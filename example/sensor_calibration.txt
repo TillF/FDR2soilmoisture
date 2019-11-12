@@ -1,0 +1,129 @@
+probe_id	ring_no	voltage_air_mV	voltage_water_mV	remarks	type	serial_no	date
+999	1			Budach, faulty readings (-14)	Theta Probe	079/053	14.08.2019
+999	1	1	1070	Budach	Theta Probe	114/035	14.08.2019
+999	1	7	1102	Budach	Theta Probe	320/060	14.08.2019
+999	1	9	1090	Budach	Theta Probe	323/006	14.08.2019
+999	1			Budach, not connected	Theta Probe	97/084	14.08.2019
+999	1	8	1094	Budach	Theta Probe	323/014	14.08.2019
+999	1	4	1.095	Bauer/Francke	Theta Probe	56/033	18.09.2019
+999	1	8	1.092	Bauer/Francke	Theta Probe	323/007	18.09.2019
+999	1	-2	1.090	Bauer/Francke	Theta Probe	75/055	18.09.2019
+999	1	3	1.100	Bauer/Francke	Theta Probe	190/076	18.09.2019
+999	1	96	1.101	Bauer/Francke	Theta Probe	333/085	18.09.2019
+999	1	60	1.109	Bauer/Francke	Theta Probe	333/082	18.09.2019
+999	1	59	1.102	Bauer/Francke	Theta Probe	333/079	18.09.2019
+999	1	99	1.111	Bauer/Francke	Theta Probe	333/095	18.09.2019
+1	1	66	985	Bauer/Budach	PR2, analogue	012-038	03.05.2019
+1	2	133	1074	Bauer/Budach	PR2, analogue	012-038	03.05.2019
+1	3	134.5	1100	Bauer/Budach	PR2, analogue	012-038	03.05.2019
+1	4	133	1104	Bauer/Budach	PR2, analogue	012-038	03.05.2019
+1	5	136	1124	Bauer/Budach	PR2, analogue	012-038	03.05.2019
+1	6	141.5	1132.5	Bauer/Budach	PR2, analogue	012-038	03.05.2019
+10	1	140	945	Szulc-S., recorded eps converted to U	PR2, SDI-12	034-099	15.08.2019
+10	2	135	978	Szulc-S., recorded eps converted to U	PR2, SDI-12	034-099	15.08.2019
+10	3	134	989	Szulc-S., recorded eps converted to U	PR2, SDI-12	034-099	15.08.2019
+10	4	133	999	Szulc-S., recorded eps converted to U	PR2, SDI-12	034-099	15.08.2019
+10	5	136	1029	Szulc-S., recorded eps converted to U	PR2, SDI-12	034-099	15.08.2019
+10	6	125	1049	Szulc-S., recorded eps converted to U	PR2, SDI-12	034-099	15.08.2019
+11	1	139	965	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-005	15.08.2019
+11	2	135	998	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-005	15.08.2019
+11	3	133	1008	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-005	15.08.2019
+11	4	131	1014	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-005	15.08.2019
+11	5	131	1036	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-005	15.08.2019
+11	6	129	1058	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-005	15.08.2019
+12	1	134	978	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-004	15.08.2019
+12	2	134	987	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-004	15.08.2019
+12	3	130	1003	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-004	15.08.2019
+12	4	132	1001	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-004	15.08.2019
+12	5	132	1050	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-004	15.08.2019
+12	6	123	1065	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-004	15.08.2019
+13	1	135	926	Szulc-S., recorded eps converted to U	PR2, SDI-12	013-056	15.08.2019
+13	2	133	975	Szulc-S., recorded eps converted to U	PR2, SDI-12	013-056	15.08.2019
+13	3	132	992	Szulc-S., recorded eps converted to U	PR2, SDI-12	013-056	15.08.2019
+13	4	125	1006	Szulc-S., recorded eps converted to U	PR2, SDI-12	013-056	15.08.2019
+14	1	71	953	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-008	15.08.2019
+14	2	71	976	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-008	15.08.2019
+14	3	75	992	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-008	15.08.2019
+14	4	82	1006	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-008	15.08.2019
+14	5	80	1040	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-008	15.08.2019
+14	6	81	1070	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-008	15.08.2019
+15	1	109	968	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-007	15.08.2019
+15	2	108	985	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-007	15.08.2019
+15	3	107	998	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-007	15.08.2019
+15	4	111	1006	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-007	15.08.2019
+15	5	111	1027	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-007	15.08.2019
+15	6	108	1048	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-007	15.08.2019
+16	1	117	942	Szulc-S., recorded eps converted to U	PR2, SDI-12	013-053	15.08.2019
+16	2	116	982	Szulc-S., recorded eps converted to U	PR2, SDI-12	013-053	15.08.2019
+16	3	119	997	Szulc-S., recorded eps converted to U	PR2, SDI-12	013-053	15.08.2019
+16	4	115	1011	Szulc-S., recorded eps converted to U	PR2, SDI-12	013-053	15.08.2019
+18	1	134	957	Szulc-S., recorded eps converted to U	PR2, SDI-12	034-031	15.08.2019
+18	2	130	984	Szulc-S., recorded eps converted to U	PR2, SDI-12	034-031	15.08.2019
+18	3	130	997	Szulc-S., recorded eps converted to U	PR2, SDI-12	034-031	15.08.2019
+18	4	130	1011	Szulc-S., recorded eps converted to U	PR2, SDI-12	034-031	15.08.2019
+18	5	130	1033	Szulc-S., recorded eps converted to U	PR2, SDI-12	034-031	15.08.2019
+18	6	122	1061	Szulc-S., recorded eps converted to U	PR2, SDI-12	034-031	15.08.2019
+19	1	132	945	Szulc-S., recorded eps converted to U	PR2, SDI-12	013-055	15.08.2019
+19	2	131	983	Szulc-S., recorded eps converted to U	PR2, SDI-12	013-055	15.08.2019
+19	3	130	999	Szulc-S., recorded eps converted to U	PR2, SDI-12	013-055	15.08.2019
+19	4	127	1013	Szulc-S., recorded eps converted to U	PR2, SDI-12	013-055	15.08.2019
+2	1	57	989	Bauer/Budach	PR2, analogue	012-036	03.05.2019
+2	2	566	1142	Bauer/Budach	PR2, analogue	012-036	03.05.2019
+2	3	556	1173	Bauer/Budach	PR2, analogue	012-036	03.05.2019
+2	4	551	1170	Bauer/Budach	PR2, analogue	012-036	03.05.2019
+2	5	566	1190	Bauer/Budach	PR2, analogue	012-036	03.05.2019
+2	6	576	NA	Bauer/Budach	PR2, analogue	012-036	03.05.2019
+21	1	126	977	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-002	15.08.2019
+21	2	127	1016	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-002	15.08.2019
+21	3	124	1003	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-002	15.08.2019
+21	4	120	1026	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-002	15.08.2019
+21	5	124	1045	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-002	15.08.2019
+21	6	114	1072	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-002	15.08.2019
+22	1	132	942	Szulc-S., recorded eps converted to U	PR2, SDI-12	013-052	15.08.2019
+22	2	125	979	Szulc-S., recorded eps converted to U	PR2, SDI-12	013-052	15.08.2019
+22	3	132	994	Szulc-S., recorded eps converted to U	PR2, SDI-12	013-052	15.08.2019
+22	4	129	1003	Szulc-S., recorded eps converted to U	PR2, SDI-12	013-052	15.08.2019
+23	1	131	937	Szulc-S., recorded eps converted to U	PR2, SDI-12	013-054	15.08.2019
+23	2	131	985	Szulc-S., recorded eps converted to U	PR2, SDI-12	013-054	15.08.2019
+23	3	131	998	Szulc-S., recorded eps converted to U	PR2, SDI-12	013-054	15.08.2019
+23	4	126	1012	Szulc-S., recorded eps converted to U	PR2, SDI-12	013-054	15.08.2019
+24	1	64	970	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-013	15.08.2019
+24	2	69	999	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-013	15.08.2019
+24	3	72	999	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-013	15.08.2019
+24	4	73	1019	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-013	15.08.2019
+24	5	73	1042	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-013	15.08.2019
+24	6	78	1060	Szulc-S., recorded eps converted to U	PR2, SDI-12	035-013	15.08.2019
+4	1	74	1038	Bauer/Budach	PR2, analogue	012-043	03.05.2019
+4	2	147	1117	Bauer/Budach	PR2, analogue	012-043	03.05.2019
+4	3	139	1131	Bauer/Budach	PR2, analogue	012-043	03.05.2019
+4	4	136	1118	Bauer/Budach	PR2, analogue	012-043	03.05.2019
+4	5	133	1135	Bauer/Budach	PR2, analogue	012-043	03.05.2019
+4	6	139	1142	Bauer/Budach	PR2, analogue	012-043	03.05.2019
+5	1	68	994	Bauer/Budach	PR2, analogue	012-037	03.05.2019
+5	2	158	1098	Bauer/Budach	PR2, analogue	012-037	03.05.2019
+5	3	135	1103	Bauer/Budach	PR2, analogue	012-037	03.05.2019
+5	4	141	1118	Bauer/Budach	PR2, analogue	012-037	03.05.2019
+5	5	134	1144	Bauer/Budach	PR2, analogue	012-037	03.05.2019
+5	6	133	1166	Bauer/Budach	PR2, analogue	012-037	03.05.2019
+6	1	68	980	Bauer/Budach	PR2, analogue	013-011	03.05.2019
+6	2	138	1073	Bauer/Budach	PR2, analogue	013-011	03.05.2019
+6	3	127	1089	Bauer/Budach	PR2, analogue	013-011	03.05.2019
+6	4	129	1086	Bauer/Budach	PR2, analogue	013-011	03.05.2019
+6	5	126	1114	Bauer/Budach	PR2, analogue	013-011	03.05.2019
+6	6	132	1119	Bauer/Budach	PR2, analogue	013-011	03.05.2019
+7	1	89	1042	Bauer/Budach	PR2, analogue	012-034	03.05.2019
+7	2	180	1123	Bauer/Budach	PR2, analogue	012-034	03.05.2019
+7	3	157	1121	Bauer/Budach	PR2, analogue	012-034	03.05.2019
+7	4	159	1128	Bauer/Budach	PR2, analogue	012-034	03.05.2019
+7	5	157	1142	Bauer/Budach	PR2, analogue	012-034	03.05.2019
+7	6	94	1042	Bauer/Budach	PR2, analogue	012-034	03.05.2019
+9	1	65	976	Bauer/Budach	PR2, analogue	012-035	03.05.2019
+9	2	141	1080	Bauer/Budach	PR2, analogue	012-035	03.05.2019
+9	3	129	1092	Bauer/Budach	PR2, analogue	012-035	03.05.2019
+9	4	128	1093	Bauer/Budach	PR2, analogue	012-035	03.05.2019
+9	5	122	1122	Bauer/Budach	PR2, analogue	012-035	03.05.2019
+9	6	114	1131	Bauer/Budach	PR2, analogue	012-035	03.05.2019
+999	1	9	1096	Biro	Theta Probe	323/013	08.11.2019
+999	1	13	1097	Biro	Theta Probe	323/009	08.11.2019
+999	1	13	1098	Biro	Theta Probe	323/010	08.11.2019
+999	1	5	1087	Biro	Theta Probe	323/005	08.11.2019
