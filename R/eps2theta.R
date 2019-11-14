@@ -2,9 +2,6 @@
 
 eps2theta = function(epsdata, equation)
 {
-  if (!is.data.frame(epsdata)) stop("epsdata must be a dataframe.")
-  if (!is.character(equation)) stop("equation must be a character string.")
-  
   required_fields = list(
     deltaT_minorg = c("epsilon", "soil"),
     FerschEtal2017 = c("epsilon", "n"),
@@ -13,10 +10,16 @@ eps2theta = function(epsdata, equation)
     Jacobsen_Schjonning1993= c("epsilon", "BD", "clay_perc", "om_perc")    
   )
   
+  if (equation == "list") return (names(required_fields)) #only return names of supported equations
+  
+  if (!is.data.frame(epsdata)) stop("epsdata must be a dataframe.")
+  if (!is.character(equation)) stop("equation must be a character string.")
+  
+  
   if (!(all(equation %in% names(required_fields)))) stop("equation must be one of ", paste0(names(required_fields), collapse = ", "))
   for (eq in equation)
   {
-    if (!(all(required_fields[[eq]] %in% names(epsdata)))) stop(paste0("Equation ", eq, "needs the columns ", paste0(required_fields[[eq]], collapse = ", "), " in epsdata."))    
+    if (!(all(required_fields[[eq]] %in% names(epsdata)))) stop(paste0("Equation '", eq, "' needs the columns ", paste0(required_fields[[eq]], collapse = ", "), " in epsdata."))    
   }  
   
   

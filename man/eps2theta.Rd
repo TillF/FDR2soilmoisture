@@ -26,7 +26,9 @@ Applies various equations, most of which are listed in Mohamed & Paleologos, 201
 
 }
 \value{
-theta (volumetric water content) [-].
+A vector of reals, i.e. theta (volumetric water content) [-].
+
+For \code{equation=="list"}, a character vector of all supported equations is returned.
 }
 \references{
 Mohamed, A.-M.O., Paleologos, E.K., 2018. Dielectric Permittivity and Moisture Content, in: Fundamentals of Geoenvironmental Engineering. Elsevier, pp. 581–637. https://doi.org/10.1016/B978-0-12-804830-6.00016-8
@@ -45,7 +47,6 @@ Till Francke
 \code{\link{correct_sensor_voltage}}
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
+#return list of supported equations
+eps2theta(epsdata = NULL, equation = "list")
 }
