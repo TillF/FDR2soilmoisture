@@ -1,8 +1,8 @@
 Package: FDR2soilmoisture
 Type: Package
 Title: Processing data of FDR-measurements to obtain soil moisture
-Version: 0.1
-Date: 2019-11-12
+Version: 0.101
+Date: 2019-11-14
 Author: Till Francke
 Maintainer: Till Francke <francke@uni-potsdam.de>
 Description: Obtain sensor specific calibrations, choose or create suitable conversion functions between voltage, permittivity and soil moisture.
@@ -10,7 +10,6 @@ License: WTFPL
 Depends: R (>= 3.3)
 Imports: 
 Suggests: xlsx(>= 0.6.1)
-URL: http://www.rforge.net/hydroPSO,
-        http://cran.r-project.org/web/packages/hydroPSO
+URL: https://github.com/TillF/FDR2soilmoisture
 Keywords: FDR, frequency domain reflectrometry, soil moisture, theta, permittivity, epsilon
 NeedsCompilation: no

@@ -4,7 +4,7 @@
   V2eps = function(V, type)
   {  
 
-    if (type=="PR2")
+    if (grepl(type, pattern="PR2"))
     #PR2
     #default equation according to manual (PR2_user_manual_version_5.0.pdf, eq. 2)
     # (PR2_SDI-12-_User_Manual_version_4_1.pdf, eq. 2)
@@ -12,7 +12,7 @@
     
     #theta-probe
     #convert to epsilon, eq. 1 of ThetaProbe user manual, p.12
-    if (type=="Theta Probe")
+    if (grepl(type, pattern="Theta Probe"))
     eps = (1.07 + 6.4*V-6.4*V^2+4.7*V^3 )^2
     
     return(eps)
@@ -29,16 +29,18 @@
     eps_synth = V2eps(V_synth, type=probe_type) #range of epsilon values
     i_eps2V[[probe_type]] = approxfun(x=eps_synth, y=V_synth) #use piecewise linear approximation
 
-    # illustration ####
-    V2 =i_eps2V[[probe_type]](eps_synth) #approximate inverse of default regression
-    plot(V_synth, eps_synth, type="l", lwd=2, main=probe_type) #, xlim=c(0,0.1), ylim=c(0,))
-    lines(V2, eps_synth, col="red", lty="dashed")
+    # # illustration ####
+    # V2 =i_eps2V[[probe_type]](eps_synth) #approximate inverse of default regression
+    # plot(V_synth, eps_synth, type="l", lwd=2, main=probe_type) #, xlim=c(0,0.1), ylim=c(0,))
+    # lines(V2, eps_synth, col="red", lty="dashed")
   }
   
   eps2V = function(eps, type) #wrapper for internal function created above
   {  
+    #replace e.g. "PR2, analogue" by "PR2"
+    type = sub(x = type, pattern = paste0("^(", paste0(names(i_eps2V), collapse="|" ), ").*"), repl="\\1") 
     if (!(type %in% names(i_eps2V)))
-      stop("Unknown probe type. Must be in <", paste0(names(i_eps2V), collapse=", "),">")
+      stop("Unknown probe type. Must be one of ('", paste0(names(i_eps2V), collapse="', '"),"').")
     return(i_eps2V[[type]](eps))
   }
 

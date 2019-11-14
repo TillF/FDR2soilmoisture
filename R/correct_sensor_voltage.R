@@ -51,7 +51,7 @@ get_reference_voltage = function(serial_no=NULL, probe_id=NULL, ring_no, calib_d
     V_h2o_meas = median(calib_data$voltage_water_mV[cur_row], na.rm=TRUE) / 1000
   
   #if coefficients are missing for ALL rings, use the median of all probes of this type
-  cur_row = calib_data$ring_no == ring_no & calib_data$type[cur_row] == type
+  cur_row = calib_data$ring_no == ring_no & calib_data$type == type
   if (is.na(V_air_meas))
     V_air_meas = median(calib_data$voltage_air_mV  [cur_row], na.rm=TRUE) / 1000
   if (is.na(V_h2o_meas))
