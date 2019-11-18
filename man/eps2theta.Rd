@@ -13,16 +13,24 @@ eps2theta(epsdata, equation)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{epsdata}{
-dataframe holding a column \code{epsilon} and potentially others, depending on the choice of \code{equation}.
+dataframe holding at least a column \code{epsilon} and potentially others, depending on the choice of \code{equation}. See details.
 }
   \item{equation}{
 Equation to be used. Must be one of "deltaT_minorg", "FerschEtal2017", "ToppEtal1980", "MalickiEtal1996", "Jacobsen_Schjonning1993".
 }
 }
 \details{
-Applies various equations, most of which are listed in Mohamed & Paleologos, 2018: 
-
-    
+Applies various equations, most of which are listed in Mohamed & Paleologos, 2018.
+The following columns in the data frame \code{epsdata} are supported and may be required, depending on the choice of the equation:
+\itemize{
+\item{epsilon} { Electric permittivity. [-]} 
+\item{soil} { Soil type indicator. \code{"mineral", "organic"}} 
+\item{n} { Soil porosity. [-]}
+\item{BD} { dry Bulk density. [g/cm³]}
+\item{clay_perc} { Percent clay. [%]}
+\item{om_perc} { Percent organic matter. [%]}
+}
+   
 
 }
 \value{
@@ -38,13 +46,14 @@ Mohamed, A.-M.O., Paleologos, E.K., 2018. Dielectric Permittivity and Moisture C
 Till Francke
 }
 \note{
-%%  ~~further notes~~
+The different equations can automatically tested and compared with \code{\link{compare_eps2theta_equations}}.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
 \code{\link{correct_sensor_voltage}}
+\code{\link{compare_eps2theta_equations}}
 }
 \examples{
 #return list of supported equations
