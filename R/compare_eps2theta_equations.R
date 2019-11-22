@@ -161,6 +161,6 @@ compare_eps2theta_equations = function(common_set)
   plot(1, 1, main="", type="n", axes=FALSE, xlab="", ylab="")    
   legend("topleft", legend=c("mineral", "organic", "testdata", "1:1"), col=c(palette()[1:2], "black", "black"), pch=c(20, 20, 20, NA), lty=c(0,0,0,1))
   
-  savePlot("comparison", type="png")
-  
+
+  return(list(r2_train=r2_train, r2_test=r2_test, eps2theta_function=eps2theta_function_list))
 }  

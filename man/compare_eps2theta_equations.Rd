@@ -26,7 +26,9 @@ The dataframe \code{common_set} may hold a logical column "training". If present
 }
 
 \value{
- Matrix of plots showing the tested equations and the respective R2-values (training and testing).
+A list with the elements \code{r2_train, r2_test, eps2theta_function}, each holding the computed R2-values and the conversion functions, repsectively.
+
+Additionally, the function generates a matrix of plots showing the tested equations and the respective R2-values (training and testing).
 }
 \references{
 %% ~put references to the literature/web site here ~
