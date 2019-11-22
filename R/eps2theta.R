@@ -10,7 +10,7 @@ eps2theta = function(epsdata, equation)
     Jacobsen_Schjonning1993= c("epsilon", "BD", "clay_perc", "om_perc")    
   )
   
-  if (equation == "list") return (names(required_fields)) #only return names of supported equations
+  if (equation == "list") return (required_fields) #only return names of supported equations
   
   if (!is.data.frame(epsdata)) stop("epsdata must be a dataframe.")
   if (!is.character(equation)) stop("equation must be a character string.")

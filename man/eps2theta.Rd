@@ -27,8 +27,8 @@ The following columns in the data frame \code{epsdata} are supported and may be 
 \item{soil} { Soil type indicator. \code{"mineral", "organic"}} 
 \item{n} { Soil porosity. [-]}
 \item{BD} { dry Bulk density. [g/cm³]}
-\item{clay_perc} { Percent clay. [%]}
-\item{om_perc} { Percent organic matter. [%]}
+\item{clay_perc} { Percent clay. [\%]}
+\item{om_perc} { Percent organic matter. [\%]}
 }
    
 
@@ -36,8 +36,9 @@ The following columns in the data frame \code{epsdata} are supported and may be 
 \value{
 A vector of reals, i.e. theta (volumetric water content) [-].
 
-For \code{equation=="list"}, a character vector of all supported equations is returned.
+For \code{equation=="list"}, a named list of all supported equations is returned. The elements in the list are character strings, denoting the necessary input fields for the equations.
 }
+
 \references{
 Mohamed, A.-M.O., Paleologos, E.K., 2018. Dielectric Permittivity and Moisture Content, in: Fundamentals of Geoenvironmental Engineering. Elsevier, pp. 581–637. https://doi.org/10.1016/B978-0-12-804830-6.00016-8
 
@@ -45,6 +46,7 @@ Mohamed, A.-M.O., Paleologos, E.K., 2018. Dielectric Permittivity and Moisture C
 \author{
 Till Francke
 }
+
 \note{
 The different equations can automatically tested and compared with \code{\link{compare_eps2theta_equations}}.
 }

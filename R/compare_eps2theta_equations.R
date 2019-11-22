@@ -15,8 +15,16 @@ compare_eps2theta_equations = function(common_set)
     r2_test =NULL #for collecting r2 values (test data set)
     eps2theta_function_list = list() #collect conversion functions
     
-    for (eq in eps2theta(epsdata = NULL, equation = "list") )
+    supported_eqs = eps2theta(epsdata = NULL, equation = "list") #get list of all supported equations
+    for (i in 1:length(supported_eqs))
     {
+      eq = names(supported_eqs)[i]
+      missing_fields = setdiff (supported_eqs[[i]], names(common_set))
+      if (length(missing_fields) > 0)
+      {
+        print(paste0("Skipped ", eq, "; missing fields: ", paste0(missing_fields, collapse = ", ")))
+        next
+      }
       common_set[, paste0("theta_", eq)] = eps2theta(common_set, equation = eq) #apply equation
       r2_train   [paste0("theta_", eq)] = r2(common_set[ common_set$training, paste0("theta_", eq)], common_set$theta[ common_set$training]) 
       r2_test    [paste0("theta_", eq)] = r2(common_set[!common_set$training, paste0("theta_", eq)], common_set$theta[!common_set$training]) 
@@ -51,6 +59,7 @@ compare_eps2theta_equations = function(common_set)
     
     
     # Ledieu et al. (1986). adjusted (eq. 16.62 in Mohamed, 2018)
+    if (length(setdiff ("BD", names(common_set))) ==0)
     {  
       eq="theta_Ledieu_adj"
       lm_all = lm(theta ~ epsilon+BD, data=common_set[common_set$training,])
@@ -71,7 +80,8 @@ compare_eps2theta_equations = function(common_set)
       r2_test    [eq] = r2(common_set[!common_set$training, eq], common_set$theta[!common_set$training]) 
     }
     
-    #Malicki, adjusted (*** chosen)
+    #Malicki, adjusted
+    if (length(setdiff ("BD", names(common_set))) ==0)
     {
       eq="theta_malicki_adj"
       lm_all = nls(formula = theta ~ (sqrt(epsilon) -a - b*BD- c*BD^2)/(d+e*BD), data = common_set[common_set$training,], start = c(a=0.819, b=0.168, c=0.168, d=7.17, e=2.18))
@@ -90,6 +100,7 @@ compare_eps2theta_equations = function(common_set)
     }
     
     #Jacobsen & Schjonning (1993), adjusted
+    if (length(setdiff (c("BD", "clay_perc", "om_perc"), names(common_set))) ==0)
     {
       eq="theta_jacsch_adj"
       lm_all = lm(formula = theta ~  epsilon+epsilon^2+epsilon^3+ BD + clay_perc + om_perc, data = common_set[common_set$training,])
@@ -110,6 +121,7 @@ compare_eps2theta_equations = function(common_set)
   
    
     #own glm
+    if (length(setdiff (c("BD"), names(common_set))) ==0)
     {
       eq="theta_glm"
       lm_all = glm(formula = theta ~  epsilon+I(epsilon^2)+ BD + I(BD^2), data = common_set[common_set$training,], family=quasipoisson)
