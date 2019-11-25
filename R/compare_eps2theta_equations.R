@@ -3,6 +3,9 @@ compare_eps2theta_equations = function(common_set)
 {  
     if (is.null(common_set$training)) common_set$training   = TRUE #default: use all as training, none as test
     
+    if (is.null(common_set$pch)) common_set$pch = 20  #default symbol for plotting
+    if (is.null(common_set$col)) common_set$col = ifelse(common_set$training, "black", "red")  #default colour for plotting
+    
     
     #for assessing goodness of fit
     r2 = function(mod, obs) 
@@ -84,7 +87,8 @@ compare_eps2theta_equations = function(common_set)
     if (length(setdiff ("BD", names(common_set))) ==0)
     {
       eq="theta_malicki_adj"
-      lm_all = nls(formula = theta ~ (sqrt(epsilon) -a - b*BD- c*BD^2)/(d+e*BD), data = common_set[common_set$training,], start = c(a=0.819, b=0.168, c=0.168, d=7.17, e=2.18))
+      lm_all = nls(formula = theta ~ (sqrt(epsilon) -a - b*BD- c*BD^2)/(d+e*BD), data = common_set[common_set$training,], start = c(a=0.819, b=0.168, c=0.168, d=7.17, e=2.18),
+                   nls.control(maxiter = 100, warnOnly = FALSE)             )
       mod_list = assign(paste0("lm_", eq),lm_all, envir = globvars) #keep this lm for later use
 
       ftemp = function(common_set)
@@ -124,7 +128,7 @@ compare_eps2theta_equations = function(common_set)
     if (length(setdiff (c("BD"), names(common_set))) ==0)
     {
       eq="theta_glm"
-      lm_all = glm(formula = theta ~  epsilon+I(epsilon^2)+ BD + I(BD^2), data = common_set[common_set$training,], family=quasipoisson)
+      lm_all = glm(formula = theta ~  sqrt(epsilon)+epsilon+I(epsilon^2)+ BD + I(BD^2), data = common_set[common_set$training,], family=quasipoisson)
       mod_list = assign(paste0("lm_", eq),lm_all, envir = globvars) #keep this lm for later use
       
 
@@ -151,8 +155,8 @@ compare_eps2theta_equations = function(common_set)
   for (mm in models)    
   {
     plot(1, 1, main=paste0(mm, "\n R2 = ", format(r2_train[mm], digits = 3), " / ", format(r2_test[mm], digits = 3)), xlim=c(0.05,0.95), ylim=c(0.05,0.95), type="n", xlab="theta_obs", ylab="theta_mod")
-    points(common_set$theta[!common_set$training], common_set[!common_set$training, mm],  col="black", pch=20)
-    points(common_set$theta[ common_set$training], common_set[ common_set$training, mm],  col=ifelse(common_set$soil=="mineral",1,2) , pch=20)
+    points(common_set$theta[!common_set$training], common_set[!common_set$training, mm],  col=common_set$col[!common_set$training], pch=common_set$pch[!common_set$training])
+    points(common_set$theta[ common_set$training], common_set[ common_set$training, mm],  col=common_set$col[ common_set$training], pch=common_set$pch[ common_set$training])
            
     abline(b=1, a=0)
     #r2_ = r2(common_set[, mm], common_set$theta)

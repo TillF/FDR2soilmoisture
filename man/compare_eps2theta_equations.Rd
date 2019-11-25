@@ -20,8 +20,9 @@ The dataframe \code{common_set} holds measured values of epsilon and observed va
 Additionally, other explanatory variables (e.g. bulk density) can be contained (see details in \code{\link{eps2theta}}).
 The function applies all equations supported by \code{\link{eps2theta}}. It also adjusts the coefficients of these equations to better match the data, yielding equations variants with suffix "_adj".
 
-The dataframe \code{common_set} may hold a logical column "training". If present, the custom model fits (see above) are based on this subset only; the remaining data are also displayed and R2-values reported.
+The dataframe \code{common_set} may hold a logical column \code{training}. If present, the custom model fits (see above) are based on this subset only; the remaining data are also displayed and R2-values reported.
 
+For plotting, the dataframe \code{common_set} may hold column \code{col} and \code{pch}. These are used in the plots.
 
 }
 
