@@ -10,7 +10,7 @@ Compare different equations for converting epsilon to theta by creating a plot a
 \usage{
 compare_eps2theta_equations(common_set)
 }
-
+\arguments{
   \item{common_set}{
 	Data frame with observed data. See details. 
 }
