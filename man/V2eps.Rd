@@ -51,7 +51,5 @@ Till Francke
 \code{\link{correct_sensor_voltage}}
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
+V2eps(V= 1.3, type = "Theta Probe") #convert to epsilon, eq. 1 of ThetaProbe user manual
 }
