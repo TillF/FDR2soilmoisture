@@ -96,7 +96,7 @@ correct_sensor_voltage = function(V, serial_no=NULL, probe_id=NULL, ring_no=1, c
     if (Vmax_measured > unique_settings[ss, "V_h2o_meas"])
     {
       warning(paste0("Max V in time series (", Vmax_measured, ") larger than reference V for water (", unique_settings[ss, "V_h2o_meas"],"). Consider updating calibration data for ",
-                     ifelse(is.null(unique_settings$probe_id), paste("ser_no",unique_settings$serial_no[ss]), paste("probe-id", unique_settings$probe_id[ss])),", ring ", unique_settings$ring_no[ss], ". Using new max."))
+                     ifelse(is.null(unique_settings$probe_id), paste0("ser_no '",unique_settings$serial_no[ss]), paste0("probe-id '", unique_settings$probe_id[ss])),"', ring '", unique_settings$ring_no[ss], "'. Using new max."))
       unique_settings[ss, "V_h2o_meas"] = Vmax_measured
     }
     V_corrected[cur_rows] = V_corr(V = V[cur_rows], V_air_meas = unique_settings[ss, "V_air_meas"], V_h2o_meas = unique_settings[ss, "V_h2o_meas"], type=unique_settings[ss, "type"])
