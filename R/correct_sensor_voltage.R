@@ -40,7 +40,7 @@ get_reference_voltage = function(serial_no=NULL, probe_id=NULL, ring_no, calib_d
   type = calib_data$type[cur_row]
     
   if (is.na(V_air_meas + V_h2o_meas))
-    warning(paste0("NA-coefficients for ", arg, " ", get(arg), " and ring-no ", ring_no, ". Using medians of same type and ring."))
+    warning(paste0("NA-coefficients for ", arg, " '", get(arg), "' and ring-no '", ring_no, "'. Using medians of same type and ring."))
   
 
   #if coefficients are missing for SOME rings, use the median of all rings of this probe
@@ -95,8 +95,8 @@ correct_sensor_voltage = function(V, serial_no=NULL, probe_id=NULL, ring_no=1, c
     Vmax_measured = quantile(V[cur_rows], probs = 0.99, na.rm=T) #get maximum voltage measured, discarding outliers
     if (Vmax_measured > unique_settings[ss, "V_h2o_meas"])
     {
-      warning(paste0("Max V in time series (", Vmax_measured, ") larger than reference V for water (", unique_settings[ss, "V_h2o_meas"],"). Consider updating calibration data for ",
-                     ifelse(is.null(unique_settings$probe_id), paste("ser_no",unique_settings$serial_no[ss]), paste("probe-id", unique_settings$probe_id[ss])),", ring ", unique_settings$ring_no[ss], ". Using new max."))
+      warning(paste0("Max V in time series (", Vmax_measured, " V) larger than reference V for water (", unique_settings[ss, "V_h2o_meas"]," V). Consider updating calibration data for ",
+                     ifelse(is.null(unique_settings$probe_id), paste0("ser_no '",unique_settings$serial_no[ss]), paste0("probe-id '", unique_settings$probe_id[ss])),"', ring '", unique_settings$ring_no[ss], "'. Using new max."))
       unique_settings[ss, "V_h2o_meas"] = Vmax_measured
     }
     V_corrected[cur_rows] = V_corr(V = V[cur_rows], V_air_meas = unique_settings[ss, "V_air_meas"], V_h2o_meas = unique_settings[ss, "V_h2o_meas"], type=unique_settings[ss, "type"])

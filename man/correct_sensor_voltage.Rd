@@ -1,5 +1,5 @@
 \name{correct_sensor_voltage}
-\alias{correct_sensor_voltage}
+\alias{}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 correct_sensor_voltage
@@ -28,7 +28,7 @@ correct_sensor_voltage(V, serial_no=NULL, probe_id=NULL, ring_no=1, calib_data)
 }
 }
 \details{
-In spite of manufacture specifications, Theta Probe and PR2-instruments usually yield output deviating from the specifications. This deviation seems especially pronounced for the analogue PR2 probes, with varying offsets along the length of the rod. We assume this mismatch to be linear. Thus, it can be corrected with to reference points. These are taken from the supplied calibration data, which contain two measurements (air, water) for each sensor. Thus, the given raw input \code{V} is linearly transformed in a way, that the manufacture's conversion of Voltage to permittivity (epsilon) holds for air and water.
+In spite of manufacture specifications, Theta Probe and PR2-instruments usually yield output deviating from the specifications. This deviation seems especially pronounced for the analogue PR2 probes, with varying offsets along the length of the rod. We assume this mismatch to be linear. Thus, it can be corrected with two reference points. These are taken from the supplied user calibration data, which contain two measurements (air, water) for each sensor. Thus, the given raw input \code{V} is linearly transformed in a way, that the manufacture's conversion of Voltage to permittivity (epsilon) holds for air and water.
 
 \itemize{
 \code{calib_data}: Data frame with calibration data. The following columns must be present:
@@ -63,8 +63,10 @@ Till Francke
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
+
+calib_file = system.file("example", "sensor_calibration.txt", package = "FDR2soilmoisture") #replace this by your own calibration file
+calib_data = read.table(calib_file, nrow=-1, sep="\t", stringsAsFactors = FALSE, header=TRUE, na.strings = c("NA",""))  #load the file
+V_corr = correct_sensor_voltage(V=0.8, serial_no = "114/035", calib_data = calib_data) #apply sensor-specific voltage calibration
+
 }
 
