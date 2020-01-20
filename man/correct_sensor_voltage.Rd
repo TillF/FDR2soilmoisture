@@ -1,5 +1,5 @@
 \name{correct_sensor_voltage}
-\alias{}
+\alias{correct_sensor_voltage}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 correct_sensor_voltage

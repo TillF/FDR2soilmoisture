@@ -31,11 +31,14 @@ The following columns in the data frame \code{epsdata} are supported and may be 
 \item{om_perc} { Percent organic matter. [\%]}
 }
    
-% \citep{malicki_improving_1996} resulting in
-%    \begin{equation}
-%    \theta =  \frac{\sqrt{\epsilon}-0.819-0.168\rho-0.159\rho^2}{7.17+1.18\rho}
-%    \label{eq:permittivity_to_theta_till}
-%    \end{equation}
+The respective equations used are
+
+
+Malicki et al., 1996:
+\deqn{\theta =  \frac{\sqrt{\epsilon}-0.819-0.168\rho-0.159\rho^2}{7.17+1.18\rho}
+}{%
+\theta =  (\sqrt{\epsilon}-0.819-0.168\rho-0.159\rho^2)/(7.17+1.18\rho).
+}
 
 }
 \value{

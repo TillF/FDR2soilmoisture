@@ -1,12 +1,26 @@
 #compare various equations for eps2theta conversion
-compare_eps2theta_equations = function(common_set)
+compare_eps2theta_equations = function(common_set, legend_args=NULL)
 {  
     if (is.null(common_set$training)) common_set$training   = TRUE #default: use all as training, none as test
     
-    if (is.null(common_set$pch)) common_set$pch = 20  #default symbol for plotting
-    if (is.null(common_set$col)) common_set$col = ifelse(common_set$training, "black", "red")  #default colour for plotting
+    legend_args2=list(x="topleft", legend="1:1", lty=1, pch=NA, col="black")
     
-    
+    if (is.null(common_set$pch))
+    {  
+      common_set$pch = 20  #default symbol for plotting
+      legend_args2$pch = c(legend_args2$pch, 20, 20)
+    }
+    if (is.null(common_set$col))
+    {  
+      common_set$col = ifelse(common_set$training, "black", "grey")  #default colour for plotting
+      legend_args2$col = c(legend_args2$col, "black", "red")
+      legend_args2$lty = c(legend_args2$lty, 0, 0)
+      legend_args2$legend = c(legend_args2$legend, "training", "test")
+    }
+   
+    if (is.null(legend_args)) 
+      legend_args=legend_args2
+
     #for assessing goodness of fit
     r2 = function(mod, obs) 
     {
@@ -123,18 +137,68 @@ compare_eps2theta_equations = function(common_set)
       r2_test    [eq] = r2(common_set[!common_set$training, eq], common_set$theta[!common_set$training])       
     }
   
-   
-    #own glm
-    if (length(setdiff (c("BD"), names(common_set))) ==0)
+    form_str = "theta ~  sqrt(epsilon)+epsilon+I(epsilon^2)"
+    if ("BD" %in% names(common_set) )
+      form_str = paste0(form_str, "+ BD"
+      )
+    if ("om_perc" %in% names(common_set) )
+      form_str = paste0(form_str, "+ om_perc")
+    
+    if ("clay_perc" %in% names(common_set) )
+      form_str = paste0(form_str, "+ clay_perc")
+      
+    #glm_poiss
     {
-      eq="theta_glm"
-      lm_all = glm(formula = theta ~  sqrt(epsilon)+epsilon+I(epsilon^2)+ BD + I(BD^2), data = common_set[common_set$training,], family=quasipoisson)
+      eq="theta_glm_poiss"
+ 
+      lm_all = glm(formula = formula(form_str), data = common_set[common_set$training,], family=quasipoisson)
       mod_list = assign(paste0("lm_", eq),lm_all, envir = globvars) #keep this lm for later use
       
-
       ftemp = function(common_set)
       {  
-        theta_pred = predict(get(x = "lm_theta_glm",  envir = globvars), newdata = common_set, type="response")
+        theta_pred = predict(get(x = "lm_theta_glm_poiss",  envir = globvars), newdata = common_set, type="response")
+        return(theta_pred)
+      }
+      
+      eps2theta_function_list [[eq]] = ftemp #store conversion function
+      common_set             [, eq] = ftemp(common_set) #apply conversion function
+      r2_train   [eq] = r2(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
+      r2_test    [eq] = r2(common_set[!common_set$training, eq], common_set$theta[!common_set$training])     
+    }
+    rm(lm_all)
+    
+    #own glm_bin
+    {
+      eq="theta_glm_bin"
+  
+      lm_all = glm(formula = formula(form_str), data = common_set[common_set$training,], family=quasibinomial)
+      mod_list = assign(paste0("lm_", eq),lm_all, envir = globvars) #keep this lm for later use
+      
+      
+      ftemp = function(common_set)
+      {  
+        theta_pred = predict(get(x = "lm_theta_glm_bin",  envir = globvars), newdata = common_set, type="response")
+        return(theta_pred)
+      }
+      
+      eps2theta_function_list [[eq]] = ftemp #store conversion function
+      common_set             [, eq] = ftemp(common_set) #apply conversion function
+      r2_train   [eq] = r2(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
+      r2_test    [eq] = r2(common_set[!common_set$training, eq], common_set$theta[!common_set$training])     
+    }
+    rm(lm_all)
+    
+    #own glm_gauss
+    {
+      eq="theta_glm_gauss"
+  
+      lm_all = glm(formula = formula(form_str), data = common_set[common_set$training,], family=gaussian)
+      mod_list = assign(paste0("lm_", eq),lm_all, envir = globvars) #keep this lm for later use
+      
+      
+      ftemp = function(common_set)
+      {  
+        theta_pred = predict(get(x = "lm_theta_glm_gauss",  envir = globvars), newdata = common_set, type="response")
         return(theta_pred)
       }
       
@@ -163,7 +227,9 @@ compare_eps2theta_equations = function(common_set)
     #text(x = 0.22, y=0.6, labels = paste0("R2 = ", format(r2_, digits = 3)))
   } 
   plot(1, 1, main="", type="n", axes=FALSE, xlab="", ylab="")    
-  legend("topleft", legend=c("mineral", "organic", "testdata", "1:1"), col=c(palette()[1:2], "black", "black"), pch=c(20, 20, 20, NA), lty=c(0,0,0,1))
+  if (length(legend_args)>0)
+    do.call(legend, args=legend_args)
+#    legend("topleft", legend=c("mineral", "organic", "testdata", "1:1"), col=c(palette()[1:2], "black", "black"), pch=c(20, 20, 20, NA), lty=c(0,0,0,1))
   
 
   return(list(r2_train=r2_train, r2_test=r2_test, eps2theta_function=eps2theta_function_list))
