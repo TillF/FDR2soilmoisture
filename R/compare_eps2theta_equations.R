@@ -206,6 +206,29 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
       r2_test    [eq] = r2(common_set[!common_set$training, eq], common_set$theta[!common_set$training])       
     }
     
+    #   Singh et al 2019 (10.1016/j.agwat.2019.02.024)
+    if (length(setdiff ("clay_perc", names(common_set))) ==0)
+    {
+      eq="theta_Singh_adj"
+      lm_all = nls(formula = theta ~ (a1*clay_perc^2 + a2*clay_perc + a3)*sqrt(epsilon) + b, 
+                   data = common_set[common_set$training,], start = c(a1=0, a2=0, a3=0.1),
+                   nls.control(maxiter = 100, warnOnly = FALSE)             )
+      mod_list = assign(paste0("lm_", eq),lm_all, envir = globvars) #keep this lm for later use
+      
+      ftemp = function(common_set)
+      {  
+        theta_pred = predict(get(x = "lm_theta_Singh_adj",  envir = globvars), newdata = common_set)
+        return(theta_pred)
+      }
+      
+      eps2theta_function_list [[eq]] = ftemp #store conversion function
+      common_set             [, eq] = ftemp(common_set) #apply conversion function
+      r2_train   [eq] = r2(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
+      r2_test    [eq] = r2(common_set[!common_set$training, eq], common_set$theta[!common_set$training])       
+    }
+    
+    
+    
 
     form_str = "theta ~  sqrt(epsilon)+epsilon+I(epsilon^2)"
     if ("BD" %in% names(common_set) )
@@ -282,7 +305,10 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
     #   r2_test    [eq] = r2(common_set[!common_set$training, eq], common_set$theta[!common_set$training])     
     # }
     rm(lm_all)
+ 
     
+
+       
     
   # compare results  
     models = names(common_set)

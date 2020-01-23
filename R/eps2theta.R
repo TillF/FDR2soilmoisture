@@ -6,9 +6,12 @@ eps2theta = function(epsdata, equation)
     deltaT_minorg = c("epsilon", "soil"),
     FerschEtal2017 = c("epsilon", "n"),
     ToppEtal1980 = c("epsilon"),
+    RothEtal1992 = c("epsilon"),
+    SchaapEtal1997 = c("epsilon"),
     MalickiEtal1996 = c("epsilon", "BD"),
     Jacobsen_Schjonning1993= c("epsilon", "BD", "clay_perc", "om_perc"),    
     DrnevichEtal2005= c("epsilon", "BD", "cohesive"),
+    JuEtal2010 = c("epsilon", "BD"),
     ZhaoEtal2016 = c("epsilon", "BD")
   )
   
@@ -40,6 +43,7 @@ eps2theta = function(epsdata, equation)
     theta[!min_ix] = (sqrt(epsdata$epsilon[!min_ix]) - a0) / a1 #ThetaProbe manual, eq. 6
     
   }
+  #Kargas & Kerkides 2008seem to give a similar eq.
   
   if (equation=="FerschEtal2017")
   {  
@@ -52,6 +56,20 @@ eps2theta = function(epsdata, equation)
   { 
     theta = -0.053+ 2.93e-2*epsdata$epsilon -5.5e-4*epsdata$epsilon^2 + 4.3e-6*epsdata$epsilon^3
   }
+  
+  # Roth et al 1992 (eq. 6 in Kargas & Kerkides, 2006)
+  if (equation=="RothEtal1992")
+  { 
+    theta = 0.0233+ 0.0285*epsdata$epsilon -0.000431^2 + 0.00000304*epsdata$epsilon^3
+  }
+  #Yoshikawa et al. (2004), Pepin et al. (1992) give further polyniomial equations
+  
+  # Schaap et al 1997 (eq. 2b in Vaz et al 2013)
+  if (equation=="SchaapEtal1997")
+  { 
+    theta = (0.133*sqrt(epsdata$epsilon) -0.146)^0.885
+  }
+  
   
   #Malicki et al 1996(eq. 16.63 in Mohamed & Paleologos, 2018)
   if (equation=="MalickiEtal1996")
@@ -81,8 +99,17 @@ eps2theta = function(epsdata, equation)
             ((18.0283*epsdata$BD-17.9531) +(-0.6806*epsdata$BD+1.8351)*sqrt(epsdata$epsilon))
   }
   
+  #Ju et al, 2010
+  if (equation=="JuEtal2010")
+  {
+    theta = 0.1228*sqrt(epsdata$epsilon) - 0.1322*epsdata$BD -0.0152
+  }
   
   
+  
+  
+  
+  #Schwartz et al 2008 (10.2136/sssaj2007.0208) provide multilinear regression using partcle size fractions and Ca-content etc.
 
 
   
