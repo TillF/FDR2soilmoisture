@@ -5,7 +5,7 @@
 compare_eps2theta_equations
 }
 \description{
-Compare different equations for converting epsilon to theta by creating a plot and showing R2-values.
+Compare different equations for converting epsilon to theta by creating a plot and showing R2-values. The function uses the equations included in \code{\link{eps2theta}} plus some generic GLM variants using different link functions.
 }
 \usage{
 compare_eps2theta_equations(common_set, legend_args=NULL)
@@ -15,7 +15,7 @@ compare_eps2theta_equations(common_set, legend_args=NULL)
 	Data frame with observed data. See details. 
 }
 \item{legend_args}{
-	Arguments passed to legend() to create the legend for the plots. 
+	Arguments passed to \code{\link{legend()}} to create the legend for the plots. 
 }
 
 }
@@ -26,7 +26,7 @@ The function applies all equations supported by \code{\link{eps2theta}}. It also
 
 The dataframe \code{common_set} may hold a logical column \code{training}. If present, the custom model fits (see above) are based on this subset only; the remaining data are also displayed and their R2-values ("testing") reported.
 
-For plotting, the dataframe \code{common_set} may hold column \code{col} and \code{pch}. These are used in the plots.
+For plotting, the dataframe \code{common_set} may hold columns \code{col} and \code{pch}. These are used in the plots as respective arguments.
 
 }
 

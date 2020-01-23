@@ -191,7 +191,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
     #own glm_gauss
     {
       eq="theta_glm_gauss"
-  
+      
       lm_all = glm(formula = formula(form_str), data = common_set[common_set$training,], family=gaussian)
       mod_list = assign(paste0("lm_", eq),lm_all, envir = globvars) #keep this lm for later use
       
@@ -199,6 +199,29 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
       ftemp = function(common_set)
       {  
         theta_pred = predict(get(x = "lm_theta_glm_gauss",  envir = globvars), newdata = common_set, type="response")
+        return(theta_pred)
+      }
+      
+      eps2theta_function_list [[eq]] = ftemp #store conversion function
+      common_set             [, eq] = ftemp(common_set) #apply conversion function
+      r2_train   [eq] = r2(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
+      r2_test    [eq] = r2(common_set[!common_set$training, eq], common_set$theta[!common_set$training])     
+    }
+    rm(lm_all)
+    
+    #own glm_sqrt
+    {
+      form_str = sub(x = form_str, pattern = "theta", repl="sqrt(theta)")
+      eq="theta_glm_sqrt"
+      
+      lm_all = glm(formula = formula(form_str), data = common_set[common_set$training,], family=gaussian)
+      mod_list = assign(paste0("lm_", eq),lm_all, envir = globvars) #keep this lm for later use
+      
+      
+      ftemp = function(common_set)
+      {  
+        theta_pred = predict(get(x = "lm_theta_glm_sqrt",  envir = globvars), newdata = common_set, type="response")
+        theta_pred = theta_pred^2  #convert sqrt(theta) to theta
         return(theta_pred)
       }
       
