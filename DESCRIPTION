@@ -1,8 +1,8 @@
 Package: FDR2soilmoisture
 Type: Package
 Title: Processing data of FDR-measurements to obtain soil moisture
-Version: 0.103
-Date: 2019-01-15
+Version: 0.104
+Date: 2019-01-23
 Author: Till Francke
 Maintainer: Till Francke <francke@uni-potsdam.de>
 Description: Obtain sensor specific calibrations, choose or create suitable conversion functions between voltage, permittivity and soil moisture.

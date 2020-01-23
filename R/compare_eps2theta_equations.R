@@ -104,10 +104,10 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
       lm_all = nls(formula = theta ~ (sqrt(epsilon) -a - b*BD- c*BD^2)/(d+e*BD), data = common_set[common_set$training,], start = c(a=0.819, b=0.168, c=0.168, d=7.17, e=2.18),
                    nls.control(maxiter = 100, warnOnly = FALSE)             )
       mod_list = assign(paste0("lm_", eq),lm_all, envir = globvars) #keep this lm for later use
-
+      
       ftemp = function(common_set)
       {  
-         theta_pred = predict(get(x = "lm_theta_malicki_adj",  envir = globvars), newdata = common_set)
+        theta_pred = predict(get(x = "lm_theta_malicki_adj",  envir = globvars), newdata = common_set)
         return(theta_pred)
       }
       
@@ -116,6 +116,26 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
       r2_train   [eq] = r2(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
       r2_test    [eq] = r2(common_set[!common_set$training, eq], common_set$theta[!common_set$training])       
     }
+    
+    # #Malicki, sqrt
+    # if (length(setdiff ("BD", names(common_set))) ==0)
+    # {
+    #   eq="theta_malicki_adj_sqrt"
+    #   lm_all = nls(formula = theta ~ sqrt((sqrt(epsilon) -a - b*BD- c*BD^2)/(d+e*BD)), data = common_set[common_set$training,], start = c(a=0.819, b=0.168, c=0.168, d=7.17, e=2.18),
+    #                nls.control(maxiter = 100, warnOnly = FALSE)             )
+    #   mod_list = assign(paste0("lm_", eq),lm_all, envir = globvars) #keep this lm for later use
+    #   
+    #   ftemp = function(common_set)
+    #   {  
+    #     theta_pred = predict(get(x = "lm_theta_malicki_adj_sqrt",  envir = globvars), newdata = common_set)
+    #     return(theta_pred)
+    #   }
+    #   
+    #   eps2theta_function_list [[eq]] = ftemp #store conversion function
+    #   common_set             [, eq] = ftemp(common_set) #apply conversion function
+    #   r2_train   [eq] = r2(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
+    #   r2_test    [eq] = r2(common_set[!common_set$training, eq], common_set$theta[!common_set$training])       
+    # }
     
     #Jacobsen & Schjonning (1993), adjusted
     if (length(setdiff (c("BD", "clay_perc", "om_perc"), names(common_set))) ==0)
@@ -137,6 +157,56 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
       r2_test    [eq] = r2(common_set[!common_set$training, eq], common_set$theta[!common_set$training])       
     }
   
+    #Drnevich et al (2005) adjusted
+    if (length(setdiff (c("BD", "cohesive"), names(common_set))) ==0)
+    {
+      eq="theta_Drnevich_adj"
+      lm_all = nls(formula = theta ~ (sqrt(epsilon) / BD - (cohesive*a_coh + (1-cohesive)*a_ncoh)) /
+                     (cohesive*b_coh + (1-cohesive)*b_ncoh), 
+                   data = common_set[common_set$training,], 
+                   #start = c(a_coh=0.95, a_ncoh=1, b_coh=8.8, b_ncoh=8.5),
+                   start = c(a_coh=1, a_ncoh=1, b_coh=1, b_ncoh=1),
+                   lower = c(a_coh=0.01, a_ncoh=0.01, b_coh=0.01, b_ncoh=0.01), 
+                   upper = c(a_coh=100, a_ncoh=100, b_coh=100, b_ncoh=100), 
+                   algorithm =  "port",
+                   nls.control(maxiter = 100, warnOnly = FALSE))  
+      mod_list = assign(paste0("lm_", eq),lm_all, envir = globvars) #keep this lm for later use
+      
+      ftemp = function(common_set)
+      {  
+        theta_pred = predict(get(x = "lm_theta_Drnevich_adj",  envir = globvars), newdata = common_set)
+        return(theta_pred)
+      }
+      
+      eps2theta_function_list [[eq]] = ftemp #store conversion function
+      common_set             [, eq] = ftemp(common_set) #apply conversion function
+      r2_train   [eq] = r2(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
+      r2_test    [eq] = r2(common_set[!common_set$training, eq], common_set$theta[!common_set$training])       
+    }
+    
+    #Zhao et al., 2016, adjusted
+    if (length(setdiff ("BD", names(common_set))) ==0)
+    {
+      eq="theta_Zhao_adj"
+      lm_all = nls(formula = theta ~ (a*BD +b + sqrt(epsilon)) /
+                     ((c*BD+d) +(e*BD+f)*sqrt(epsilon)), 
+                   data = common_set[common_set$training,], start = c(a=0.3039, b=- 2.1851, c=18.0283, d=-17.9531, e=-0.6806, f=1.8351),
+                   nls.control(maxiter = 100, warnOnly = FALSE)             )
+      mod_list = assign(paste0("lm_", eq),lm_all, envir = globvars) #keep this lm for later use
+      
+      ftemp = function(common_set)
+      {  
+        theta_pred = predict(get(x = "lm_theta_Zhao_adj",  envir = globvars), newdata = common_set)
+        return(theta_pred)
+      }
+      
+      eps2theta_function_list [[eq]] = ftemp #store conversion function
+      common_set             [, eq] = ftemp(common_set) #apply conversion function
+      r2_train   [eq] = r2(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
+      r2_test    [eq] = r2(common_set[!common_set$training, eq], common_set$theta[!common_set$training])       
+    }
+    
+
     form_str = "theta ~  sqrt(epsilon)+epsilon+I(epsilon^2)"
     if ("BD" %in% names(common_set) )
       form_str = paste0(form_str, "+ BD"
@@ -147,26 +217,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
     if ("clay_perc" %in% names(common_set) )
       form_str = paste0(form_str, "+ clay_perc")
       
-    #glm_poiss
-    {
-      eq="theta_glm_poiss"
- 
-      lm_all = glm(formula = formula(form_str), data = common_set[common_set$training,], family=quasipoisson)
-      mod_list = assign(paste0("lm_", eq),lm_all, envir = globvars) #keep this lm for later use
-      
-      ftemp = function(common_set)
-      {  
-        theta_pred = predict(get(x = "lm_theta_glm_poiss",  envir = globvars), newdata = common_set, type="response")
-        return(theta_pred)
-      }
-      
-      eps2theta_function_list [[eq]] = ftemp #store conversion function
-      common_set             [, eq] = ftemp(common_set) #apply conversion function
-      r2_train   [eq] = r2(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
-      r2_test    [eq] = r2(common_set[!common_set$training, eq], common_set$theta[!common_set$training])     
-    }
-    rm(lm_all)
-    
+
     #own glm_bin
     {
       eq="theta_glm_bin"
@@ -209,27 +260,27 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
     }
     rm(lm_all)
     
-    #own glm_sqrt
-    {
-      form_str = sub(x = form_str, pattern = "theta", repl="sqrt(theta)")
-      eq="theta_glm_sqrt"
-      
-      lm_all = glm(formula = formula(form_str), data = common_set[common_set$training,], family=gaussian)
-      mod_list = assign(paste0("lm_", eq),lm_all, envir = globvars) #keep this lm for later use
-      
-      
-      ftemp = function(common_set)
-      {  
-        theta_pred = predict(get(x = "lm_theta_glm_sqrt",  envir = globvars), newdata = common_set, type="response")
-        theta_pred = theta_pred^2  #convert sqrt(theta) to theta
-        return(theta_pred)
-      }
-      
-      eps2theta_function_list [[eq]] = ftemp #store conversion function
-      common_set             [, eq] = ftemp(common_set) #apply conversion function
-      r2_train   [eq] = r2(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
-      r2_test    [eq] = r2(common_set[!common_set$training, eq], common_set$theta[!common_set$training])     
-    }
+    # #own glm_sqrt
+    # {
+    #   form_str = sub(x = form_str, pattern = "theta", repl="sqrt(theta)")
+    #   eq="theta_glm_sqrt"
+    #   
+    #   lm_all = glm(formula = formula(form_str), data = common_set[common_set$training,], family=gaussian)
+    #   mod_list = assign(paste0("lm_", eq),lm_all, envir = globvars) #keep this lm for later use
+    #   
+    #   
+    #   ftemp = function(common_set)
+    #   {  
+    #     theta_pred = predict(get(x = "lm_theta_glm_sqrt",  envir = globvars), newdata = common_set, type="response")
+    #     theta_pred = theta_pred^2  #convert sqrt(theta) to theta
+    #     return(theta_pred)
+    #   }
+    #   
+    #   eps2theta_function_list [[eq]] = ftemp #store conversion function
+    #   common_set             [, eq] = ftemp(common_set) #apply conversion function
+    #   r2_train   [eq] = r2(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
+    #   r2_test    [eq] = r2(common_set[!common_set$training, eq], common_set$theta[!common_set$training])     
+    # }
     rm(lm_all)
     
     
@@ -243,8 +294,10 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
   {
     plot(1, 1, main=paste0(mm, "\n R2 = ", format(r2_train[mm], digits = 3), " / ", format(r2_test[mm], digits = 3)), xlim=c(0.05,0.95), ylim=c(0.05,0.95), type="n", xlab="theta_obs", ylab="theta_mod")
     points(common_set$theta[!common_set$training], common_set[!common_set$training, mm],  col=common_set$col[!common_set$training], pch=common_set$pch[!common_set$training])
+    lines (lowess(common_set$theta[!common_set$training], common_set[!common_set$training, mm], delta=0.01, f=1),  col="red", lty="dashed")
     points(common_set$theta[ common_set$training], common_set[ common_set$training, mm],  col=common_set$col[ common_set$training], pch=common_set$pch[ common_set$training])
-           
+    lines (lowess(common_set$theta[common_set$training], common_set[common_set$training, mm], delta=0.01, f=1),  col="red", lty="solid")
+    
     abline(b=1, a=0)
     #r2_ = r2(common_set[, mm], common_set$theta)
     #text(x = 0.22, y=0.6, labels = paste0("R2 = ", format(r2_, digits = 3)))

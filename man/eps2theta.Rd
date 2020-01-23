@@ -16,7 +16,7 @@ eps2theta(epsdata, equation)
 dataframe holding at least a column \code{epsilon} and potentially others, depending on the choice of \code{equation}. See details.
 }
   \item{equation}{
-Equation to be used. Must be one of "deltaT_minorg", "FerschEtal2017", "ToppEtal1980", "MalickiEtal1996", "Jacobsen_Schjonning1993".
+Equation to be used. Must be one of "deltaT_minorg", "FerschEtal2017", "ToppEtal1980", "MalickiEtal1996", "Jacobsen_Schjonning1993", "DrnevichEtal2005".
 }
 }
 \details{
@@ -26,9 +26,10 @@ The following columns in the data frame \code{epsdata} are supported and may be 
 \item{epsilon} { Electric permittivity. [-]} 
 \item{soil} { Soil type indicator. \code{"mineral", "organic"}} 
 \item{n} { Soil porosity. [-]}
-\item{BD} { dry Bulk density. [g/cm³]}
+\item{BD} { dry bulk density. [g/cm³]}
 \item{clay_perc} { Percent clay. [\%]}
 \item{om_perc} { Percent organic matter. [\%]}
+\item{cohesive} { is the soil cohesive? [0/1]}
 }
    
 The respective equations used are
@@ -50,6 +51,8 @@ For \code{equation=="list"}, a named list of all supported equations is returned
 \references{
 Delta-T Devices Ltd, 1998. ThetaProbe SOIL MOISTURE SENSOR TYPE ML2 USER MANUAL (ML2-UM-1). Delta-T Devices Ltd, Cambridge, UK.
 
+Drnevich, V.P., Ashmawy, A.K., Yu, X., Sallam, A.M., 2005. Time domain reflectometry for water content and density of soils: study of soil-dependent calibration constants. Can. Geotech. J. 42, 1053–1065. https://doi.org/10.1139/T05-047
+
 Fersch, B., Jagdhuber, T., Schroen, M., Voelksch, I., Jaeger, M., 2018. Synergies for Soil Moisture Retrieval Across Scales From Airborne Polarimetric SAR, Cosmic Ray Neutron Roving, and an In Situ Sensor Network. Water Resour. Res. 54, 9364–9383. https://doi.org/10.1029/2018WR023337
 
 Jacobsen, O., Schjonning, P., 1993. A Laboratory Calibration of Time-Domain Reflectometry for Soil-Water Measurement Including Effects of Bulk-Density and Texture. J. Hydrol. 151, 147–157. https://doi.org/10.1016/0022-1694(93)90233-Y
@@ -60,6 +63,7 @@ Mohamed, A.-M.O., Paleologos, E.K., 2018. Dielectric Permittivity and Moisture C
 
 Topp, G., Davis, J., Annan, A., 1980. Electromagnetic Determination of Soil-Water Content - Measurements in Coaxial Transmission-Lines. Water Resour. Res. 16, 574–582. https://doi.org/10.1029/WR016i003p00574
 
+Zhao, Y., Ling, D., Wang, Y., Huang, B., Wang, H., 2016. Study on a calibration equation for soil water content in field tests using time domain reflectometry. J. Zhejiang Univ.-SCI A 17, 240–252. https://doi.org/10.1631/jzus.A1500065
 
 }
 \author{

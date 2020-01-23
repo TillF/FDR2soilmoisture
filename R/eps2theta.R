@@ -7,7 +7,9 @@ eps2theta = function(epsdata, equation)
     FerschEtal2017 = c("epsilon", "n"),
     ToppEtal1980 = c("epsilon"),
     MalickiEtal1996 = c("epsilon", "BD"),
-    Jacobsen_Schjonning1993= c("epsilon", "BD", "clay_perc", "om_perc")    
+    Jacobsen_Schjonning1993= c("epsilon", "BD", "clay_perc", "om_perc"),    
+    DrnevichEtal2005= c("epsilon", "BD", "cohesive"),
+    ZhaoEtal2016 = c("epsilon", "BD")
   )
   
   if (equation == "list") return (required_fields) #only return names of supported equations
@@ -63,6 +65,23 @@ eps2theta = function(epsdata, equation)
     theta = -3.41*1e-2 +3.45*1e-2*epsdata$epsilon-11.4*1e-4*epsdata$epsilon^2 + 17.1*1e-6*epsdata$epsilon^3-
       3.7*1e-2*epsdata$BD + 7.36*1e-4*epsdata$clay_perc + 47.7*1e-4 * epsdata$om_perc
   }
+  
+  #Drnevich et al (2005) from Zhao et al., 2016
+  if (equation=="DrnevichEtal2005")
+  {
+    a = ifelse(epsdata$cohesive, 0.95, 1)    
+    b = ifelse(epsdata$cohesive, 8.8, 8.5)    
+    theta = (sqrt(epsdata$epsilon) / epsdata$BD - a) / b
+  }
+  
+  #Zhao et al., 2016
+  if (equation=="ZhaoEtal2016")
+  {
+    theta = (0.3039*epsdata$BD - 2.1851 + sqrt(epsdata$epsilon)) /
+            ((18.0283*epsdata$BD-17.9531) +(-0.6806*epsdata$BD+1.8351)*sqrt(epsdata$epsilon))
+  }
+  
+  
   
 
 
