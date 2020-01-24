@@ -15,7 +15,7 @@ compare_eps2theta_equations(common_set, legend_args=NULL)
 	Data frame with observed data. See details. 
 }
 \item{legend_args}{
-	Arguments passed to \code{\link{legend()}} to create the legend for the plots. 
+	Arguments passed to \code{\link{legend}()} to create the legend for the plots. 
 }
 
 }
