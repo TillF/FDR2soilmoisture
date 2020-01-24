@@ -16,7 +16,18 @@ eps2theta(epsdata, equation)
 dataframe holding at least a column \code{epsilon} and potentially others, depending on the choice of \code{equation}. See details.
 }
   \item{equation}{
-Equation to be used. Must be one of "deltaT_minorg", "FerschEtal2017", "ToppEtal1980", "MalickiEtal1996", "Jacobsen_Schjonning1993", "DrnevichEtal2005", "JuEtal2010".
+Equation to be used. Must be one of 
+"deltaT_minorg", 
+"DrnevichEtal2005",
+"FerschEtal2017", 
+"Jacobsen_Schjonning1993",
+"JuEtal2010",
+"MalickiEtal1996",
+"RothEtal1992",
+"ToppEtal1980", 
+"SchaapEtal1997",
+"ZhaoEtal2016".
+
 }
 }
 \details{
@@ -32,7 +43,7 @@ The following columns in the data frame \code{epsdata} are supported and may be 
 \item{cohesive} { is the soil cohesive? [0/1]}
 }
    
-The respective equations used are
+The respective equations used are:
 
 
 Malicki et al., 1996:
@@ -40,6 +51,8 @@ Malicki et al., 1996:
 }{%
 \theta =  (\sqrt{\epsilon}-0.819-0.168\rho-0.159\rho^2)/(7.17+1.18\rho).
 }
+
+[to be completed]
 
 }
 \value{

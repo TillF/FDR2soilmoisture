@@ -211,7 +211,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
     {
       eq="theta_Singh_adj"
       lm_all = nls(formula = theta ~ (a1*clay_perc^2 + a2*clay_perc + a3)*sqrt(epsilon) + b, 
-                   data = common_set[common_set$training,], start = c(a1=0, a2=0, a3=0.1),
+                   data = common_set[common_set$training,], start = c(a1=0, a2=0, a3=0.1, b=0),
                    nls.control(maxiter = 100, warnOnly = FALSE)             )
       mod_list = assign(paste0("lm_", eq),lm_all, envir = globvars) #keep this lm for later use
       
