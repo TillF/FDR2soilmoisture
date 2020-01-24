@@ -188,22 +188,47 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
     if (length(setdiff ("BD", names(common_set))) ==0)
     {
       eq="theta_Zhao_adj"
-      lm_all = nls(formula = theta ~ (a*BD +b + sqrt(epsilon)) /
-                     ((c*BD+d) +(e*BD+f)*sqrt(epsilon)), 
-                   data = common_set[common_set$training,], start = c(a=0.3039, b=- 2.1851, c=18.0283, d=-17.9531, e=-0.6806, f=1.8351),
-                   nls.control(maxiter = 100, warnOnly = FALSE)             )
-      mod_list = assign(paste0("lm_", eq),lm_all, envir = globvars) #keep this lm for later use
-      
-      ftemp = function(common_set)
+      #robust optimization using optim
+      obj_fun = function(parms, data1)
       {  
-        theta_pred = predict(get(x = "lm_theta_Zhao_adj",  envir = globvars), newdata = common_set)
-        return(theta_pred)
+        theta_mod = (parms[1]*data1$BD +parms[2] + sqrt(data1$epsilon)) /
+          ((parms[3]*data1$BD+parms[4]) +(parms[5]*data1$BD+parms[6])*sqrt(data1$epsilon))
+        sse = sum((theta_mod - data1$theta)^2, na.rm=TRUE)
+        return(sse)             
       }
+      start=c(a=0.3039, b= -2.1851, c= 18.0283, d=-17.9531, e=-0.6806, f=1.8351) #Zhao's values
+      res=optim(par = c(a=0, b=0, c=0, d=0, e=1, f=1), fn = obj_fun, data1 = common_set[common_set$training,])
       
-      eps2theta_function_list [[eq]] = ftemp #store conversion function
-      common_set             [, eq] = ftemp(common_set) #apply conversion function
-      r2_train   [eq] = r2(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
-      r2_test    [eq] = r2(common_set[!common_set$training, eq], common_set$theta[!common_set$training])       
+      ignore = is.na(common_set$BD + common_set$theta + common_set$epsilon) #mask NAs
+      tt = try({
+        lm_all = nls(formula = theta ~ (a*BD +b + sqrt(epsilon)) /
+                       ((c*BD+d) +(e*BD+f)*sqrt(epsilon)), 
+                     data = common_set[common_set$training & !ignore,], 
+                     start = res$par,
+                     lower=-Inf,
+                     upper= Inf,
+                     trace=FALSE,
+                     nls.control(maxiter = 100, warnOnly = TRUE)             )
+      }, silent=TRUE
+      )
+      if (class(tt) =="try-error")
+      {
+        warning(paste0("Failed to fit ", eq," (", attr(tt, "condition"),")"))
+      } else
+      {  
+        mod_list = assign(paste0("lm_", eq),lm_all, envir = globvars) #keep this lm for later use
+        
+        ftemp = function(common_set)
+        {  
+          theta_pred = predict(get(x = "lm_theta_Zhao_adj",  envir = globvars), newdata = common_set)
+          return(theta_pred)
+        }
+        
+        eps2theta_function_list [[eq]] = ftemp #store conversion function
+        common_set             [, eq] = ftemp(common_set) #apply conversion function
+        r2_train   [eq] = r2(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
+        r2_test    [eq] = r2(common_set[!common_set$training, eq], common_set$theta[!common_set$training])
+      }  
     }
     
     #   Singh et al 2019 (10.1016/j.agwat.2019.02.024)
@@ -222,15 +247,16 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
       obj_fun = function(parms, data1)
       {  
         theta_mod = (parms[1]*data1$clay_perc^2 + parms[2]*data1$clay_perc + parms[3])*sqrt(data1$epsilon) + parms[4] 
-        sse = sum((theta_mod - data1$theta)^2)
+        sse = sum((theta_mod - data1$theta)^2, na.rm=TRUE)
         return(sse)             
       }
       res=optim(par = c(a1=0, a2=as.numeric(a2), a3=0, b=as.numeric(b)), fn = obj_fun, data1 = common_set[common_set$training,])
       
       #refine with nlxb, the improved version of nls
       library(nlmrt) #the regular nls is not robust here
+      ignore = is.na(common_set$clay_perc + common_set$theta + common_set$epsilon) #mask NAs
       lm_all = nlxb(formula = theta ~ (a1*clay_perc^2 + a2*clay_perc + a3)*sqrt(epsilon) + b, 
-                    data = common_set[common_set$training,], 
+                    data = common_set[common_set$training & !ignore,], 
                     start = res$par,
                     upper = res$par + abs(res$par)*0.01, 
                     lower = res$par - abs(res$par)*0.01, 

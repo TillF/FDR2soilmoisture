@@ -24,7 +24,7 @@ eps2theta = function(epsdata, equation)
   if (!(all(equation %in% names(required_fields)))) stop("equation must be one of ", paste0(names(required_fields), collapse = ", "))
   for (eq in equation)
   {
-    if (!(all(required_fields[[eq]] %in% names(epsdata)))) stop(paste0("Equation '", eq, "' needs the columns ", paste0(required_fields[[eq]], collapse = ", "), " in epsdata."))    
+    if (!(all(required_fields[[eq]] %in% names(epsdata)))) stop(paste0("Equation '", eq, "' needs the column(s) '", paste0(required_fields[[eq]], collapse = "', '"), "' in epsdata."))    
   }  
   
   
