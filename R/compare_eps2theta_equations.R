@@ -210,14 +210,42 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
     if (length(setdiff ("clay_perc", names(common_set))) ==0)
     {
       eq="theta_Singh_adj"
-      lm_all = nls(formula = theta ~ (a1*clay_perc^2 + a2*clay_perc + a3)*sqrt(epsilon) + b, 
-                   data = common_set[common_set$training,], start = c(a1=0, a2=0, a3=0.1, b=0),
-                   nls.control(maxiter = 100, warnOnly = FALSE)             )
+      #get initial estimate
+      lm_all = lm(formula = theta ~ sqrt(epsilon), 
+                  data = common_set[common_set$training,]) 
+      a3 = coef(lm_all)["sqrt(epsilon)"] #retrieve coefficient
+      b  = coef(lm_all)["(Intercept)"] #retrieve coefficient
+      
+      a2=a3/mean(common_set$clay_perc, na.rm=TRUE) #estimate starting value for a2
+      
+      #robust optimization using optim
+      obj_fun = function(parms, data1)
+      {  
+        theta_mod = (parms[1]*data1$clay_perc^2 + parms[2]*data1$clay_perc + parms[3])*sqrt(data1$epsilon) + parms[4] 
+        sse = sum((theta_mod - data1$theta)^2)
+        return(sse)             
+      }
+      res=optim(par = c(a1=0, a2=as.numeric(a2), a3=0, b=as.numeric(b)), fn = obj_fun, data1 = common_set[common_set$training,])
+      
+      #refine with nlxb, the improved version of nls
+      library(nlmrt) #the regular nls is not robust here
+      lm_all = nlxb(formula = theta ~ (a1*clay_perc^2 + a2*clay_perc + a3)*sqrt(epsilon) + b, 
+                    data = common_set[common_set$training,], 
+                    start = res$par,
+                    upper = res$par + abs(res$par)*0.01, 
+                    lower = res$par - abs(res$par)*0.01, 
+                    #alg="port",
+                    trace=FALSE,
+                    nls.control(maxiter = 100, warnOnly = FALSE)  )
       mod_list = assign(paste0("lm_", eq),lm_all, envir = globvars) #keep this lm for later use
       
       ftemp = function(common_set)
       {  
-        theta_pred = predict(get(x = "lm_theta_Singh_adj",  envir = globvars), newdata = common_set)
+        lm_t = get("lm_theta_Singh_adj", envir = globvars) 
+        str(lm_t$coefficients)
+        lm_t$coefficients["a1"]
+        theta_pred = (lm_t$coefficients["a1"]*common_set$clay_perc^2 + lm_t$coefficients["a2"]*common_set$clay_perc + 
+                        lm_t$coefficients["a3"])*sqrt(common_set$epsilon) + lm_t$coefficients["b"] 
         return(theta_pred)
       }
       
