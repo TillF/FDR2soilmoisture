@@ -28,6 +28,27 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
       return(1 - sum((mod[complete]-obs[complete])^2, na.rm=TRUE  ) / sum((mean(obs[complete]) - obs[complete])^2, na.rm=TRUE  )) 
     }
     
+    
+    #generate "average" data for plotting
+    numeric_cols = sapply(common_set, class) == "numeric" #index to numeric columns
+    modus = function(x)
+    { return (names(sort(-table(x)))[1])}
+    eps_range = seq(from=1.1, to=80, by=1)
+    
+    
+    common_set_plot_train = sapply(common_set[common_set$training, numeric_cols], median, na.rm=TRUE)
+    common_set_plot_train = data.frame(t(common_set_plot_train), t(sapply(common_set[common_set$training, !numeric_cols], modus)))
+    common_set_plot_train = cbind(common_set_plot_train, epsilon=eps_range)
+    common_set_plot_train$epsilon = NULL
+    
+    common_set_plot_test = sapply(common_set[!common_set$training, numeric_cols], median, na.rm=TRUE)
+    common_set_plot_test = data.frame(t(common_set_plot_test), t(sapply(common_set[!common_set$training, !numeric_cols], modus)))
+    common_set_plot_test = cbind(common_set_plot_test, epsilon=eps_range)
+    common_set_plot_test$epsilon = NULL
+    
+    
+          
+
     r2_train=NULL #for collecting r2 values
     r2_test =NULL #for collecting r2 values (test data set)
     eps2theta_function_list = list() #collect conversion functions
@@ -47,32 +68,118 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
       r2_test    [paste0("theta_", eq)] = r2(common_set[!common_set$training, paste0("theta_", eq)], common_set$theta[!common_set$training]) 
       ftemp = eval(parse(text=paste0("function(epsdata){eps2theta(epsdata = epsdata, equation = \"",eq, "\")}")))
       eps2theta_function_list [[paste0("theta_", eq)]] = ftemp #store conversion function
+      
+      #collect equation output for plotting
+      common_set_plot_train[, paste0("theta_", eq)] = eps2theta(common_set_plot_train, equation = eq) #apply equation
+      common_set_plot_test [, paste0("theta_", eq)] = eps2theta(common_set_plot_test , equation = eq) #apply equation
     }
     
   
     #custom fits:  
     
-    #simple regression on epsilon_sqrt
+    # #simple regression on epsilon_sqrt
+    # {
+    #   eq="theta_simple_linear"
+    #   lm_all = lm(theta ~ sqrt(epsilon), data=common_set[common_set$training,])
+    #   
+    #   mod_list = assign(paste0("lm_", eq),lm_all, envir = globvars) #keep this lm for later use
+    #   
+    #   ftemp = function(common_set)
+    #   {  
+    #     #valid_rows = is.finite(common_set$theta + common_set$epsilon)
+    #     #theta_pred = rep(NA, nrow(common_set)) #create empty array for result
+    #     
+    #     theta_pred = predict(get(x = "lm_theta_simple_linear",  envir = globvars), newdata = common_set)
+    #     return(theta_pred)
+    #   }
+    # 
+    #   eps2theta_function_list [[eq]] = ftemp #store conversion function
+    #   common_set             [, eq] = ftemp(common_set) #apply conversion function
+    #   r2_train   [eq] = r2(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
+    #   r2_test    [eq] = r2(common_set[!common_set$training, eq], common_set$theta[!common_set$training]) 
+    #   
+    #   #collect equation output for plotting
+    #   common_set_plot_train[, eq] = ftemp(common_set_plot_train) #apply equation
+    #   common_set_plot_test [, eq] = ftemp(common_set_plot_test ) #apply equation
+    # }
+    # 
+    #adjusted Delta_T with fixed intercept, regression on sqrt eps
+    if (length(setdiff (c("soil"), names(common_set))) ==0)
     {
-      eq="theta_simple_linear"
-      lm_all = lm(theta ~ sqrt(epsilon), data=common_set[common_set$training,])
+      eq="theta_deltaT_adj"
+      if (any (!(unique(common_set$soil, na.rm=TRUE) %in% c("mineral", "organic", "clay"))))
+        stop("Field 'soil' must be 'mineral' or 'organic'")
+      
+      common_set$a0 = NA #auxiliary column to fix intercept (aProfile Probe User Manual 5.0, p. 47)
+      common_set$a0[common_set$soil == "organic"] = 1.4
+      common_set$a0[common_set$soil == "mineral"] = 1.6
+      common_set$a0[common_set$soil == "clay"]    = 1.8
+      
+      lm_all = lm(sqrt(epsilon)-a0 ~ theta -1, data=common_set[common_set$training,])
+      mod_list = assign(paste0("lm_", eq),lm_all, envir = globvars) #keep this lm for later use
+      
+      ftemp = function(common_set)
+      {  
+        common_set$a0[common_set$soil == "organic"] = 1.4
+        common_set$a0[common_set$soil == "mineral"] = 1.6
+        common_set$a0[common_set$soil == "clay"]    = 1.8
+        
+        lm_t = get("lm_theta_deltaT_adj", envir = globvars) 
+        #a1 = lm_t$coefficients["theta"]
+        theta_pred =  1/lm_t$coefficients["theta"]*sqrt(common_set$epsilon) - common_set$a0/lm_t$coefficients["theta"] 
+        return(theta_pred)
+      }
+      
+      eps2theta_function_list [[eq]] = ftemp #store conversion function
+      common_set             [, eq] = ftemp(common_set) #apply conversion function
+      r2_train   [eq] = r2(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
+      r2_test    [eq] = r2(common_set[!common_set$training, eq], common_set$theta[!common_set$training]) 
+      
+      #collect equation output for plotting
+      common_set_plot_train[, eq] = ftemp(common_set_plot_train) #apply equation
+      common_set_plot_test [, eq] = ftemp(common_set_plot_test ) #apply equation
+      common_set$a0 = NULL #remove auxiliary col
+      
+    }
+    
+    #adjusted Delta_T with fixed intercept, direct regression
+    if (length(setdiff (c("soil"), names(common_set))) == 0)
+    {
+      eq="theta_deltaT_adj2"
+      if (any (!(unique(common_set$soil, na.rm=TRUE) %in% c("mineral", "organic", "clay"))))
+        stop("Field 'soil' must be 'mineral' or 'organic'")
+      
+      common_set$a0 = NA #auxiliary column to fix intercept (aProfile Probe User Manual 5.0, p. 47)
+      common_set$a0[common_set$soil == "organic"] = 1.4
+      common_set$a0[common_set$soil == "mineral"] = 1.6
+      common_set$a0[common_set$soil == "clay"]    = 1.8
+      
+      lm_all = nls(formula = theta ~ 1/a1 * sqrt(epsilon) -a0/a1, data = common_set[common_set$training,], start = c(a1=0.12),
+                   nls.control(maxiter = 100, warnOnly = FALSE) )
       
       mod_list = assign(paste0("lm_", eq),lm_all, envir = globvars) #keep this lm for later use
       
       ftemp = function(common_set)
       {  
-        #valid_rows = is.finite(common_set$theta + common_set$epsilon)
-        #theta_pred = rep(NA, nrow(common_set)) #create empty array for result
+        common_set$a0[common_set$soil == "organic"] = 1.4
+        common_set$a0[common_set$soil == "mineral"] = 1.6
+        common_set$a0[common_set$soil == "clay"]    = 1.8
         
-        theta_pred = predict(get(x = "lm_theta_simple_linear",  envir = globvars), newdata = common_set)
+        theta_pred = predict(get(x = "lm_theta_deltaT_adj2",  envir = globvars), newdata = common_set)
         return(theta_pred)
       }
-  
+      
       eps2theta_function_list [[eq]] = ftemp #store conversion function
       common_set             [, eq] = ftemp(common_set) #apply conversion function
       r2_train   [eq] = r2(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
       r2_test    [eq] = r2(common_set[!common_set$training, eq], common_set$theta[!common_set$training]) 
-      }
+      
+      #collect equation output for plotting
+      common_set_plot_train[, eq] = ftemp(common_set_plot_train) #apply equation
+      common_set_plot_test [, eq] = ftemp(common_set_plot_test ) #apply equation
+      common_set$a0 = NULL #remove auxiliary col
+      
+    }
     
     
     # Ledieu et al. (1986). adjusted (eq. 16.62 in Mohamed, 2018)
@@ -95,6 +202,11 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
       common_set             [, eq] = ftemp(common_set) #apply conversion function
       r2_train   [eq] = r2(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
       r2_test    [eq] = r2(common_set[!common_set$training, eq], common_set$theta[!common_set$training]) 
+      
+      #collect equation output for plotting
+      common_set_plot_train[, eq] = ftemp(common_set_plot_train) #apply equation
+      common_set_plot_test [, eq] = ftemp(common_set_plot_test ) #apply equation
+      
     }
     
     #Malicki, adjusted
@@ -115,6 +227,11 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
       common_set             [, eq] = ftemp(common_set) #apply conversion function
       r2_train   [eq] = r2(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
       r2_test    [eq] = r2(common_set[!common_set$training, eq], common_set$theta[!common_set$training])       
+      
+      #collect equation output for plotting
+      common_set_plot_train[, eq] = ftemp(common_set_plot_train) #apply equation
+      common_set_plot_test [, eq] = ftemp(common_set_plot_test ) #apply equation
+      
     }
     
     # #Malicki, sqrt
@@ -155,6 +272,11 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
       common_set             [, eq] = ftemp(common_set) #apply conversion function
       r2_train   [eq] = r2(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
       r2_test    [eq] = r2(common_set[!common_set$training, eq], common_set$theta[!common_set$training])       
+      
+      #collect equation output for plotting
+      common_set_plot_train[, eq] = ftemp(common_set_plot_train) #apply equation
+      common_set_plot_test [, eq] = ftemp(common_set_plot_test ) #apply equation
+      
     }
   
     #Drnevich et al (2005) adjusted
@@ -182,6 +304,11 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
       common_set             [, eq] = ftemp(common_set) #apply conversion function
       r2_train   [eq] = r2(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
       r2_test    [eq] = r2(common_set[!common_set$training, eq], common_set$theta[!common_set$training])       
+      
+      #collect equation output for plotting
+      common_set_plot_train[, eq] = ftemp(common_set_plot_train) #apply equation
+      common_set_plot_test [, eq] = ftemp(common_set_plot_test ) #apply equation
+      
     }
     
     #Zhao et al., 2016, adjusted
@@ -228,6 +355,11 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
         common_set             [, eq] = ftemp(common_set) #apply conversion function
         r2_train   [eq] = r2(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
         r2_test    [eq] = r2(common_set[!common_set$training, eq], common_set$theta[!common_set$training])
+        
+        #collect equation output for plotting
+        common_set_plot_train[, eq] = ftemp(common_set_plot_train) #apply equation
+        common_set_plot_test [, eq] = ftemp(common_set_plot_test ) #apply equation
+        
       }  
     }
     
@@ -268,8 +400,6 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
       ftemp = function(common_set)
       {  
         lm_t = get("lm_theta_Singh_adj", envir = globvars) 
-        str(lm_t$coefficients)
-        lm_t$coefficients["a1"]
         theta_pred = (lm_t$coefficients["a1"]*common_set$clay_perc^2 + lm_t$coefficients["a2"]*common_set$clay_perc + 
                         lm_t$coefficients["a3"])*sqrt(common_set$epsilon) + lm_t$coefficients["b"] 
         return(theta_pred)
@@ -279,6 +409,11 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
       common_set             [, eq] = ftemp(common_set) #apply conversion function
       r2_train   [eq] = r2(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
       r2_test    [eq] = r2(common_set[!common_set$training, eq], common_set$theta[!common_set$training])       
+      
+      #collect equation output for plotting
+      common_set_plot_train[, eq] = ftemp(common_set_plot_train) #apply equation
+      common_set_plot_test [, eq] = ftemp(common_set_plot_test ) #apply equation
+      
     }
     
     
@@ -313,9 +448,13 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
       common_set             [, eq] = ftemp(common_set) #apply conversion function
       r2_train   [eq] = r2(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
       r2_test    [eq] = r2(common_set[!common_set$training, eq], common_set$theta[!common_set$training])     
+      
+      #collect equation output for plotting
+      common_set_plot_train[, eq] = ftemp(common_set_plot_train) #apply equation
+      common_set_plot_test [, eq] = ftemp(common_set_plot_test ) #apply equation
+      
     }
-    rm(lm_all)
-    
+
     #own glm_gauss
     {
       eq="theta_glm_gauss"
@@ -334,8 +473,12 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
       common_set             [, eq] = ftemp(common_set) #apply conversion function
       r2_train   [eq] = r2(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
       r2_test    [eq] = r2(common_set[!common_set$training, eq], common_set$theta[!common_set$training])     
+      
+      #collect equation output for plotting
+      common_set_plot_train[, eq] = ftemp(common_set_plot_train) #apply equation
+      common_set_plot_test [, eq] = ftemp(common_set_plot_test ) #apply equation
     }
-    rm(lm_all)
+
     
     # #own glm_sqrt
     # {
@@ -358,25 +501,27 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
     #   r2_train   [eq] = r2(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
     #   r2_test    [eq] = r2(common_set[!common_set$training, eq], common_set$theta[!common_set$training])     
     # }
-    rm(lm_all)
+
  
     
 
        
     
-  # compare results  
+  # compare results in scatterplot matrix #### 
     models = names(common_set)
     models = models[grepl(models, pattern = "theta_")]
     
   windows(width = 40, height = 30) #open largest possible window in 4:3 format
-    par(mfrow=c(length(models) %/% 4 +1, 4))
+    par(mfrow=c(length(models) %/% 4 +1, 4), oma=c(0,0,0,0), mar=c(0.7, 1.5, 4.1, 0.5), cex=0.6)
   for (mm in models)    
   {
-    plot(1, 1, main=paste0(mm, "\n R2 = ", format(r2_train[mm], digits = 3), " / ", format(r2_test[mm], digits = 3)), xlim=c(0.05,0.95), ylim=c(0.05,0.95), type="n", xlab="theta_obs", ylab="theta_mod")
+    plot(1, 1, main=paste0(mm, "\n R2 = ", format(r2_train[mm], digits = 3), " / ", format(r2_test[mm], digits = 3)), xlim=c(0.05,0.95), ylim=c(0.05,0.95), type="n"
+         , xlab="", ylab="")
+  #    , xlab="theta_obs", ylab="theta_mod")
     points(common_set$theta[!common_set$training], common_set[!common_set$training, mm],  col=common_set$col[!common_set$training], pch=common_set$pch[!common_set$training])
-    lines (lowess(common_set$theta[!common_set$training], common_set[!common_set$training, mm], delta=0.01, f=1),  col="red", lty="dashed")
+    lines (lowess(common_set$theta[!common_set$training], common_set[!common_set$training, mm], delta=0.01, f=2),  col="red", lty="dashed")
     points(common_set$theta[ common_set$training], common_set[ common_set$training, mm],  col=common_set$col[ common_set$training], pch=common_set$pch[ common_set$training])
-    lines (lowess(common_set$theta[common_set$training], common_set[common_set$training, mm], delta=0.01, f=1),  col="red", lty="solid")
+    lines (lowess(common_set$theta[common_set$training], common_set[common_set$training, mm], delta=0.01, f=2),  col="red", lty="solid")
     
     abline(b=1, a=0)
     #r2_ = r2(common_set[, mm], common_set$theta)
@@ -388,5 +533,40 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
 #    legend("topleft", legend=c("mineral", "organic", "testdata", "1:1"), col=c(palette()[1:2], "black", "black"), pch=c(20, 20, 20, NA), lty=c(0,0,0,1))
   
 
+# compare equations by plotting "characteristic" curves into a single diagram  
+  windows(width = 40, height = 30) #open largest possible window in 4:3 format
+  models = names(common_set_plot_train)
+  models = models[grepl(models, pattern = "theta_")]
+  
+  
+  #construct palette
+  library(RColorBrewer)
+  n = length(models)
+  #construct palette
+  pal = brewer.pal( min(n, 12), "Paired")
+  lty = rep("solid", min(n, 12))
+  
+  if (n > 12)
+  {
+        pal = c(pal, pal)
+        lty = c(lty, rep("dashed", max(n-12, 0)))
+  }      
+  
+  palette(pal)
+  
+  plot(1, 1, xlim=range(eps_range), ylim=c(0.00,1.2), type="n", xlab="epsilon", ylab="theta_mod")
+  
+  
+  for (i in 1:n)    
+  {
+    mm = models[i]
+    lines (eps_range, common_set_plot_train[, mm], col=pal[i], lty=lty[i], lwd=2)
+    lines (eps_range, common_set_plot_test [, mm], col=pal[i], lty=lty[i], lwd=1.0)
+    
+  } 
+  legend("topleft", legend=c("train", "test", models), col=c("black", "black", pal[1:n]), 
+         pch=NA, lty=c("solid","solid", lty), lwd=c(2, 1, rep(2, length(models))))
+  
+  
   return(list(r2_train=r2_train, r2_test=r2_test, eps2theta_function=eps2theta_function_list))
 }  

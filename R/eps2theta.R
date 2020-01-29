@@ -6,7 +6,7 @@ eps2theta = function(epsdata, equation)
     deltaT_minorg = c("epsilon", "soil"),
     FerschEtal2017 = c("epsilon", "n"),
     ToppEtal1980 = c("epsilon"),
-    RothEtal1992 = c("epsilon"),
+    RothEtal1992 = c("epsilon", "soil"),
     SchaapEtal1997 = c("epsilon"),
     MalickiEtal1996 = c("epsilon", "BD"),
     Jacobsen_Schjonning1993= c("epsilon", "BD", "clay_perc", "om_perc"),    
@@ -31,11 +31,11 @@ eps2theta = function(epsdata, equation)
   theta=NA
   if (equation=="deltaT_minorg")
   {
-    if (any (!(unique(epsdata$soil, na.rm=TRUE) %in% c("mineral", "organic"))))
+    if (any (!(unique(epsdata$soil, na.rm=TRUE) %in% c("mineral", "organic", "clay"))))
       stop("Field 'soil' must be 'mineral' or 'organic'")
     theta = rep(NA, nrow(epsdata))
-    min_ix = epsdata$soil == "mineral" 
-    a0 = 1.6  #ThetaProbe manual, page 14
+    min_ix = (epsdata$soil == "mineral") |(epsdata$soil == "clay")
+    a0 = 1.6  #ThetaProbe manual, page 14; Profile Probe User Manual 5.0, page 21
     a1 = 8.4   
     theta[min_ix] = (sqrt(epsdata$epsilon[min_ix]) - a0) / a1 #ThetaProbe manual, eq. 6
     a0 = 1.3  #ThetaProbe manual, page 14
@@ -60,7 +60,14 @@ eps2theta = function(epsdata, equation)
   # Roth et al 1992 (eq. 6 in Kargas & Kerkides, 2006)
   if (equation=="RothEtal1992")
   { 
-    theta = 0.0233+ 0.0285*epsdata$epsilon -0.000431^2 + 0.00000304*epsdata$epsilon^3
+    if (any (!(unique(epsdata$soil, na.rm=TRUE) %in% c("mineral", "organic"))))
+      stop("Field 'soil' must be 'mineral' or 'organic'")
+    theta = rep(NA, nrow(epsdata))
+    min_ix = epsdata$soil == "mineral" 
+    #mineral
+    theta[ min_ix] = -0.0728 + 0.0448*epsdata$epsilon[ min_ix] -0.00195 *epsdata$epsilon[ min_ix]^2 + 0.0000361*epsdata$epsilon[min_ix]^3
+    #organic
+    theta[!min_ix] =  0.0233 + 0.0285*epsdata$epsilon[!min_ix] -0.000431*epsdata$epsilon[!min_ix]^2 + 0.00000304*epsdata$epsilon[!min_ix]^3
   }
   #Yoshikawa et al. (2004), Pepin et al. (1992) give further polyniomial equations
   

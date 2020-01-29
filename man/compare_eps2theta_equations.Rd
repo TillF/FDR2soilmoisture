@@ -5,7 +5,7 @@
 compare_eps2theta_equations
 }
 \description{
-Compare different equations for converting epsilon to theta by creating a plot and showing R2-values. The function uses the equations included in \code{\link{eps2theta}} plus some generic GLM variants using different link functions.
+Compare different equations for converting epsilon to theta by creating a plot and showing R2-values. The function uses the equations included in \code{\link{eps2theta}}, some of them with customized coefficients, plus some GLM variants using different link functions.
 }
 \usage{
 compare_eps2theta_equations(common_set, legend_args=NULL)
