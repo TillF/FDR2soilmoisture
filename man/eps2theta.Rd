@@ -53,7 +53,7 @@ Malicki et al., 1996:
 }
 
 Zhao et al., 2016:
-\deqn{\theta =  \frac{0.3039 * \BD - 2.1851 + \sqrt{\epsilon}}{(18.0283 * BD - 17.9531) + (-0.6806 * BD + 1.8351) * \sqrt{\epsilon}
+\deqn{\theta =  \frac{0.3039 * \BD - 2.1851 + \sqrt{\epsilon}}{(18.0283 * BD - 17.9531) + (-0.6806 * BD + 1.8351) * \sqrt{\epsilon}}
 }{%
 \theta ~ (0.3039 * \BD - 2.1851 + sqrt(\epsilon))/((18.0283 * BD - 17.9531) + (-0.6806 * BD + 1.8351) * sqrt(\epsilon)).
 }

@@ -20,15 +20,20 @@ Type of sensor. Must be "Theta Probe" OR "PR2".
 }
 }
 \details{
-Applies the manufacturer's conversion functions. V: voltage in [V?] 
+Applies the manufacturer's conversion functions. V: voltage in [V] 
 
-PR2: eps = (1.125 - 5.53*V + 67.17*V^2 - 234.42*V^3 + 413.56*V^4 - 356.68*V^5 + 121.53*V^6)^2 
-    #default equation according to manual (PR2_user_manual_version_5.0.pdf, eq. 2)
-    # (PR2_SDI-12-_User_Manual_version_4_1.pdf, eq. 2)
+PR2 default equation according to manual (PR2_user_manual_version_5.0.pdf, eq. 2), (PR2_SDI-12-_User_Manual_version_4_1.pdf, eq. 2):
+\deqn{\sqrt{\epsilon} = 1.125 - 5.53*\V + 67.17*\V^2 - 234.42*\V^3 + 413.56*\V^4 - 356.68*\V^5 + 121.53*\V^6
+}{%
+\sqrt{\epsilon} = 1.125 - 5.53*\V + 67.17*\V^2 - 234.42*\V^3 + 413.56*\V^4 - 356.68*\V^5 + 121.53*\V^6
+}
     
-Theta Probe:
-    #eq. 3 of ThetaProbe user manual
-    eps = 1.07 + 6.4*V-6.4*V^2+4.7*V^3 
+Theta Probe (ThetaProbe user manual, eq. 3):
+\deqn{\epsilon = 1.07 + 6.4*\V-6.4*\V^2+4.7*\V^3 
+}{%
+\epsilon = 1.07 + 6.4*\V-6.4*\V^2+4.7*\V^3 
+}
+
     
 
 }
