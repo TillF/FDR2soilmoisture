@@ -49,13 +49,13 @@ The respective equations used are:
 Malicki et al., 1996:
 \deqn{\theta =  \frac{\sqrt{\epsilon}-0.819-0.168\BD-0.159\BD^2}{7.17+1.18\BD}
 }{%
-\theta =  (\sqrt{\epsilon}-0.819-0.168\BD-0.159\BD^2)/(7.17+1.18\BD).
+\theta =  (\sqrt(\epsilon)-0.819-0.168 BD-0.159 BD^2)/(7.17+1.18 BD).
 }
 
 Zhao et al., 2016:
 \deqn{\theta =  \frac{0.3039 * \BD - 2.1851 + \sqrt{\epsilon}}{(18.0283 * BD - 17.9531) + (-0.6806 * BD + 1.8351) * \sqrt{\epsilon}}
 }{%
-\theta ~ (0.3039 * \BD - 2.1851 + sqrt(\epsilon))/((18.0283 * BD - 17.9531) + (-0.6806 * BD + 1.8351) * sqrt(\epsilon)).
+\theta = (0.3039 * BD - 2.1851 + sqrt(\epsilon))/((18.0283 * BD - 17.9531) + (-0.6806 * BD + 1.8351) * sqrt(\epsilon)).
 }
 
 [to be completed]
