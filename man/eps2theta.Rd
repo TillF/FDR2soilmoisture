@@ -46,6 +46,12 @@ The following columns in the data frame \code{epsdata} are supported and may be 
 The respective equations used are:
 
 
+Delta-T Devices Ltd, 1998:
+\deqn{\theta =  \frac{\sqrt{\epsilon}-\a_subscript{0}}{\a_1}
+}{%
+\theta =  (\sqrt{\epsilon}-\a~0~)/\a_1.
+} with a~0~=1.6 and a_1=8.4 for mineral soils, a_0=1.3 and a_1=7.7 for organic soils, 
+
 Malicki et al., 1996:
 \deqn{\theta =  \frac{\sqrt{\epsilon}-0.819-0.168\BD-0.159\BD^2}{7.17+1.18\BD}
 }{%
