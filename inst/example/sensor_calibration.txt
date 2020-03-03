@@ -145,3 +145,4 @@ N3	3	137	1125	Bauer/Schmehl	PR2, analogue	50-04	01.06.2019
 N3	4	138	1118	Bauer/Schmehl	PR2, analogue	50-04	01.06.2019
 N3	5	140	1143	Bauer/Schmehl	PR2, analogue	50-04	01.06.2019
 N3	6	137	1131	Bauer/Schmehl	PR2, analogue	50-04	01.06.2019
+Theta Probe	1	NA	NA	dummy placeholder	Theta Probe	Theta Probe	01.03.2020
