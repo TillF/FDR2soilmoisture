@@ -24,8 +24,8 @@ Equation to be used. Must be one of
 "JuEtal2010",
 "MalickiEtal1996",
 "RothEtal1992",
-"ToppEtal1980", 
 "SchaapEtal1997",
+"ToppEtal1980", 
 "ZhaoEtal2016".
 
 }
@@ -47,16 +47,65 @@ The respective equations used are:
 
 
 Delta-T Devices Ltd, 1998:
-\deqn{\theta =  \frac{\sqrt{\epsilon}-\a_subscript{0}}{\a_1}
+\deqn{\theta =  \frac{\sqrt{\epsilon}-\a_0}{\a_1}
 }{%
-\theta =  (\sqrt{\epsilon}-\a~0~)/\a_1.
-} with a~0~=1.6 and a_1=8.4 for mineral soils, a_0=1.3 and a_1=7.7 for organic soils, 
+\theta =  (\sqrt(\epsilon)-a_0)/a_1.
+} with a_0=1.6 and a_1=8.4 for mineral soils, a_0=1.3 and a_1=7.7 for organic soils, 
+
+Drnevich et al., 2005:
+\deqn{\theta =  \frac{\frac{\sqrt{\epsilon}{\BD}-\a}}{\b}
+}{%
+\theta = (\sqrt(\epsilon) / BD - a) / b)
+} with a=0.95 and b=8.8 for cohesive soils, a=1 and b=8.5 for non-cohesive soils, 
+
+Fersch et al. 2017:
+\deqn{\theta =  \frac{(\sqrt(\epsilon) - (1 - n* \sqrt(3.29)) - n * 1)}{
+      (\sqrt(80) - \sqrt(1))}
+}{%
+\theta = (\sqrt(\epsilon) - (1 - n* \sqrt(3.29)) - n * 1) /
+      (\sqrt(80) - \sqrt(1))
+}, 
+
+Jacobsen & Schjonning, 1993:
+\deqn{\theta =  -3.41*1e-2 +3.45*1e-2*\epsilon-11.4*1e-4*\epsilon^2 + 17.1*1e-6*\epsilon^3- 3.7*1e-2*\BD + 7.36*1e-4*\clay_perc + 47.7*1e-4 * \om_perc
+}{%
+\theta = -3.41*1e-2 +3.45*1e-2*epsilon-11.4*1e-4*epsilon^2 + 17.1*1e-6*epsilon^3-
+      3.7*1e-2*BD + 7.36*1e-4*clay_perc + 47.7*1e-4 * om_perc
+}, 
+
+Ju et al., 2010:
+\deqn{\theta =  0.1228*\sqrt(epsilon) - 0.1322*BD -0.0152
+}{%
+\theta = 0.1228*\sqrt(epsilon) - 0.1322*BD -0.0152
+}, 
+
 
 Malicki et al., 1996:
 \deqn{\theta =  \frac{\sqrt{\epsilon}-0.819-0.168\BD-0.159\BD^2}{7.17+1.18\BD}
 }{%
 \theta =  (\sqrt(\epsilon)-0.819-0.168 BD-0.159 BD^2)/(7.17+1.18 BD).
-}
+},
+
+Roth et al., 1992:
+\deqn{\theta =  \frac{\sqrt{\epsilon}-0.819-0.168\BD-0.159\BD^2}{7.17+1.18\BD}
+}{%
+\theta =  (a_1 + a_2*\epsilon +a_3 *\epsilon^2 + a_4*epsilon^3).
+},
+
+ with a_1 = -0.0728, a_2 = 0.0448, a_3 = -0.00195, a_4= 0.0000361 for mineral soils, a_1 =  0.0233, a_2 = 0.0285, a_3 = -0.000431, a_4 = 0.00000304 for organic soils, 
+
+Schaap et al. 1997 (eq. 2b in Vaz et al. 2013):
+\deqn{\theta =  (0.133*\sqrt(epsilon) -0.146)^0.885
+}{%
+\theta = (0.133*\sqrt(epsilon) -0.146)^0.885
+},  
+  
+   
+Topp et al., 1980:
+\deqn{\theta =  -0.053+ 2.93e-2*\epsilon -5.5e-4*\epsilon^2 + 4.3e-6*\epsilon^3
+}{%
+\theta = -0.053+ 2.93e-2*\epsilon -5.5e-4*\epsilon^2 + 4.3e-6*\epsilon^3
+},
 
 Zhao et al., 2016:
 \deqn{\theta =  \frac{0.3039 * \BD - 2.1851 + \sqrt{\epsilon}}{(18.0283 * BD - 17.9531) + (-0.6806 * BD + 1.8351) * \sqrt{\epsilon}}
@@ -64,7 +113,6 @@ Zhao et al., 2016:
 \theta = (0.3039 * BD - 2.1851 + sqrt(\epsilon))/((18.0283 * BD - 17.9531) + (-0.6806 * BD + 1.8351) * sqrt(\epsilon)).
 }
 
-[to be completed]
 
 }
 \value{
