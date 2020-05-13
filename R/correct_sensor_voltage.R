@@ -1,4 +1,4 @@
-correct_sensor_voltage = function(V, serial_no=NULL, probe_id=NULL, ring_no=1, calib_data)
+correct_sensor_voltage = function(V, serial_no=NULL, probe_id=NULL, ring_no=1, calib_data, warnOnly=FALSE)
 # converts sensor voltage [Volts] according to calibration data in calib_data for the specified sensor and ring   
 {
   #tt = get_reference_voltage(serial_no = serial_no, probe_id = probe_id, ring_no = ring_no, calib_data = calib_data)
@@ -19,11 +19,11 @@ correct_sensor_voltage = function(V, serial_no=NULL, probe_id=NULL, ring_no=1, c
   {
     if (!is.null(unique_settings$serial_no))
     {
-      tt = get_reference_voltage(serial_no = unique_settings$serial_no[ss], ring_no = unique_settings$ring_no[ss], calib_data = calib_data) 
+      tt = get_reference_voltage(serial_no = unique_settings$serial_no[ss], ring_no = unique_settings$ring_no[ss], calib_data = calib_data, warnOnly=warnOnly) 
       cur_rows = serial_no == unique_settings$serial_no[ss] & ring_no == unique_settings$ring_no[ss] 
     }    else
     {  
-      tt= get_reference_voltage(probe_id  = unique_settings$probe_id [ss], ring_no = unique_settings$ring_no[ss], calib_data = calib_data) 
+      tt= get_reference_voltage(probe_id  = unique_settings$probe_id [ss], ring_no = unique_settings$ring_no[ss], calib_data = calib_data, warnOnly=warnOnly) 
       cur_rows = probe_id == unique_settings$probe_id[ss] & ring_no == unique_settings$ring_no[ss] 
     }
     unique_settings[ss, c("V_air_meas", "V_h2o_meas")] = c(tt$V_air_meas, tt$V_h2o_meas)

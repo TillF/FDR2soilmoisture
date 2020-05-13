@@ -1,4 +1,4 @@
-get_reference_voltage = function(serial_no=NULL, probe_id=NULL, ring_no, calib_data)
+get_reference_voltage = function(serial_no=NULL, probe_id=NULL, ring_no=1, calib_data, warnOnly=FALSE)
 {
   if (!is.null(serial_no) & !is.null(probe_id)) stop("Either serial_no OR probe_id must be specified")
   if (!is.null(serial_no) & !is.null(probe_id)) stop("Either serial_no OR probe_id must be specified")
@@ -12,7 +12,16 @@ get_reference_voltage = function(serial_no=NULL, probe_id=NULL, ring_no, calib_d
     cur_row = which(calib_data[, arg] == get(arg) & calib_data$ring_no == ring_no ) 
     
     
-    if (length(cur_row)< 1) stop(paste0("Probe with ", arg, " ", get(arg), " and ring-no ", ring_no, " not found in calibration data."))
+    if (length(cur_row)== 0) #no entry found?
+      if (!warnOnly)  
+      {  
+        stop(paste0("Probe with ", arg, " ", get(arg), " and ring-no ", ring_no, " not found in calibration data.")) 
+      }  else #do warning only, act as if coefficients war NA
+      {
+        warning(paste0("Probe with ", arg, " ", get(arg), " and ring-no ", ring_no, " not found in calibration data, using medians."))
+        cur_row = ncol(calib_data)+1 #
+      }  
+    
     if (length(cur_row)> 1) 
     {  
       warning(paste0("Multiple probes with ", arg, " ", get(arg), " and ring-no ", ring_no, " found in calibration data (lines ", paste(cur_row, collapse=","), ") using last entry."))
