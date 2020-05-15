@@ -24,7 +24,7 @@ correct_sensor_voltage(V, serial_no=NULL, probe_id=NULL, ring_no=1, calib_data)
 	Ring number (only relevant for PR2-probes, i.e. with multiple sensor rings). The number is serves for finding the respective records in \code{calib_data}. 
 }
   \item{calib_data}{
-	Data frame with calibration data. See details. 
+	Data frame with calibration data. See details. }
 	
   \item{warnOnly=FALSE}{
   If no data for the specified probe are found, an error is raised. With \code{warnOnly=TRUE}, instead, a warning is issued and medians of the same probe type are used.
