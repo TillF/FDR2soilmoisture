@@ -36,15 +36,18 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
     eps_range = seq(from=1.1, to=80, by=1)
     
     
+    #prepare arrays for plotting curves later using mean/modus properties
     common_set_plot_train = sapply(common_set[common_set$training, numeric_cols], median, na.rm=TRUE)
     common_set_plot_train = data.frame(t(common_set_plot_train), t(sapply(common_set[common_set$training, !numeric_cols], modus)))
+    common_set_plot_train$epsilon = NULL #discard original epsilon column
     common_set_plot_train = cbind(common_set_plot_train, epsilon=eps_range)
-    common_set_plot_train$epsilon = NULL
+    
     
     common_set_plot_test = sapply(common_set[!common_set$training, numeric_cols], median, na.rm=TRUE)
     common_set_plot_test = data.frame(t(common_set_plot_test), t(sapply(common_set[!common_set$training, !numeric_cols], modus)))
-    common_set_plot_test = cbind(common_set_plot_test, epsilon=eps_range)
     common_set_plot_test$epsilon = NULL
+    common_set_plot_test = cbind(common_set_plot_test, epsilon=eps_range)
+    
     
     
           
@@ -280,7 +283,8 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
     }
   
     #Drnevich et al (2005) adjusted
-    if (length(setdiff (c("BD", "cohesive"), names(common_set))) ==0)
+    if (length(setdiff (c("BD", "cohesive"), names(common_set))) ==0 &
+        length(unique(common_set$cohesive))>1 ) #there must be at least two different classes, otherwise, the fitting fails
     {
       eq="theta_Drnevich_adj"
       lm_all = nls(formula = theta ~ (sqrt(epsilon) / BD - (cohesive*a_coh + (1-cohesive)*a_ncoh)) /
@@ -512,14 +516,16 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
     models = models[grepl(models, pattern = "theta_")]
     
   windows(width = 40, height = 30) #open largest possible window in 4:3 format
-    par(mfrow=c(length(models) %/% 4 +1, 4), oma=c(0,0,0,0), mar=c(0.7, 1.5, 4.1, 0.5), cex=0.6)
+    par(mfrow=c(length(models) %/% 4 +1, 4), oma=c(1.2,0,0,0), mar=c(0.7, 1.5, 4.2, 0.5), cex=0.6)
   for (mm in models)    
   {
-    plot(1, 1, main=paste0(mm, "\n R2 = ", format(r2_train[mm], digits = 3), " / ", format(r2_test[mm], digits = 3)), xlim=c(0.05,0.95), ylim=c(0.05,0.95), type="n"
+    ax_lims = pmin(1, pmax(0, extendrange(common_set$theta, f = 0.1)))
+    plot(1, 1, main=paste0(mm, "\n R2 = ", format(r2_train[mm], digits = 3), " / ", format(r2_test[mm], digits = 3)), xlim=ax_lims, ylim=ax_lims, type="n"
          , xlab="", ylab="")
   #    , xlab="theta_obs", ylab="theta_mod")
     points(common_set$theta[!common_set$training], common_set[!common_set$training, mm],  col=common_set$col[!common_set$training], pch=common_set$pch[!common_set$training])
-    lines (lowess(common_set$theta[!common_set$training], common_set[!common_set$training, mm], delta=0.01, f=2),  col="red", lty="dashed")
+    if (any(!common_set$training))
+      lines (lowess(common_set$theta[!common_set$training], common_set[!common_set$training, mm], delta=0.01, f=2),  col="red", lty="dashed")
     points(common_set$theta[ common_set$training], common_set[ common_set$training, mm],  col=common_set$col[ common_set$training], pch=common_set$pch[ common_set$training])
     lines (lowess(common_set$theta[common_set$training], common_set[common_set$training, mm], delta=0.01, f=2),  col="red", lty="solid")
     

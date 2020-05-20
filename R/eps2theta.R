@@ -32,7 +32,7 @@ eps2theta = function(epsdata, equation)
   if (equation=="deltaT_minorg")
   {
     if (any (!(unique(epsdata$soil, na.rm=TRUE) %in% c("mineral", "organic", "clay"))))
-      stop("Field 'soil' must be 'mineral' or 'organic'")
+      warning("Field 'soil' must be 'mineral' or 'organic'")
     theta = rep(NA, nrow(epsdata))
     min_ix = (epsdata$soil == "mineral") |(epsdata$soil == "clay")
     a0 = 1.6  #ThetaProbe manual, page 14; Profile Probe User Manual 5.0, page 21
@@ -61,7 +61,7 @@ eps2theta = function(epsdata, equation)
   if (equation=="RothEtal1992")
   { 
     if (any (!(unique(epsdata$soil, na.rm=TRUE) %in% c("mineral", "organic"))))
-      stop("Field 'soil' must be 'mineral' or 'organic'")
+      warning("Field 'soil' must be 'mineral' or 'organic'")
     theta = rep(NA, nrow(epsdata))
     min_ix = epsdata$soil == "mineral" 
     #mineral
