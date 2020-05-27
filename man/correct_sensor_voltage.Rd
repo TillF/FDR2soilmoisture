@@ -5,7 +5,7 @@
 correct_sensor_voltage
 }
 \description{
-Correct the sensor voltage output to values stated by the manufacturer using calibration values
+Correct the sensor voltage output to values stated by the manufacturer using supplied calibration values
 }
 \usage{
 correct_sensor_voltage(V, serial_no=NULL, probe_id=NULL, ring_no=1, calib_data)
@@ -15,7 +15,7 @@ correct_sensor_voltage(V, serial_no=NULL, probe_id=NULL, ring_no=1, calib_data)
 	raw voltage from sensor [V] to be corrected
 }
   \item{serial_no}{
-	Serial number of probe. The number is serves for finding the respective records in \code{calib_data}. Either \code{serial_no} OR \code{probe_id} must be specified.
+	Serial number of probe. The number is serves for finding the respective records in \code{calib_data}. Either \code{serial_no} OR \code{probe_id} must be specified. With the example file (see Details), the placeholders \code{"Theta Probe", "PR2, analogue", "PR2, analogue grounded", "PR2, SDI-12"} can be used for unknown devices. In this case, mean values of the same sensor type and ring number are used.
 }
   \item{probe_id}{
 	Serial number of probe. The number is serves for finding the respective records in \code{calib_data}. Either \code{serial_no} OR \code{probe_id} must be specified.
@@ -31,7 +31,7 @@ correct_sensor_voltage(V, serial_no=NULL, probe_id=NULL, ring_no=1, calib_data)
 }
 }
 \details{
-In spite of manufacture specifications, Theta Probe and PR2-instruments usually yield output deviating from the specifications. This deviation seems especially pronounced for the analogue PR2 probes, with varying offsets along the length of the rod. We assume this mismatch to be linear. Thus, it can be corrected with two reference points. These are taken from the supplied user calibration data, which contain two measurements (air, water) for each sensor. Thus, the given raw input \code{V} is linearly transformed in a way, that the manufacture's conversion of Voltage to permittivity (epsilon) holds for air and water.
+In spite of manufacture specifications, Theta Probe and PR2-instruments usually yield output deviating from the specifications. This deviation seems especially pronounced for the analogue PR2 probes, with varying offsets along the length of the rod. We assume this mismatch to be linear. Thus, it can be corrected with two reference points. These are taken from the supplied user calibration data (\code{calib_data}), which contain two measurements (air, water) for each sensor. Thus, the given raw input \code{V} is linearly transformed in a way, that the manufacture's conversion of Voltage to Permittivity (epsilon) holds for air and water.
 
 \itemize{
 \code{calib_data}: Data frame with calibration data. The following columns must be present:

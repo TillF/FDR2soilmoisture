@@ -3,13 +3,22 @@ correct_sensor_voltage = function(V, serial_no=NULL, probe_id=NULL, ring_no=1, c
 {
   #tt = get_reference_voltage(serial_no = serial_no, probe_id = probe_id, ring_no = ring_no, calib_data = calib_data)
   
+  if ( (!is.null(serial_no) & !is.null(probe_id)) |
+       ( is.null(serial_no) &  is.null(probe_id)) ) 
+    stop ("Either serial_no OR probe_id must be specified.")
   if (!is.null(serial_no) & !is.null(probe_id)) stop ("Either serial_no OR probe_id must be specified.")
-  if (!is.null(serial_no))
-      unique_settings = data.frame(serial_no=serial_no) else
-      unique_settings = data.frame(probe_id=probe_id) 
   
-  unique_settings$ring_no=ring_no
-  unique_settings=unique(unique_settings) #reduce to unique combinations of identifier and ring_no
+  if (!is.null(serial_no)) #which option is used for identification? serial_no or probe_id? 
+    id_argument = "serial_no" else
+    id_argument = "probe_id" 
+    
+  if (any(is.na(get(id_argument))))      
+    stop(paste(id_argument, " contains NAs, please fix this. Use dummy serial_no, if needed (see help)."))
+    
+    unique_settings = data.frame(get(id_argument), ring_no=ring_no)   
+    names(unique_settings)[1] = id_argument
+  
+    unique_settings=unique(unique_settings) #reduce to unique combinations of identifier and ring_no
 
   #ref_voltages = sapply(FUN=get_reference_voltage, X = serial_no, probe_id = probe_id, ring_no = ring_no, calib_data = calib_data)
   
@@ -17,15 +26,11 @@ correct_sensor_voltage = function(V, serial_no=NULL, probe_id=NULL, ring_no=1, c
   unique_settings[, c("V_air_meas", "V_h2o_meas")] = NA #create empty cols
   for (ss in 1:nrow(unique_settings))
   {
-    if (!is.null(unique_settings$serial_no))
-    {
-      tt = get_reference_voltage(serial_no = unique_settings$serial_no[ss], ring_no = unique_settings$ring_no[ss], calib_data = calib_data, warnOnly=warnOnly) 
-      cur_rows = serial_no == unique_settings$serial_no[ss] & ring_no == unique_settings$ring_no[ss] 
-    }    else
-    {  
-      tt= get_reference_voltage(probe_id  = unique_settings$probe_id [ss], ring_no = unique_settings$ring_no[ss], calib_data = calib_data, warnOnly=warnOnly) 
-      cur_rows = probe_id == unique_settings$probe_id[ss] & ring_no == unique_settings$ring_no[ss] 
-    }
+    args = list(dummy = unique_settings[ss, id_argument], ring_no = unique_settings$ring_no[ss], calib_data = calib_data, warnOnly=warnOnly)
+    names(args)[1] = id_argument
+    tt = do.call(get_reference_voltage, args = args) #get the reference voltage
+    cur_rows = get(id_argument) == unique_settings[ss, id_argument] & ring_no == unique_settings$ring_no[ss] 
+    
     unique_settings[ss, c("V_air_meas", "V_h2o_meas")] = c(tt$V_air_meas, tt$V_h2o_meas)
     unique_settings[ss, "type"] = tt$type
   

@@ -1,4 +1,23 @@
 probe_id	ring_no	voltage_air_mV	voltage_water_mV	remarks	type	serial_no	date
+999	1			dummy placeholder, to be used for unknown devices	Theta Probe	Theta Probe	01.01.2000
+999	1			dummy placeholder, to be used for unknown devices	PR2, analogue	PR2, analogue	01.01.2000
+999	2			dummy placeholder, to be used for unknown devices	PR2, analogue	PR2, analogue	01.01.2000
+999	3			dummy placeholder, to be used for unknown devices	PR2, analogue	PR2, analogue	01.01.2000
+999	4			dummy placeholder, to be used for unknown devices	PR2, analogue	PR2, analogue	01.01.2000
+999	5			dummy placeholder, to be used for unknown devices	PR2, analogue	PR2, analogue	01.01.2000
+999	6			dummy placeholder, to be used for unknown devices	PR2, analogue	PR2, analogue	01.01.2000
+999	1			dummy placeholder, to be used for unknown devices	PR2, analogue grounded	PR2, analogue grounded	01.01.2000
+999	2			dummy placeholder, to be used for unknown devices	PR2, analogue grounded	PR2, analogue grounded	01.01.2000
+999	3			dummy placeholder, to be used for unknown devices	PR2, analogue grounded	PR2, analogue grounded	01.01.2000
+999	4			dummy placeholder, to be used for unknown devices	PR2, analogue grounded	PR2, analogue grounded	01.01.2000
+999	5			dummy placeholder, to be used for unknown devices	PR2, analogue grounded	PR2, analogue grounded	01.01.2000
+999	6			dummy placeholder, to be used for unknown devices	PR2, analogue grounded	PR2, analogue grounded	01.01.2000
+999	1			dummy placeholder, to be used for unknown devices	PR2, SDI-12	PR2, SDI-12	01.01.2000
+999	2			dummy placeholder, to be used for unknown devices	PR2, SDI-12	PR2, SDI-12	01.01.2000
+999	3			dummy placeholder, to be used for unknown devices	PR2, SDI-12	PR2, SDI-12	01.01.2000
+999	4			dummy placeholder, to be used for unknown devices	PR2, SDI-12	PR2, SDI-12	01.01.2000
+999	5			dummy placeholder, to be used for unknown devices	PR2, SDI-12	PR2, SDI-12	01.01.2000
+999	6			dummy placeholder, to be used for unknown devices	PR2, SDI-12	PR2, SDI-12	01.01.2000
 999	1			Budach, faulty readings (-14)	Theta Probe	079/053	14.08.2019
 999	1	1	1070	Budach	Theta Probe	114/035	14.08.2019
 999	1	7	1102	Budach	Theta Probe	320/060	14.08.2019
@@ -145,58 +164,58 @@ N3	3	137	1125	Bauer/Schmehl	PR2, analogue	50-04	01.06.2019
 N3	4	138	1118	Bauer/Schmehl	PR2, analogue	50-04	01.06.2019
 N3	5	140	1143	Bauer/Schmehl	PR2, analogue	50-04	01.06.2019
 N3	6	137	1131	Bauer/Schmehl	PR2, analogue	50-04	01.06.2019
-999		12	1097	Budach	Theta Probe	323/004	13.05.2020
-999	1	81	1064	Budach, hardware calibration	PR2, analogue	012-034	19.05.2020
-999	2	80	1072	Budach, hardware calibration	PR2, analogue	012-034	19.05.2020
-999	3	77	1048	Budach, hardware calibration	PR2, analogue	012-034	19.05.2020
-999	4	76	1061	Budach, hardware calibration	PR2, analogue	012-034	19.05.2020
-999	5	77	1068	Budach, hardware calibration	PR2, analogue	012-034	19.05.2020
-999	6	82	1060	Budach, hardware calibration	PR2, analogue	012-034	19.05.2020
-999	1	76	1054	Budach, hardware calibration	PR2, analogue	012-035	19.05.2020
-999	2	77	1062	Budach, hardware calibration	PR2, analogue	012-035	19.05.2020
-999	3	76	1060	Budach, hardware calibration	PR2, analogue	012-035	19.05.2020
-999	4	76	1058	Budach, hardware calibration	PR2, analogue	012-035	19.05.2020
-999	5	76	1059	Budach, hardware calibration	PR2, analogue	012-035	19.05.2020
-999	6	78	1063	Budach, hardware calibration	PR2, analogue	012-035	19.05.2020
-999	1	76	1078	Budach, hardware calibration	PR2, analogue	012-036	19.05.2020
-999	2	76	1071	Budach, hardware calibration	PR2, analogue	012-036	19.05.2020
-999	3	79	1075	Budach, hardware calibration	PR2, analogue	012-036	19.05.2020
-999	4	76	1079	Budach, hardware calibration	PR2, analogue	012-036	19.05.2020
-999	5	76	1073	Budach, hardware calibration	PR2, analogue	012-036	19.05.2020
-999	6	81	1076	Budach, hardware calibration	PR2, analogue	012-036	19.05.2020
-999	1	81	1063	Budach, hardware calibration	PR2, analogue	012-037	19.05.2020
-999	2	81	1066	Budach, hardware calibration	PR2, analogue	012-037	19.05.2020
-999	3	79	1065	Budach, hardware calibration	PR2, analogue	012-037	19.05.2020
-999	4	76	1043	Budach, hardware calibration	PR2, analogue	012-037	19.05.2020
-999	5	74	1063	Budach, hardware calibration	PR2, analogue	012-037	19.05.2020
-999	6	75	1063	Budach, hardware calibration	PR2, analogue	012-037	19.05.2020
-999	1	85	1054	Budach, hardware calibration	PR2, analogue	012-038	19.05.2020
-999	2	82	1086	Budach, hardware calibration	PR2, analogue	012-038	19.05.2020
-999	3	78	1062	Budach, hardware calibration	PR2, analogue	012-038	19.05.2020
-999	4	77	1059	Budach, hardware calibration	PR2, analogue	012-038	19.05.2020
-999	5	77	1058	Budach, hardware calibration	PR2, analogue	012-038	19.05.2020
-999	6	82	1062	Budach, hardware calibration	PR2, analogue	012-038	19.05.2020
-999	1	86	1083	Budach, hardware calibration	PR2, analogue	012-039	19.05.2020
-999	2	81	1072	Budach, hardware calibration	PR2, analogue	012-039	19.05.2020
-999	3	79	1072	Budach, hardware calibration	PR2, analogue	012-039	19.05.2020
-999	4	77	1072	Budach, hardware calibration	PR2, analogue	012-039	19.05.2020
-999	5	78	1074	Budach, hardware calibration	PR2, analogue	012-039	19.05.2020
-999	6	81	1067	Budach, hardware calibration	PR2, analogue	012-039	19.05.2020
-999	1	82	1069	Budach, hardware calibration	PR2, analogue	013-012	19.05.2020
-999	2	80	1068	Budach, hardware calibration	PR2, analogue	013-012	19.05.2020
-999	3	79	1064	Budach, hardware calibration	PR2, analogue	013-012	19.05.2020
-999	4	79	1063	Budach, hardware calibration	PR2, analogue	013-012	19.05.2020
-999	5	78	1033	Budach, hardware calibration	PR2, analogue	013-012	19.05.2020
-999	6	81	1066	Budach, hardware calibration	PR2, analogue	013-012	19.05.2020
-999	1	80	1062	Budach, hardware calibration	PR2, analogue	013-013	19.05.2020
-999	2	79	1071	Budach, hardware calibration	PR2, analogue	013-013	19.05.2020
-999	3	78	1068	Budach, hardware calibration	PR2, analogue	013-013	19.05.2020
-999	4	77	1050	Budach, hardware calibration	PR2, analogue	013-013	19.05.2020
-999	5	78	1030	Budach, hardware calibration	PR2, analogue	013-013	19.05.2020
-999	6	81	1069	Budach, hardware calibration	PR2, analogue	013-013	19.05.2020
-999	1	81	1082	Budach, hardware calibration	PR2, analogue	013-014	19.05.2020
-999	2	79	1077	Budach, hardware calibration	PR2, analogue	013-014	19.05.2020
-999	3	78	1076	Budach, hardware calibration	PR2, analogue	013-014	19.05.2020
-999	4	77	1076	Budach, hardware calibration	PR2, analogue	013-014	19.05.2020
-999	5	77	1057	Budach, hardware calibration	PR2, analogue	013-014	19.05.2020
-999	6	78	1077	Budach, hardware calibration	PR2, analogue	013-014	19.05.2020
+999	1	12	1097	Budach	Theta Probe	323/004	13.05.2020
+999	1	81	1064	Budach, hardware calibration, terminals grounded	PR2, analogue grounded	012-034	19.05.2020
+999	2	80	1072	Budach, hardware calibration	PR2, analogue grounded	012-034	19.05.2020
+999	3	77	1048	Budach, hardware calibration	PR2, analogue grounded	012-034	19.05.2020
+999	4	76	1061	Budach, hardware calibration	PR2, analogue grounded	012-034	19.05.2020
+999	5	77	1068	Budach, hardware calibration	PR2, analogue grounded	012-034	19.05.2020
+999	6	82	1060	Budach, hardware calibration	PR2, analogue grounded	012-034	19.05.2020
+999	1	76	1054	Budach, hardware calibration	PR2, analogue grounded	012-035	19.05.2020
+999	2	77	1062	Budach, hardware calibration	PR2, analogue grounded	012-035	19.05.2020
+999	3	76	1060	Budach, hardware calibration	PR2, analogue grounded	012-035	19.05.2020
+999	4	76	1058	Budach, hardware calibration	PR2, analogue grounded	012-035	19.05.2020
+999	5	76	1059	Budach, hardware calibration	PR2, analogue grounded	012-035	19.05.2020
+999	6	78	1063	Budach, hardware calibration	PR2, analogue grounded	012-035	19.05.2020
+999	1	76	1078	Budach, hardware calibration	PR2, analogue grounded	012-036	19.05.2020
+999	2	76	1071	Budach, hardware calibration	PR2, analogue grounded	012-036	19.05.2020
+999	3	79	1075	Budach, hardware calibration	PR2, analogue grounded	012-036	19.05.2020
+999	4	76	1079	Budach, hardware calibration	PR2, analogue grounded	012-036	19.05.2020
+999	5	76	1073	Budach, hardware calibration	PR2, analogue grounded	012-036	19.05.2020
+999	6	81	1076	Budach, hardware calibration	PR2, analogue grounded	012-036	19.05.2020
+999	1	81	1063	Budach, hardware calibration	PR2, analogue grounded	012-037	19.05.2020
+999	2	81	1066	Budach, hardware calibration	PR2, analogue grounded	012-037	19.05.2020
+999	3	79	1065	Budach, hardware calibration	PR2, analogue grounded	012-037	19.05.2020
+999	4	76	1043	Budach, hardware calibration	PR2, analogue grounded	012-037	19.05.2020
+999	5	74	1063	Budach, hardware calibration	PR2, analogue grounded	012-037	19.05.2020
+999	6	75	1063	Budach, hardware calibration	PR2, analogue grounded	012-037	19.05.2020
+999	1	85	1054	Budach, hardware calibration	PR2, analogue grounded	012-038	19.05.2020
+999	2	82	1086	Budach, hardware calibration	PR2, analogue grounded	012-038	19.05.2020
+999	3	78	1062	Budach, hardware calibration	PR2, analogue grounded	012-038	19.05.2020
+999	4	77	1059	Budach, hardware calibration	PR2, analogue grounded	012-038	19.05.2020
+999	5	77	1058	Budach, hardware calibration	PR2, analogue grounded	012-038	19.05.2020
+999	6	82	1062	Budach, hardware calibration	PR2, analogue grounded	012-038	19.05.2020
+999	1	86	1083	Budach, hardware calibration	PR2, analogue grounded	012-039	19.05.2020
+999	2	81	1072	Budach, hardware calibration	PR2, analogue grounded	012-039	19.05.2020
+999	3	79	1072	Budach, hardware calibration	PR2, analogue grounded	012-039	19.05.2020
+999	4	77	1072	Budach, hardware calibration	PR2, analogue grounded	012-039	19.05.2020
+999	5	78	1074	Budach, hardware calibration	PR2, analogue grounded	012-039	19.05.2020
+999	6	81	1067	Budach, hardware calibration	PR2, analogue grounded	012-039	19.05.2020
+999	1	82	1069	Budach, hardware calibration	PR2, analogue grounded	013-012	19.05.2020
+999	2	80	1068	Budach, hardware calibration	PR2, analogue grounded	013-012	19.05.2020
+999	3	79	1064	Budach, hardware calibration	PR2, analogue grounded	013-012	19.05.2020
+999	4	79	1063	Budach, hardware calibration	PR2, analogue grounded	013-012	19.05.2020
+999	5	78	1033	Budach, hardware calibration	PR2, analogue grounded	013-012	19.05.2020
+999	6	81	1066	Budach, hardware calibration	PR2, analogue grounded	013-012	19.05.2020
+999	1	80	1062	Budach, hardware calibration	PR2, analogue grounded	013-013	19.05.2020
+999	2	79	1071	Budach, hardware calibration	PR2, analogue grounded	013-013	19.05.2020
+999	3	78	1068	Budach, hardware calibration	PR2, analogue grounded	013-013	19.05.2020
+999	4	77	1050	Budach, hardware calibration	PR2, analogue grounded	013-013	19.05.2020
+999	5	78	1030	Budach, hardware calibration	PR2, analogue grounded	013-013	19.05.2020
+999	6	81	1069	Budach, hardware calibration	PR2, analogue grounded	013-013	19.05.2020
+999	1	81	1082	Budach, hardware calibration	PR2, analogue grounded	013-014	19.05.2020
+999	2	79	1077	Budach, hardware calibration	PR2, analogue grounded	013-014	19.05.2020
+999	3	78	1076	Budach, hardware calibration	PR2, analogue grounded	013-014	19.05.2020
+999	4	77	1076	Budach, hardware calibration	PR2, analogue grounded	013-014	19.05.2020
+999	5	77	1057	Budach, hardware calibration	PR2, analogue grounded	013-014	19.05.2020
+999	6	78	1077	Budach, hardware calibration	PR2, analogue grounded	013-014	19.05.2020
