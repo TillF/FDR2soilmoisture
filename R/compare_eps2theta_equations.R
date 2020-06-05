@@ -1,6 +1,8 @@
 #compare various equations for eps2theta conversion
 compare_eps2theta_equations = function(common_set, legend_args=NULL)
 {  
+    if (any(common_set$theta > 1 | common_set$theta < 0)) stop("Theta must be within [0,1].")
+  
     if (is.null(common_set$training)) common_set$training   = TRUE #default: use all as training, none as test
     
     legend_args2=list(x="topleft", legend="1:1", lty=1, pch=NA, col="black")

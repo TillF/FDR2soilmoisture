@@ -219,3 +219,18 @@ N3	6	137	1131	Bauer/Schmehl	PR2, analogue	50-04	01.06.2019
 999	4	77	1076	Budach, hardware calibration	PR2, analogue grounded	013-014	19.05.2020
 999	5	77	1057	Budach, hardware calibration	PR2, analogue grounded	013-014	19.05.2020
 999	6	78	1077	Budach, hardware calibration	PR2, analogue grounded	013-014	19.05.2020
+mq_1_5	1	35	1104	Budach	Theta Probe	333-078	04.06.2020
+mq_1_2	1	61	1112	Budach	Theta Probe	333-089	05.06.2020
+mq_1_1	1	49	1109	Budach	Theta Probe	333-092	06.06.2020
+mq_1_3	1	39	1108	Budach	Theta Probe	333-084	07.06.2020
+mq_1_4	1	7	1087	Budach	Theta Probe	56-029	08.06.2020
+mq_2_5	1	45	1111	Budach	Theta Probe	333-093	09.06.2020
+mq_2_1	1	45	1113	Budach	Theta Probe	333-080	10.06.2020
+mq_2_2	1	36	1106	Budach	Theta Probe	333-094	11.06.2020
+mq_2_3	1	32	1105	Budach	Theta Probe	333-086	12.06.2020
+mq_2_4	1	33	1090	Budach	Theta Probe	323-003	13.06.2020
+mq_3_5	1	42	1113	Budach	Theta Probe	333-091	14.06.2020
+mq_3_3	1	44	1102	Budach	Theta Probe	333-077	15.06.2020
+mq_3_4	1	43	1105	Budach	Theta Probe	333-083	16.06.2020
+mq_3_1	1	38	1113	Budach	Theta Probe	333-076	17.06.2020
+mq_3_2	1	8	1089	Budach	Theta Probe	56-037	18.06.2020
