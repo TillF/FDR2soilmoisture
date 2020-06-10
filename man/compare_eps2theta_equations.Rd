@@ -22,7 +22,7 @@ compare_eps2theta_equations(common_set, legend_args=NULL)
 \details{
 The dataframe \code{common_set} holds measured values of epsilon and observed values of soil moisture (theta, e.g. obtained by gravimetric method). 
 Additionally, other explanatory variables (e.g. bulk density) can be contained (see details in \code{\link{eps2theta}}).
-The function applies all equations supported by \code{\link{eps2theta}}. It also adjusts the coefficients of these equations to better match the data, yielding equations variants with suffix "_adj".
+The function applies all equations supported by \code{\link{eps2theta}}, where possible with the provided datsa. It also adjusts the coefficients of these equations to better match the data, yielding equations variants with suffix "_adj". Whenever coefficients cannot be estimated (e.g. when the column BD is all set to the same value), the values of the original equation is used.
 
 The dataframe \code{common_set} may hold a logical column \code{training}. If present, the custom model fits (see above) are based on this subset only; the remaining data are also displayed and their R2-values ("testing") reported.
 

@@ -5,6 +5,11 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
   
     if (is.null(common_set$training)) common_set$training   = TRUE #default: use all as training, none as test
     
+    f_all_equal = function(x){all(x[1]==x)} #test if all values in a vector are equal
+    all_equal = apply(FUN = f_all_equal, X = common_set, MAR=2)
+    
+    if (all_equal["epsilon"]) stop("epsilon-values mustn't be all equal.")
+    
     legend_args2=list(x="topleft", legend="1:1", lty=1, pch=NA, col="black")
     
     if (is.null(common_set$pch))
@@ -80,7 +85,9 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
     }
     
   
-    #custom fits:  
+    #custom fits:  ####
+
+    
     
     # #simple regression on epsilon_sqrt
     # {
@@ -108,7 +115,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
     #   common_set_plot_test [, eq] = ftemp(common_set_plot_test ) #apply equation
     # }
     # 
-    #adjusted Delta_T with fixed intercept, regression on sqrt eps
+    #adjusted Delta_T with fixed intercept, regression on sqrt eps ####
     if (length(setdiff (c("soil"), names(common_set))) ==0)
     {
       eq="theta_deltaT_adj"
@@ -147,7 +154,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
       
     }
     
-    #adjusted Delta_T with fixed intercept, direct regression
+    #adjusted Delta_T with fixed intercept, direct regression ####
     if (length(setdiff (c("soil"), names(common_set))) == 0)
     {
       eq="theta_deltaT_adj2"
@@ -187,7 +194,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
     }
     
     
-    # Ledieu et al. (1986). adjusted (eq. 16.62 in Mohamed, 2018)
+    # Ledieu et al. (1986). adjusted (eq. 16.62 in Mohamed, 2018) ####
     if (length(setdiff ("BD", names(common_set))) ==0)
     {  
       eq="theta_Ledieu_adj"
@@ -214,7 +221,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
       
     }
     
-    #Malicki, adjusted
+    #Malicki, adjusted ####
     if (length(setdiff ("BD", names(common_set))) ==0)
     {
       eq="theta_malicki_adj"
@@ -239,7 +246,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
       
     }
     
-    # #Malicki, sqrt
+    # #Malicki, sqrt ####
     # if (length(setdiff ("BD", names(common_set))) ==0)
     # {
     #   eq="theta_malicki_adj_sqrt"
@@ -259,13 +266,22 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
     #   r2_test    [eq] = r2(common_set[!common_set$training, eq], common_set$theta[!common_set$training])       
     # }
     
-    #Jacobsen & Schjonning (1993), adjusted
-    if (length(setdiff (c("BD", "clay_perc", "om_perc"), names(common_set))) ==0)
+    #Jacobsen & Schjonning (1993), adjusted ####
+    required_fields = eps2theta(equation = "list")$"Jacobsen_Schjonning1993"
+    if (all(required_fields %in% names(common_set)))
     {
       eq="theta_jacsch_adj"
-      lm_all = lm(formula = theta ~  epsilon+epsilon^2+epsilon^3+ BD + clay_perc + om_perc, data = common_set[common_set$training,])
-      mod_list = assign(paste0("lm_", eq),lm_all, envir = globvars) #keep this lm for later use
+      #coefs_org = c(BD =- 3.7*1e-2,  clay_perc = 7.36*1e-4, om_perc= 47.7*1e-4) #coefficients of original equation
+      fmla = "theta ~  epsilon+epsilon^2+epsilon^3+ BD + clay_perc + om_perc"
+      #replace coefficients with original values, for those where there is no variation in the column (otherwise, the fitting gets problematic)
+      #exclude "all-equal" predictors from regression formula
+      for (cc in names(which(all_equal)))
+        fmla = gsub(x = fmla, pattern = paste0("\\+ *",cc), replacement = "")
+      #    fmla = gsub(x = fmla, pattern = cc, replacement = paste0("I(",coefs_org[cc],")"))
       
+      fmla = formula(fmla) #convert to formula object
+      lm_all = lm(formula = fmla, data = common_set[common_set$training,])
+      mod_list = assign(paste0("lm_", eq),lm_all, envir = globvars) #keep this lm for later use
 
       ftemp = function(common_set)
       {  
@@ -275,6 +291,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
   
       eps2theta_function_list [[eq]] = ftemp #store conversion function
       common_set             [, eq] = ftemp(common_set) #apply conversion function
+      
       r2_train   [eq] = r2(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
       r2_test    [eq] = r2(common_set[!common_set$training, eq], common_set$theta[!common_set$training])       
       
@@ -284,13 +301,17 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
       
     }
   
-    #Drnevich et al (2005) adjusted
-    if (length(setdiff (c("BD", "cohesive"), names(common_set))) ==0 &
+    #Drnevich et al (2005) adjusted ####
+    required_fields = eps2theta(equation = "list")$DrnevichEtal2005
+    if (all(required_fields %in% names(common_set)) &
         length(unique(common_set$cohesive))>1 ) #there must be at least two different classes, otherwise, the fitting fails
     {
       eq="theta_Drnevich_adj"
-      lm_all = nls(formula = theta ~ (sqrt(epsilon) / BD - (cohesive*a_coh + (1-cohesive)*a_ncoh)) /
-                     (cohesive*b_coh + (1-cohesive)*b_ncoh), 
+      fmla = "theta ~ (sqrt(epsilon) / BD - (cohesive*a_coh + (1-cohesive)*a_ncoh)) /
+                     (cohesive*b_coh + (1-cohesive)*b_ncoh)"
+    
+      fmla = formula(fmla) #convert to formula object
+      lm_all = nls(formula = fmla, 
                    data = common_set[common_set$training,], 
                    #start = c(a_coh=0.95, a_ncoh=1, b_coh=8.8, b_ncoh=8.5),
                    start = c(a_coh=1, a_ncoh=1, b_coh=1, b_ncoh=1),
@@ -317,10 +338,24 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
       
     }
     
-    #Zhao et al., 2016, adjusted
-    if (length(setdiff ("BD", names(common_set))) ==0)
+    #Zhao et al., 2016, adjusted ####
+    required_fields = eps2theta(equation = "list")$ZhaoEtal2016
+    if (all(required_fields %in% names(common_set)))
     {
       eq="theta_Zhao_adj"
+      
+      coefs_org=c(a=0.3039, b= -2.1851, c= 18.0283, d=-17.9531, e=-0.6806, f=1.8351) #coefficients of original equation/Zhao's values
+      fmla = "theta ~ ( a *BD + b + sqrt(epsilon)) /
+                       (( c *BD+d) +(e*BD+f)*sqrt(epsilon))"
+      #replace coefficients with original values, for those where there is no variation in the column (otherwise, the fitting gets problematic)
+      if ("BD" %in% names(which(all_equal)))
+      {
+        fmla = gsub(x = fmla, pattern = " a ", replacement =  coefs_org["a"])
+        fmla = gsub(x = fmla, pattern = " b ", replacement =  coefs_org["b"])
+      }
+      fmla = formula(fmla) #convert to formula object
+
+      
       #robust optimization using optim
       obj_fun = function(parms, data1)
       {  
@@ -329,13 +364,11 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
         sse = sum((theta_mod - data1$theta)^2, na.rm=TRUE)
         return(sse)             
       }
-      start=c(a=0.3039, b= -2.1851, c= 18.0283, d=-17.9531, e=-0.6806, f=1.8351) #Zhao's values
       res=optim(par = c(a=0, b=0, c=0, d=0, e=1, f=1), fn = obj_fun, data1 = common_set[common_set$training,])
       
       ignore = is.na(common_set$BD + common_set$theta + common_set$epsilon) #mask NAs
       tt = try({
-        lm_all = nls(formula = theta ~ (a*BD +b + sqrt(epsilon)) /
-                       ((c*BD+d) +(e*BD+f)*sqrt(epsilon)), 
+        lm_all = nls(formula = fmla, 
                      data = common_set[common_set$training & !ignore,], 
                      start = res$par,
                      lower=-Inf,
@@ -369,8 +402,9 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
       }  
     }
     
-    #   Singh et al 2019 (10.1016/j.agwat.2019.02.024)
-    if (length(setdiff ("clay_perc", names(common_set))) ==0)
+    #   Singh et al 2019 (10.1016/j.agwat.2019.02.024) ####
+    if (length(setdiff ("clay_perc", names(common_set))) ==0 &
+       !("clay_perc" %in% names(which(all_equal))))
     {
       eq="theta_Singh_adj"
       #get initial estimate
@@ -423,21 +457,18 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
     }
     
     
-    
-
+    #own glm_bin ####   
+{
     form_str = "theta ~  sqrt(epsilon)+epsilon+I(epsilon^2)"
-    if ("BD" %in% names(common_set) )
+    if ("BD" %in% names(common_set) & !("BD" %in% names(which(all_equal))))
       form_str = paste0(form_str, "+ BD"
       )
-    if ("om_perc" %in% names(common_set) )
+    if ("om_perc" %in% names(common_set) &  !("om_perc" %in% names(which(all_equal))))
       form_str = paste0(form_str, "+ om_perc")
     
-    if ("clay_perc" %in% names(common_set) )
+    if ("clay_perc" %in% names(common_set) &  !("clay_perc" %in% names(which(all_equal))))
       form_str = paste0(form_str, "+ clay_perc")
       
-
-    #own glm_bin
-    {
       eq="theta_glm_bin"
   
       lm_all = glm(formula = formula(form_str), data = common_set[common_set$training,], family=quasibinomial)
@@ -461,7 +492,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
       
     }
 
-    #own glm_gauss
+    #own glm_gauss ####
     {
       eq="theta_glm_gauss"
       
@@ -486,7 +517,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
     }
 
     
-    # #own glm_sqrt
+    # #own glm_sqrt ####
     # {
     #   form_str = sub(x = form_str, pattern = "theta", repl="sqrt(theta)")
     #   eq="theta_glm_sqrt"
@@ -570,7 +601,6 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
     mm = models[i]
     lines (eps_range, common_set_plot_train[, mm], col=pal[i], lty=lty[i], lwd=2)
     lines (eps_range, common_set_plot_test [, mm], col=pal[i], lty=lty[i], lwd=1.0)
-    
   } 
   legend("topleft", legend=c("train", "test", models), col=c("black", "black", pal[1:n]), 
          pch=NA, lty=c("solid","solid", lty), lwd=c(2, 1, rep(2, length(models))))

@@ -136,6 +136,8 @@ Malicki, M.A., Plagge, R., Roth, C.H., 1996. Improving the calibration of dielec
 
 Mohamed, A.-M.O., Paleologos, E.K., 2018. Dielectric Permittivity and Moisture Content, in: Fundamentals of Geoenvironmental Engineering. Elsevier, pp. 581–637. https://doi.org/10.1016/B978-0-12-804830-6.00016-8
 
+Singh, J., Lo, T., Rudnick, D.R., Irmak, S., Blanco-Canqui, H., 2019. Quantifying and correcting for clay content effects on soil water measurement by reflectometers. Agric. Water Manage. 216, 390–399. https://doi.org/10.1016/j.agwat.2019.02.024
+
 Topp, G., Davis, J., Annan, A., 1980. Electromagnetic Determination of Soil-Water Content - Measurements in Coaxial Transmission-Lines. Water Resour. Res. 16, 574–582. https://doi.org/10.1029/WR016i003p00574
 
 Zhao, Y., Ling, D., Wang, Y., Huang, B., Wang, H., 2016. Study on a calibration equation for soil water content in field tests using time domain reflectometry. J. Zhejiang Univ.-SCI A 17, 240–252. https://doi.org/10.1631/jzus.A1500065
