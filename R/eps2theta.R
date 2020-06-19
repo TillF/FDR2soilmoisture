@@ -1,4 +1,4 @@
-# functions for converting sensor permittivity [-] volumetric water content [%]
+# functions for converting sensor permittivity [-] to volumetric water content [%]
 
 eps2theta = function(epsdata, equation)
 {

@@ -1,18 +1,23 @@
 \name{eps2theta}
 \alias{eps2theta}
+\alias{theta2eps}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Convert epsilon (permittivity) to theta (volumetric water content).
+Convert between epsilon (permittivity) and theta (volumetric water content) .
 }
 \description{
-Convert epsilon (permittivity) to theta (volumetric water content) using different equations.
+Convert between epsilon (permittivity) and theta (volumetric water content) using different equations.
 }
 \usage{
-eps2theta(epsdata, equation)
+eps2theta(epsdata,   equation)
+theta2eps(thetadata, equation)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{epsdata}{
+dataframe holding at least a column \code{epsilon} and potentially others, depending on the choice of \code{equation}. See details.
+}
+  \item{thetadata}{
 dataframe holding at least a column \code{epsilon} and potentially others, depending on the choice of \code{equation}. See details.
 }
   \item{equation}{
@@ -42,6 +47,8 @@ The following columns in the data frame \code{epsdata} are supported and may be 
 \item{om_perc} { Percent organic matter. [\%]}
 \item{cohesive} { is the soil cohesive? [0/1]}
 }
+   
+\code{theta2eps} is the inverse of \code{eps2theta}. However, currently only implemented for \code{equation="deltaT_minorg"}.
    
 The respective equations used are:
 
