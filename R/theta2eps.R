@@ -38,11 +38,11 @@ theta2eps = function(thetadata, equation)
     a0 = 1.6  #ThetaProbe manual, page 14; Profile Probe User Manual 5.0, page 21
     a1 = 8.4   
     
-    thetadata$epsilon[min_ix] = (thetadata$theta[min_ix] * a1 + a0)^2  #ThetaProbe manual, eq. 6
+    eps[min_ix] = (thetadata$theta[min_ix] * a1 + a0)^2  #ThetaProbe manual, eq. 6
     
     a0 = 1.3  #ThetaProbe manual, page 14
     a1 = 7.7   
-    thetadata$epsilon[!min_ix] = (thetadata$theta[!min_ix] * a1 + a0)^2  #ThetaProbe manual, eq. 6
+    eps[!min_ix] = (thetadata$theta[!min_ix] * a1 + a0)^2  #ThetaProbe manual, eq. 6
     
   }
 
