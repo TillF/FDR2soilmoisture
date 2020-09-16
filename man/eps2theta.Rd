@@ -18,7 +18,7 @@ theta2eps(thetadata, equation)
 dataframe holding at least a column \code{epsilon} and potentially others, depending on the choice of \code{equation}. See details.
 }
   \item{thetadata}{
-dataframe holding at least a column \code{epsilon} and potentially others, depending on the choice of \code{equation}. See details.
+dataframe holding at least a column \code{theta} (volumetric water content, [-]) and potentially others, depending on the choice of \code{equation}. See details.
 }
   \item{equation}{
 Equation to be used. Must be one of 
