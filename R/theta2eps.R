@@ -27,7 +27,9 @@ theta2eps = function(thetadata, equation)
     if (!(all(required_fields[[eq]] %in% names(thetadata)))) stop(paste0("Equation '", eq, "' needs the column(s) '", paste0(required_fields[[eq]], collapse = "', '"), "' in thetadata."))    
   }  
   
-	if (any(thetadata$theta > 1) |  any(thetadata$theta < 0)) stop("theta must be within [0..1] (volumetric water content).")
+	if (any(!is.na(thetadata$theta) & ( 
+		(thetadata$theta > 1) |  (thetadata$theta < 0)
+		))) stop("theta must be within [0..1] (volumetric water content).")
   
  
   eps=NA
