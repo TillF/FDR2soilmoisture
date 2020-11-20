@@ -50,12 +50,14 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
     common_set_plot_train = cbind(common_set_plot_train, epsilon=eps_range)
     
     
-    common_set_plot_test = sapply(common_set[!common_set$training, numeric_cols], median, na.rm=TRUE)
-    common_set_plot_test = data.frame(t(common_set_plot_test), t(sapply(common_set[!common_set$training, !numeric_cols], modus)))
-    common_set_plot_test$epsilon = NULL
-    common_set_plot_test = cbind(common_set_plot_test, epsilon=eps_range)
-    
-    
+    if (all(common_set$training))
+      common_set_plot_test=common_set_plot_train[1,][-1,] else #empty dataframe
+    {    
+      common_set_plot_test = sapply(common_set[!common_set$training, numeric_cols], median, na.rm=TRUE)
+      common_set_plot_test = data.frame(t(common_set_plot_test), t(sapply(common_set[!common_set$training, !numeric_cols], modus)))
+      common_set_plot_test$epsilon = NULL
+      common_set_plot_test = cbind(common_set_plot_test, epsilon=eps_range)
+    }
     
           
 
