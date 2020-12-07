@@ -3,10 +3,10 @@
 \alias{eps2V}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Convert sensor voltage to epsilon and v.v. using manufacturer's spefications.
+Convert sensor voltage to epsilon and v.v. using manufacturer's specifications.
 }
 \description{
-Convert sensor voltage to epsilon and v.v. using manufacturer's spefications. Defined for Theta Probe and PR2 (DeltaT).
+Convert sensor voltage to epsilon and v.v. using manufacturer's specifications. Defined for Theta Probe and PR2 (DeltaT).
 }
 \usage{
 V2eps(V, type)
