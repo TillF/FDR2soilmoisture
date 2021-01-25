@@ -45,7 +45,11 @@ Theta Probe (ThetaProbe user manual, eq. 3):
 Permittivity value (epsilon) [-] or sensor voltage [V].
 }
 \references{
-%% ~put references to the literature/web site here ~
+Delta-T Devices Ltd, 1998. ThetaProbe SOIL MOISTURE SENSOR TYPE ML2 USER MANUAL (ML2-UM-1). Delta-T Devices Ltd, Cambridge, UK.
+
+Delta-T Devices Ltd, 2016. User Manual for the Profile Probe type PR2 (PR2-UM-5.0). Delta-T Devices Ltd, Cambridge, UK.
+
+
 }
 \author{
 Till Francke
@@ -60,5 +64,22 @@ Till Francke
 \code{\link{correct_sensor_voltage}}
 }
 \examples{
-V2eps(V= 1.3, type = "Theta Probe") #convert to epsilon, eq. 1 of ThetaProbe user manual
+V2eps(V= 1.1, type = "Theta Probe") #convert to epsilon, eq. 1 of Theta-Probe user manual
+
+  eps_air =1.00059
+  eps_h2o =81
+  eps2V(eps_air, type = "Theta Probe") 
+  eps2V(eps_h2o, type = "Theta Probe") 
+
+
+# reproducing the figure on p.11,  Theta-Probe user manual
+  V = seq(from=0.0, to=1., by=0.1)
+  eps = V2eps(V, type = "Theta Probe")
+  plot(V, sqrt(eps))
+  abline(lm(sqrt(eps)~V))
+  
+  # add values from inverse function
+  eps_inv = seq(from=1, to=80, by=2)
+  V_inv = eps2V(eps_inv, type = "Theta Probe")  
+  points(V_inv, sqrt(eps_inv), col="red", pch="+")  
 }
