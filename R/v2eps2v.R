@@ -1,5 +1,45 @@
 # functions for converting sensor permittivity [-] to voltage  [Volts] and back
 
+
+#.onLoad <- function(libname, pkgname) {
+print("hello from onload")
+  # replace polynom (inappropriate over 0.55 V) with converted lookup table ####
+  lin_file = system.file("example", "ThetaProbe.txt", package = "FDR2soilmoisture") #Linearisation table from DeltaT ThetaProbe manual. p. 14
+  lin_data = read.table(lin_file, nrow=-1, sep="\t", stringsAsFactors = FALSE, header=TRUE, na.strings = c("NA",""))  #load the file
+
+  lin_data = lin_data[-c(1, nrow(lin_data)),] #remove first and last entry that served for extrapolation only
+
+  #reconstruct epsilon values
+  epsilon_org = theta2eps(thetadata = data.frame(theta=lin_data$theta, 
+                                               soil=rep("organic", nrow(lin_data))), equation = "deltaT_minorg")
+  epsilon_min = theta2eps(thetadata = data.frame(theta=lin_data$theta, 
+                                               soil=rep("mineral", nrow(lin_data))), equation = "deltaT_minorg")
+
+  #put into data frames
+  lin_data_min = data.frame(epsilon=epsilon_min, voltage = lin_data$V_min)
+  lin_data_org = data.frame(epsilon=epsilon_org, voltage = lin_data$V_org)
+
+  #generate mean data (between mineral and organic) that will be used as a general lookup table
+  # because "mineral" and "organic" differ slightly for high moisture values
+  V = lin_data_org$voltage
+
+  eps_org = lin_data_org$epsilon
+  #get epsilon values for the same voltages as in "organic"
+  eps_min = approx(x=lin_data_min$voltage, y=lin_data_min$epsilon, xout = V)$y
+
+  #do averaging between "mineral" and "organic", disregarding NAs
+  eps_mean = apply(X = cbind(eps_min, eps_org), MAR=1, FUN=mean, na.rm=TRUE)
+
+  #extend to epsilon=1 using manufactures equation
+  eps_mean = c(1, eps_mean)
+  V_mean = c(eps2V(eps = eps_mean[1], type = "Theta Probe"), V)  
+
+  V2eps_theta_probe_table = approxfun(x=V_mean, y = eps_mean)
+
+#}
+
+print("hello outside onload")
+
 # voltage to permittivity ####
   V2eps = function(V, type)
   {  
@@ -10,12 +50,18 @@
     # (PR2_SDI-12-_User_Manual_version_4_1.pdf, eq. 2)
     return(c(eps =(1.125 - 5.53*V + 67.17*V^2 - 234.42*V^3 + 413.56*V^4 - 356.68*V^5 + 121.53*V^6)^2)) 
     
-    #theta-probe
-    #convert to epsilon, eq. 1 of ThetaProbe user manual, p.12
-    if (grepl(type, pattern="Theta Probe"))
+    #theta-probe, polynomial
+    #convert to epsilon, eq. 1 of Theta Probe user manual, p.12
+    if (grepl(type, pattern="Theta Probe polynomial"))
       return(c(eps = (1.07 + 6.4*V-6.4*V^2+4.7*V^3 )^2))
     
-    stop("type must be 'PR2' or 'Theta Probe'.")
+    #theta-probe, lookup values reconstructed from table p. 14
+    #converted to epsilon, eq. 1 of Theta Probe user manual, p.12
+    #this is more general than "Theta Probe polynomial", as it also fits above 0.55 V
+    if (grepl(type, pattern="Theta Probe"))
+      return(c(eps =V2eps_theta_probe_table(V)))
+    
+    stop("type must be 'PR2', 'Theta Probe' or 'Theta Probe polynomial'.")
   }
 
 #permittivity to voltage ####
