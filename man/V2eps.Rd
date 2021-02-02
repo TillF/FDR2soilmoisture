@@ -67,7 +67,7 @@ Till Francke
 V2eps(V= 1.1, type = "Theta Probe") #convert to epsilon, eq. 1 of Theta-Probe user manual
 
   eps_air =1.00059
-  eps_h2o =81
+  eps_h2o =81 #at 20 °C
   eps2V(eps_air, type = "Theta Probe") 
   eps2V(eps_h2o, type = "Theta Probe") 
 
