@@ -5,7 +5,7 @@
 correct_sensor_voltage
 }
 \description{
-Correct the sensor voltage output to values stated by the manufacturer using supplied calibration values
+Convert measured the sensor voltage output to "should-be" values stated by the manufacturer using user-supplied calibration values
 }
 \usage{
 correct_sensor_voltage(V, serial_no=NULL, probe_id=NULL, ring_no=1, calib_data)
@@ -29,9 +29,13 @@ correct_sensor_voltage(V, serial_no=NULL, probe_id=NULL, ring_no=1, calib_data)
   \item{warnOnly=FALSE}{
   If no data for the specified probe are found, an error is raised. With \code{warnOnly=TRUE}, instead, a warning is issued and medians of the same probe type are used.
 }
+
+  \item{adjust_range=TRUE}{
+  When this option is enabled, the 99-percentile of voltages supplied in \code{V} that is above the the calibration voltages \code{voltage_water_mV}, \code{voltage_water_mV} is enlarged accordingly, i.e. assuming there is a higher maximum value to be used. If disabled, voltages outside the interval are converted to NA.
+}
 }
 \details{
-In spite of manufacture specifications, Theta Probe and PR2-instruments usually yield output deviating from the specifications. This deviation seems especially pronounced for the analogue PR2 probes, with varying offsets along the length of the rod. We assume this mismatch to be linear. Thus, it can be corrected with two reference points. These are taken from the supplied user calibration data (\code{calib_data}), which contain two measurements (air, water) for each sensor. Thus, the given raw input \code{V} is linearly transformed in a way, that the manufacture's conversion of Voltage to Permittivity (epsilon) holds for air and water.
+In spite of manufacture specifications, Theta Probe and PR2-instruments usually yield output voltage deviating from the specifications. This deviation seems especially pronounced for higher water contents (see 'example 2b adn 2c' in examples of \link{eps2theta}) and the analogue PR2 probes, with varying offsets along the length of the rod. We assume this mismatch in voltage to be linear. Thus, it can be corrected with two reference points. These are taken from the supplied user calibration data (\code{calib_data}), which contain two measurements (in air and water, respectively) for each sensor. Thus, the given raw input \code{V} is linearly transformed in a way, that the manufacture's conversion of Voltage to Permittivity (epsilon) holds for air and water.
 
 \itemize{
 \code{calib_data}: Data frame with calibration data. The following columns must be present:

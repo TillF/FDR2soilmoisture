@@ -1,4 +1,4 @@
-correct_sensor_voltage = function(V, serial_no=NULL, probe_id=NULL, ring_no=1, calib_data, warnOnly=FALSE)
+correct_sensor_voltage = function(V, serial_no=NULL, probe_id=NULL, ring_no=1, calib_data, warnOnly=FALSE, adjust_range=TRUE)
 # converts sensor voltage [Volts] according to calibration data in calib_data for the specified sensor and ring   
 {
   #tt = get_reference_voltage(serial_no = serial_no, probe_id = probe_id, ring_no = ring_no, calib_data = calib_data)
@@ -35,13 +35,21 @@ correct_sensor_voltage = function(V, serial_no=NULL, probe_id=NULL, ring_no=1, c
     unique_settings[ss, "type"] = tt$type
   
     #check consistency between maximum recorded voltages and calibration voltage for water
-    Vmax_measured = quantile(V[cur_rows], probs = 0.99, na.rm=T) #get maximum voltage measured, discarding outliers
-    if (Vmax_measured > unique_settings[ss, "V_h2o_meas"])
+    Vmax_measured = quantile(V[cur_rows], probs = 0.99, na.rm=TRUE) #get maximum voltage measured, discarding outliers
+    Vmin_measured = quantile(V[cur_rows], probs = 0.01, na.rm=TRUE) #get minimum voltage measured, discarding outliers
+    
+    if (adjust_range) #update calibration values with measurements
+    {  
+      if (Vmax_measured > unique_settings[ss, "V_h2o_meas"])
+      {
+        warning(paste0("Max V in time series (", Vmax_measured, " V) larger than reference V for water (", unique_settings[ss, "V_h2o_meas"]," V). Consider updating calibration data for ",
+                       ifelse(is.null(unique_settings$probe_id), paste0("ser_no '",unique_settings$serial_no[ss]), paste0("probe-id '", unique_settings$probe_id[ss])),"', ring '", unique_settings$ring_no[ss], "'. Using new max."))
+        unique_settings[ss, "V_h2o_meas"] = Vmax_measured
+      }
+    } else #discard measurements outside calibration range
     {
-      warning(paste0("Max V in time series (", Vmax_measured, " V) larger than reference V for water (", unique_settings[ss, "V_h2o_meas"]," V). Consider updating calibration data for ",
-                     ifelse(is.null(unique_settings$probe_id), paste0("ser_no '",unique_settings$serial_no[ss]), paste0("probe-id '", unique_settings$probe_id[ss])),"', ring '", unique_settings$ring_no[ss], "'. Using new max."))
-      unique_settings[ss, "V_h2o_meas"] = Vmax_measured
-    }
+       V[(V > unique_settings[ss, "V_h2o_meas"]) | (V < unique_settings[ss, "V_air_meas"]) ] = NA
+    }  
     V_corrected[cur_rows] = V_corr(V = V[cur_rows], V_air_meas = unique_settings[ss, "V_air_meas"], V_h2o_meas = unique_settings[ss, "V_h2o_meas"], type=unique_settings[ss, "type"])
     
   }
