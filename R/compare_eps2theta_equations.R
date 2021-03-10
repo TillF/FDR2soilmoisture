@@ -1,7 +1,12 @@
 #compare various equations for eps2theta conversion
 compare_eps2theta_equations = function(common_set, legend_args=NULL)
 {  
-    if (any(common_set$theta > 1 | common_set$theta < 0)) stop("Theta must be within [0,1].")
+    if (is.null(common_set$theta)) stop("common_set must contain a column 'theta'")
+  
+    common_set  = common_set[!is.na(common_set$theta),] #discard NAs in theta
+  
+  
+    if (any(common_set$theta > 1 | common_set$theta < 0)) stop("theta must be within [0,1].")
   
     if (is.null(common_set$training)) common_set$training   = TRUE #default: use all as training, none as test
     

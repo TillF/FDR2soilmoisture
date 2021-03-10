@@ -11,8 +11,11 @@ globvars <- new.env()
 # globvars$a =1
 # globvars2$a =1
 # 
-# globvars$V2eps_theta_probe_table = function(x){x} #just a dummy function, so the code initializes correctly. 
-  #Will be set in .onload() with meaningful values (we cannot do it here as we require some functions first)
+# globvars$V2eps_Theta_Probe_table = function(x){x} #just a dummy function, so the code initializes correctly. 
+
+.V2eps_Theta_Probe_table = function(x){x} #just a dummy function, so the code initializes correctly. 
+.V2eps_PR2_table = function(x){x} #just a dummy function, so the code initializes correctly. 
+#Will be set in .onload() with meaningful values (we cannot do it here as we require some functions first)
 
 #print(globvars$a)
 #print(globvars2$a)

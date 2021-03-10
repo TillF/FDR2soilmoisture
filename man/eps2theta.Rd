@@ -168,9 +168,10 @@ The different equations can automatically tested and compared with \code{\link{c
 #return list of supported equations
 eps2theta(epsdata = NULL, equation = "list")
 
+\dontrun{
 # example 2: reproduce figure on page 10, DeltaT manual (voltage vs. theta) ####
   # load linearisation table
-  lin_file = system.file("example", "ThetaProbe.txt", package = "FDR2soilmoisture") #Linearisation table from DeltaT ThetaProbe manual. p. 14
+  lin_file = system.file("example", "linearization_Theta_Probe.txt", package = "FDR2soilmoisture") #Linearisation table from DeltaT ThetaProbe manual. p. 14
   lin_data = read.table(lin_file, nrow=-1, sep="\t", stringsAsFactors = FALSE, header=TRUE, na.strings = c("NA",""))  #load the file
 
   #plot data from linearization table
@@ -255,4 +256,5 @@ eps2theta(epsdata = NULL, equation = "list")
            lty=c(1,1,0,2,1,3,1), pch=c(NA,NA, 0,NA, NA, NA), col=c("blue", "green", "black", "black", "black", "black", "black"),
            lwd=c(rep(1,6),2))
 
+}
 }
