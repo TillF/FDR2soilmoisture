@@ -2,8 +2,8 @@
   # we construct the functions V2eps and eps2V for type="Theta Probe" here, because we use some
   # functions that need to be defined before
   
-  # replace polynom (inappropriate over 0.55 V(Theta Probe) and 1 V (PR2) ) with converted lookup table ####
-  for (probe in c("Theta Probe", "PR2"))
+  # replace polynom (inappropriate over 0.55 V(Theta Probe) ) with converted lookup table ####
+  for (probe in c("Theta Probe")) #for PR2, this problem does not exist
   {
     lin_file = system.file("example", paste0("linearization_", sub(probe, pattern = " ", repl="_"), ".txt"), package = "FDR2soilmoisture") #Linearisation table from DeltaT ThetaProbe manual. p. 14
     lin_data = read.table(lin_file, nrow=-1, sep="\t", stringsAsFactors = FALSE, header=TRUE, na.strings = c("NA",""))  #load the file
@@ -40,10 +40,11 @@
     #globvars$V2eps_Theta_Probe_table = approxfun(x=V_mean, y = eps_mean)
     #assign(".V2eps_Theta_Probe_table", value = approxfun(x=V_mean, y = eps_mean), envir = parent.env(environment())) 
     assign(paste0(".V2eps_", sub(probe, pattern = " ", repl="_"), "_table"), value = approxfun(x=V_mean, y = eps_mean), envir = parent.env(environment())) 
-      
+    #.V2eps_PR2_table(v = 1.067)
     #update eps2V-function
-    tt = .eps2V
+    tt = .eps2V #get current values of list of conversion functions
     tt[[probe]] = approxfun(y=V_mean, x = eps_mean) #update inverse function (so far, this was a dummy)
+    #tt[[probe]](v=81)
     
     assign(".eps2V", value = tt, envir = parent.env(environment())) 
   } 

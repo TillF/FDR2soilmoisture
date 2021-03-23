@@ -7,16 +7,10 @@ V2eps = function(V, type)
   #PR2
   #default equation according to manual (PR2_user_manual_version_5.0.pdf, eq. 2)
   # (PR2_SDI-12-_User_Manual_version_4_1.pdf, eq. 2)
-  if (type=="PR2 polynomial")
+  if (type=="PR2")
     return(c(eps =(1.125 - 5.53*V + 67.17*V^2 - 234.42*V^3 + 413.56*V^4 - 356.68*V^5 + 121.53*V^6)^2)) 
   
-  #PR2, lookup values reconstructed from Linearisation table from DeltaT PR2 manual 5.0, p. 25
-  #converted to epsilon
-  #this is more general than "PR2 Probe polynomial", as it also fits above 1 V / eps > 40
-  if (type=="PR2")
-    return(c(eps = .V2eps_PR2_table(V)))
-
-  #theta-probe, polynomial
+  #Theta-probe, polynomial
   #convert to epsilon, eq. 1 of Theta Probe user manual, p.12
   if (type=="Theta Probe polynomial")
     return(c(eps = (1.07 + 6.4*V-6.4*V^2+4.7*V^3 )^2))
@@ -38,7 +32,7 @@ V2eps = function(V, type)
 #permittivity to voltage ####
   .eps2V = list() #internal list containing functions for each sensor type
   #find inverse functions: since there are no easy analytical inverse, we use piecewise linear inverse functions 
-  for (probe_type in c("PR2 polynomial", "Theta Probe polynomial")) #for "Theta Probe", this is done later in .onLoad()
+  for (probe_type in c("PR2", "Theta Probe polynomial")) #for "Theta Probe", this is done later in .onLoad()
   {  
     minV = optimize(V2eps, interval=c(-0.2, 0.1), type = probe_type)$minimum  #find minimum of regression, i.e. start of monotonically increasing parabola
   
