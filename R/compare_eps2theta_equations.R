@@ -484,6 +484,8 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
       
       ftemp = function(common_set)
       {  
+        if (ncol(common_set==0))
+          theta_pred = NULL else
         theta_pred = predict(get(x = "lm_theta_glm_bin",  envir = globvars), newdata = common_set, type="response")
         return(theta_pred)
       }
@@ -607,7 +609,8 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
   {
     mm = models[i]
     lines (eps_range, common_set_plot_train[, mm], col=pal[i], lty=lty[i], lwd=2)
-    lines (eps_range, common_set_plot_test [, mm], col=pal[i], lty=lty[i], lwd=1.0)
+    if (nrow(common_set_plot_test)>0)
+      lines (eps_range, common_set_plot_test [, mm], col=pal[i], lty=lty[i], lwd=1.0)
   } 
   legend("topleft", legend=c("train", "test", models), col=c("black", "black", pal[1:n]), 
          pch=NA, lty=c("solid","solid", lty), lwd=c(2, 1, rep(2, length(models))))
