@@ -180,11 +180,15 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
       
       ftemp = function(common_set)
       {  
-        common_set$a0[common_set$soil == "organic"] = 1.4
-        common_set$a0[common_set$soil == "mineral"] = 1.6
-        common_set$a0[common_set$soil == "clay"]    = 1.8
-        
-        theta_pred = predict(get(x = "lm_theta_deltaT_adj2",  envir = globvars), newdata = common_set)
+        if (ncol(common_set==0))
+          theta_pred = NULL else
+        {
+          common_set$a0[common_set$soil == "organic"] = 1.4
+          common_set$a0[common_set$soil == "mineral"] = 1.6
+          common_set$a0[common_set$soil == "clay"]    = 1.8
+          
+          theta_pred = predict(get(x = "lm_theta_deltaT_adj2",  envir = globvars), newdata = common_set)
+        }
         return(theta_pred)
       }
       
@@ -212,7 +216,8 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
       {  
         #valid_rows = is.finite(common_set$theta + common_set$epsilon+common_set$BD)
         #theta_pred = rep(NA, nrow(common_set)) #create empty array for result
-        
+        if (ncol(common_set==0))
+          theta_pred = NULL else
         theta_pred = predict(get(x = "lm_theta_Ledieu_adj",  envir = globvars), newdata = common_set)
         return(theta_pred)
       }
@@ -238,6 +243,8 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
       
       ftemp = function(common_set)
       {  
+        if (ncol(common_set==0))
+          theta_pred = NULL else
         theta_pred = predict(get(x = "lm_theta_malicki_adj",  envir = globvars), newdata = common_set)
         return(theta_pred)
       }
@@ -292,6 +299,8 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
 
       ftemp = function(common_set)
       {  
+        if (ncol(common_set==0))
+          theta_pred = NULL else
         theta_pred = predict(get(x = "lm_theta_jacsch_adj",  envir = globvars), newdata = common_set)
         return(theta_pred)
       }
@@ -330,6 +339,8 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
       
       ftemp = function(common_set)
       {  
+        if (ncol(common_set==0))
+          theta_pred = NULL else
         theta_pred = predict(get(x = "lm_theta_Drnevich_adj",  envir = globvars), newdata = common_set)
         return(theta_pred)
       }
@@ -393,6 +404,8 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
         
         ftemp = function(common_set)
         {  
+          if (ncol(common_set==0))
+            theta_pred = NULL else
           theta_pred = predict(get(x = "lm_theta_Zhao_adj",  envir = globvars), newdata = common_set)
           return(theta_pred)
         }
@@ -511,6 +524,8 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
       
       ftemp = function(common_set)
       {  
+        if (ncol(common_set==0))
+          theta_pred = NULL else
         theta_pred = predict(get(x = "lm_theta_glm_gauss",  envir = globvars), newdata = common_set, type="response")
         return(theta_pred)
       }
