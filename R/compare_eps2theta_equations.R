@@ -40,17 +40,28 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
       return(1 - sum((mod[complete]-obs[complete])^2, na.rm=TRUE  ) / sum((mean(obs[complete]) - obs[complete])^2, na.rm=TRUE  )) 
     }
     
+    check_fields = function(required_fields, common_set)
+    {
+      if (!all(required_fields %in% names(common_set))) return(FALSE)
+      if (any(apply(X = common_set[, required_fields, drop=FALSE], MAR=2, FUN=function(x){all(is.na(x))}))) return (FALSE)
+          return(TRUE)
+    }
     
     #generate "average" data for plotting
     numeric_cols = sapply(common_set, class) == "numeric" #index to numeric columns
     modus = function(x)
-    { return (names(sort(-table(x)))[1])}
+    { if (all(is.na(x))) return (NA)
+      return (names(sort(-table(x)))[1])}
     eps_range = seq(from=1.1, to=80, by=1)
     
     
     #prepare arrays for plotting curves later using mean/modus properties
+    browser()
     common_set_plot_train = sapply(common_set[common_set$training, numeric_cols], median, na.rm=TRUE)
-    common_set_plot_train = data.frame(t(common_set_plot_train), t(sapply(common_set[common_set$training, !numeric_cols], modus)))
+    a = t(common_set_plot_train)
+    b = t(sapply(common_set[common_set$training, !numeric_cols], modus, simplify = TRUE))
+    
+    common_set_plot_train = data.frame(a, b)
     common_set_plot_train$epsilon = NULL #discard original epsilon column
     common_set_plot_train = cbind(common_set_plot_train, epsilon=eps_range)
     
@@ -59,7 +70,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
       common_set_plot_test=common_set_plot_train[1,][-1,] else #empty dataframe
     {    
       common_set_plot_test = sapply(common_set[!common_set$training, numeric_cols], median, na.rm=TRUE)
-      common_set_plot_test = data.frame(t(common_set_plot_test), t(sapply(common_set[!common_set$training, !numeric_cols], modus)))
+      common_set_plot_test = data.frame(t(common_set_plot_test), t(sapply(common_set[!common_set$training, !numeric_cols, drop=FALSE], modus)))
       common_set_plot_test$epsilon = NULL
       common_set_plot_test = cbind(common_set_plot_test, epsilon=eps_range)
     }
@@ -80,6 +91,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
         print(paste0("Skipped ", eq, "; missing fields: ", paste0(missing_fields, collapse = ", ")))
         next
       }
+      browser()
       common_set[, paste0("theta_", eq)] = eps2theta(common_set, equation = eq) #apply equation
       r2_train   [paste0("theta_", eq)] = r2(common_set[ common_set$training, paste0("theta_", eq)], common_set$theta[ common_set$training]) 
       r2_test    [paste0("theta_", eq)] = r2(common_set[!common_set$training, paste0("theta_", eq)], common_set$theta[!common_set$training]) 
@@ -192,6 +204,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
         return(theta_pred)
       }
       
+      
       eps2theta_function_list [[eq]] = ftemp #store conversion function
       common_set             [, eq] = ftemp(common_set) #apply conversion function
       r2_train   [eq] = r2(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
@@ -282,13 +295,16 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
     
     #Jacobsen & Schjonning (1993), adjusted ####
     required_fields = eps2theta(equation = "list")$"Jacobsen_Schjonning1993"
-    if (all(required_fields %in% names(common_set)))
+    
+    #browser()
+    if (check_fields(required_fields, common_set))
     {
       eq="theta_jacsch_adj"
       #coefs_org = c(BD =- 3.7*1e-2,  clay_perc = 7.36*1e-4, om_perc= 47.7*1e-4) #coefficients of original equation
       fmla = "theta ~  epsilon+epsilon^2+epsilon^3+ BD + clay_perc + om_perc"
       #replace coefficients with original values, for those where there is no variation in the column (otherwise, the fitting gets problematic)
       #exclude "all-equal" predictors from regression formula
+      #browser()
       for (cc in names(which(all_equal)))
         fmla = gsub(x = fmla, pattern = paste0("\\+ *",cc), replacement = "")
       #    fmla = gsub(x = fmla, pattern = cc, replacement = paste0("I(",coefs_org[cc],")"))
@@ -424,7 +440,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
     
     #   Singh et al 2019 (10.1016/j.agwat.2019.02.024) ####
     if (length(setdiff ("clay_perc", names(common_set))) ==0 &
-       !("clay_perc" %in% names(which(all_equal))))
+        !("clay_perc" %in% names(which(all_equal))))
     {
       eq="theta_Singh_adj"
       #get initial estimate
@@ -438,20 +454,27 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
       #robust optimization using optim
       obj_fun = function(parms, data1)
       {  
-        theta_mod = (parms[1]*data1$clay_perc^2 + parms[2]*data1$clay_perc + parms[3])*sqrt(data1$epsilon) + parms[4] 
+        a = (parms[1]*data1$clay_perc^2 + parms[2]*data1$clay_perc + parms[3])
+        b = (parms[4]*data1$clay_perc^2 + parms[5]*data1$clay_perc + parms[6])
+        theta_mod = a *sqrt(data1$epsilon) + b #Table 3
         sse = sum((theta_mod - data1$theta)^2, na.rm=TRUE)
         return(sse)             
       }
-      res=optim(par = c(a1=0, a2=as.numeric(a2), a3=0, b=as.numeric(b)), fn = obj_fun, data1 = common_set[common_set$training,])
+      res=optim(par = c(a1=0, a2=as.numeric(a2), a3=0, b1=0, b2=0, b3=as.numeric(b)), fn = obj_fun, data1 = common_set[common_set$training,])
+      
+      res$par = c(a1=-3.33e-5, a2=1.14e-3, a3=0.108, b1=6.52e-5, b2=-2.48e-3, b3=-0.16)
+      
+      ranges =  res$par %*% t(c(0.1, 10))
+  
       
       #refine with nlxb, the improved version of nls
       library(nlmrt) #the regular nls is not robust here
       ignore = is.na(common_set$clay_perc + common_set$theta + common_set$epsilon) #mask NAs
-      lm_all = nlxb(formula = theta ~ (a1*clay_perc^2 + a2*clay_perc + a3)*sqrt(epsilon) + b, 
+      lm_all = nlxb(formula = theta ~ (a1*clay_perc^2 + a2*clay_perc + a3)*sqrt(epsilon) + (b1*clay_perc^2 + b2*clay_perc + b3), 
                     data = common_set[common_set$training & !ignore,], 
                     start = res$par,
-                    upper = res$par + abs(res$par)*0.01, 
-                    lower = res$par - abs(res$par)*0.01, 
+                    upper = apply(X=ranges, MAR=1, FUN=max), 
+                    lower = apply(X=ranges, MAR=1, FUN=min), 
                     #alg="port",
                     trace=FALSE,
                     nls.control(maxiter = 100, warnOnly = FALSE)  )
@@ -460,8 +483,11 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL)
       ftemp = function(common_set)
       {  
         lm_t = get("lm_theta_Singh_adj", envir = globvars) 
-        theta_pred = (lm_t$coefficients["a1"]*common_set$clay_perc^2 + lm_t$coefficients["a2"]*common_set$clay_perc + 
-                        lm_t$coefficients["a3"])*sqrt(common_set$epsilon) + lm_t$coefficients["b"] 
+        
+        coeffss = lm_t$coefficients
+        a = (coeffss["a1"]*common_set$clay_perc^2 + coeffss["a2"]*common_set$clay_perc + coeffss["a3"])
+        b = (coeffss["b1"]*common_set$clay_perc^2 + coeffss["b2"]*common_set$clay_perc + coeffss["b3"])
+        theta_pred = a *sqrt(common_set$epsilon) + b 
         return(theta_pred)
       }
       

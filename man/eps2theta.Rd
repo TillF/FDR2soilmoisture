@@ -30,6 +30,7 @@ Equation to be used. Must be one of
 "MalickiEtal1996",
 "RothEtal1992",
 "SchaapEtal1997",
+"SinghEtal2017",
 "ToppEtal1980", 
 "ZhaoEtal2016".
 
@@ -107,6 +108,22 @@ Schaap et al. 1997 (eq. 2b in Vaz et al. 2013):
 \theta = (0.133*\sqrt(epsilon) -0.146)^0.885
 },  
   
+Singh et al. 2019 (version for CS655):
+\deqn{\theta =  \theta = a*\sqrt(epsilon) + b
+}{%
+\theta = a*\sqrt(epsilon) + b
+}
+with 
+\deqn{a = a1*clay_perc^2 + a2*clay_perc + a3
+}{%
+	a = a1*clay_perc^2 + a2*clay_perc + a3
+}
+\deqn{b = b1*clay_perc^2 + b2*clay_perc + b3
+}{%
+	b = b1*clay_perc^2 + b2*clay_perc + b3
+}  
+ and the coefficients for CS655 (a1=-3.33e-5, a2=1.14e-3, a3=0.108, b1=6.52e-5, b2=-2.48e-3, b3=-0.16),
+	
    
 Topp et al., 1980:
 \deqn{\theta =  -0.053+ 2.93e-2*\epsilon -5.5e-4*\epsilon^2 + 4.3e-6*\epsilon^3

@@ -9,10 +9,11 @@ eps2theta = function(epsdata, equation)
     RothEtal1992 = c("epsilon", "soil"),
     SchaapEtal1997 = c("epsilon"),
     MalickiEtal1996 = c("epsilon", "BD"),
-    Jacobsen_Schjonning1993= c("epsilon", "BD", "clay_perc", "om_perc"),    
+    Jacobsen_Schjonning1993 = c("epsilon", "BD", "clay_perc", "om_perc"),
     DrnevichEtal2005= c("epsilon", "BD", "cohesive"),
     JuEtal2010 = c("epsilon", "BD"),
-    ZhaoEtal2016 = c("epsilon", "BD")
+    ZhaoEtal2016 = c("epsilon", "BD"),
+	SinghEtal2019 = c("epsilon", "clay_perc")
   )
   
   if (equation == "list") return (required_fields) #only return names of supported equations
@@ -22,9 +23,14 @@ eps2theta = function(epsdata, equation)
   
   
   if (!(all(equation %in% names(required_fields)))) stop("equation must be one of ", paste0(names(required_fields), collapse = ", "))
+  numeric_cols = c("epsilon", "n", "BD", "clay_perc", "om_perc")
+  
   for (eq in equation)
   {
     if (!(all(required_fields[[eq]] %in% names(epsdata)))) stop(paste0("Equation '", eq, "' needs the column(s) '", paste0(required_fields[[eq]], collapse = "', '"), "' in epsdata."))    
+    req_numeric = intersect(numeric_cols, required_fields[[eq]])
+    if (!(all(apply(X = epsdata[, req_numeric, drop=FALSE], MARGIN = 2, FUN= is.numeric )))) 
+      stop(paste0("Equation '", eq, "' needs numeric data in the column(s) '", paste0(req_numeric, collapse = "', '"), "' in epsdata."))    
   }  
   
   
@@ -77,6 +83,15 @@ eps2theta = function(epsdata, equation)
     theta = (0.133*sqrt(epsdata$epsilon) -0.146)^0.885
   }
   
+  #   Singh et al 2019 (10.1016/j.agwat.2019.02.024)
+  if (equation=="SinghEtal2019")
+  { 
+    coeffss = c(a1=-3.33e-5, a2=1.14e-3, a3=0.108, b1=6.52e-5, b2=-2.48e-3, b3=-0.16)
+    a = (coeffss["a1"]*epsdata$clay_perc^2 + coeffss["a2"]*epsdata$clay_perc + coeffss["a3"])
+    b = (coeffss["b1"]*epsdata$clay_perc^2 + coeffss["b2"]*epsdata$clay_perc + coeffss["b3"])
+    theta = a *sqrt(epsdata$epsilon) + b 
+  }
+  
   
   #Malicki et al 1996(eq. 16.63 in Mohamed & Paleologos, 2018)
   if (equation=="MalickiEtal1996")
@@ -87,6 +102,7 @@ eps2theta = function(epsdata, equation)
   #Jacobsen & Schjonning (1993) from Mohamed & Paleologos, 2018
   if (equation=="Jacobsen_Schjonning1993")
   {
+    #browser()
     theta = -3.41*1e-2 +3.45*1e-2*epsdata$epsilon-11.4*1e-4*epsdata$epsilon^2 + 17.1*1e-6*epsdata$epsilon^3-
       3.7*1e-2*epsdata$BD + 7.36*1e-4*epsdata$clay_perc + 47.7*1e-4 * epsdata$om_perc
   }
