@@ -473,7 +473,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
         sse = sum((theta_mod - data1$theta)^2, na.rm=TRUE)
         return(sse)             
       }
-      browser()
+      #browser()
       res=optim(par = c(a1=0, a2=as.numeric(a2), a3=0, b1=0, b2=0, b3=as.numeric(b)), fn = obj_fun, data1 = common_set[common_set$training,])
       
       res$par = c(a1=-3.33e-5, a2=1.14e-3, a3=0.108, b1=6.52e-5, b2=-2.48e-3, b3=-0.16)
