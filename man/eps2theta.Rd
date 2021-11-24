@@ -77,41 +77,41 @@ Fersch et al. 2017:
 Jacobsen & Schjonning, 1993:
 \deqn{\theta =  -3.41*1e-2 +3.45*1e-2*\epsilon-11.4*1e-4*\epsilon^2 + 17.1*1e-6*\epsilon^3- 3.7*1e-2*\BD + 7.36*1e-4*\clay_perc + 47.7*1e-4 * \om_perc
 }{%
-\theta = -3.41*1e-2 +3.45*1e-2*epsilon-11.4*1e-4*epsilon^2 + 17.1*1e-6*epsilon^3-
+\theta = -3.41*1e-2 +3.45*1e-2*\epsilon-11.4*1e-4*\epsilon^2 + 17.1*1e-6*\epsilon^3-
       3.7*1e-2*BD + 7.36*1e-4*clay_perc + 47.7*1e-4 * om_perc
 }, 
 
 Ju et al., 2010:
-\deqn{\theta =  0.1228*\sqrt(epsilon) - 0.1322*BD -0.0152
+\deqn{\theta =  0.1228*\sqrt{\epsilon} - 0.1322*BD -0.0152
 }{%
-\theta = 0.1228*\sqrt(epsilon) - 0.1322*BD -0.0152
+\theta = 0.1228*\sqrt(\epsilon) - 0.1322*BD -0.0152
 }, 
 
 
 Malicki et al., 1996:
 \deqn{\theta =  \frac{\sqrt{\epsilon}-0.819-0.168\BD-0.159\BD^2}{7.17+1.18\BD}
 }{%
-\theta =  (\sqrt(\epsilon)-0.819-0.168 BD-0.159 BD^2)/(7.17+1.18 BD).
+\theta =  (\sqrt(\epsilon)-0.819-0.168 BD-0.159 BD^2)/(7.17+1.18 BD)
 },
 
 Roth et al., 1992:
-\deqn{\theta =  \frac{\sqrt{\epsilon}-0.819-0.168\BD-0.159\BD^2}{7.17+1.18\BD}
+\deqn{\theta =  (\a_1 + \a_2*{\epsilon} +\a_3 *{\epsilon}^2 + \a_4*{\epsilon}^3)
 }{%
-\theta =  (a_1 + a_2*\epsilon +a_3 *\epsilon^2 + a_4*epsilon^3).
+\theta =  (a_1 + a_2*\epsilon +a_3 *\epsilon^2 + a_4*\epsilon^3)
 },
 
  with a_1 = -0.0728, a_2 = 0.0448, a_3 = -0.00195, a_4= 0.0000361 for mineral soils, a_1 =  0.0233, a_2 = 0.0285, a_3 = -0.000431, a_4 = 0.00000304 for organic soils, 
 
 Schaap et al. 1997 (eq. 2b in Vaz et al. 2013):
-\deqn{\theta =  (0.133*\sqrt(epsilon) -0.146)^0.885
+\deqn{\theta =  (0.133*\sqrt{\epsilon} -0.146)^0.885
 }{%
-\theta = (0.133*\sqrt(epsilon) -0.146)^0.885
+\theta = (0.133*\sqrt(\epsilon) -0.146)^0.885
 },  
   
 Singh et al. 2019 (version for CS655):
-\deqn{\theta =  \theta = a*\sqrt(epsilon) + b
+\deqn{\theta =  \theta = a*\sqrt{\epsilon} + b
 }{%
-\theta = a*\sqrt(epsilon) + b
+\theta = a*\sqrt(\epsilon) + b
 }
 with 
 \deqn{a = a1*clay_perc^2 + a2*clay_perc + a3
@@ -132,10 +132,10 @@ Topp et al., 1980:
 },
 
 Zhao et al., 2016:
-\deqn{\theta =  \frac{0.3039 * \BD - 2.1851 + \sqrt{\epsilon}}{(18.0283 * BD - 17.9531) + (-0.6806 * BD + 1.8351) * \sqrt{\epsilon}}
+\deqn{\theta =  \frac{0.3039 * \BD - 2.1851 + \sqrt{\epsilon}}{(18.0283 * \BD - 17.9531) + (-0.6806 * \BD + 1.8351) * \sqrt{\epsilon}}
 }{%
-\theta = (0.3039 * BD - 2.1851 + sqrt(\epsilon))/((18.0283 * BD - 17.9531) + (-0.6806 * BD + 1.8351) * sqrt(\epsilon)).
-}
+\theta = (0.3039 * BD - 2.1851 + \sqrt(\epsilon))/((18.0283 * BD - 17.9531) + (-0.6806 * BD + 1.8351) * \sqrt(\epsilon))
+}.
 
 
 }
