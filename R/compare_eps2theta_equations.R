@@ -16,7 +16,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
     
     if (all_equal["epsilon"]) stop("epsilon-values mustn't be all equal.")
     
-    legend_args2=list(x="topleft", legend="1:1", lty=1, pch=NA, col="black")
+    legend_args2=list(x="topleft", legend="1:1", lty=2, pch=NA, col="black")
     
     if (is.null(common_set$pch))
     {  
@@ -25,8 +25,9 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
     }
     if (is.null(common_set$col))
     {  
-      common_set$col = ifelse(common_set$training, "black", "grey")  #default colour for plotting
-      legend_args2$col = c(legend_args2$col, "black", "red")
+      def_cols = c("black", "red") #default colours
+      common_set$col = ifelse(common_set$training, def_cols[1], def_cols[2])  
+      legend_args2$col = c(legend_args2$col, def_cols[1], def_cols[2])
       legend_args2$lty = c(legend_args2$lty, 0, 0)
       legend_args2$legend = c(legend_args2$legend, "training", "test")
     }
@@ -644,24 +645,30 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
     models = models[grepl(models, pattern = "theta_")]
     
   windows(width = 40, height = 30) #open largest possible window in 4:3 format
-    par(mfrow=c(length(models) %/% 4 +1, 4), oma=c(1.2,0,0,0), mar=c(0.7, 1.5, 4.2, 0.5), cex=0.6)
+    par(mfrow=c(length(models) %/% 4 +1, 4), oma=c(2.3,2.3,0,0), mar=c(1, 1.6, 4.2, 0.5), cex=0.6)
   for (mm in models)    
   {
     ax_lims = pmin(1, pmax(0, extendrange(common_set$theta, f = 0.1)))
     plot(1, 1, main=paste0(mm, "\n R2 = ", format(r2_train[mm], digits = 3), " / ", format(r2_test[mm], digits = 3)), xlim=ax_lims, ylim=ax_lims, type="n"
          , xlab="", ylab="")
   #    , xlab="theta_obs", ylab="theta_mod")
+    #test data
     points(common_set$theta[!common_set$training], common_set[!common_set$training, mm],  col=common_set$col[!common_set$training], pch=common_set$pch[!common_set$training])
     if (any(!common_set$training))
-      lines (lowess(common_set$theta[!common_set$training], common_set[!common_set$training, mm], delta=0.01, f=2),  col="red", lty="dashed")
+      lines (lowess(common_set$theta[!common_set$training], common_set[!common_set$training, mm], delta=0.01, f=2),  col=common_set$col[!common_set$training][1], lty=1)
+    #training data
     points(common_set$theta[ common_set$training], common_set[ common_set$training, mm],  col=common_set$col[ common_set$training], pch=common_set$pch[ common_set$training])
     if (any(common_set$training))
-      lines (lowess(common_set$theta[common_set$training], common_set[common_set$training, mm], delta=0.01, f=2),  col="red", lty="solid")
+      lines (lowess(common_set$theta[common_set$training], common_set[common_set$training, mm], delta=0.01, f=2),  col=common_set$col[common_set$training][1], lty=1)
     
-    abline(b=1, a=0)
+    abline(b=1, a=0, lty=2)
     #r2_ = r2(common_set[, mm], common_set$theta)
     #text(x = 0.22, y=0.6, labels = paste0("R2 = ", format(r2_, digits = 3)))
   } 
+  mtext(text = "theta, observed [-]" , side=1, outer=TRUE, line = 1.2)
+  mtext(text = "theta, predicted [-]", side=2, outer=TRUE, line = 1.2)
+  
+    #add legend in extra plot panel
   plot(1, 1, main="", type="n", axes=FALSE, xlab="", ylab="")    
   if (length(legend_args)>0)
     do.call(legend, args=legend_args)
@@ -689,7 +696,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
   
   palette(pal)
   
-  plot(1, 1, xlim=range(eps_range), ylim=c(0.00,1.2), type="n", xlab="epsilon", ylab="theta_mod")
+  plot(1, 1, xlim=range(eps_range), ylim=c(0.00,1.2), type="n", xlab="epsilon [-]", ylab="theta, predicted [-]")
   
   
   for (i in 1:n)    

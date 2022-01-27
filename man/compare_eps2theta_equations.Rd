@@ -33,7 +33,11 @@ For plotting, the dataframe \code{common_set} may hold columns \code{col} and \c
 \value{
 A list with the elements \code{r2_train, r2_test, eps2theta_function}, each holding the computed R2-values and the conversion functions, respectively.
 
-Additionally, the function generates two figures: a matrix of plots showing the tested equations and the respective R2-values (training and testing); and a plot showing the behaviour of the equations over the range of epsilon-values (other data averaged). The latter plot can help to identify equations with implausible behaviour in extrapolation.
+Additionally, the function generates two figures:
+
+- a matrix of plots showing the tested equations and the respective R2-values (training and testing); 
+
+- a plot showing the behaviour of the equations over the range of epsilon-values (other data averaged). This plot can help to identify equations with implausible behaviour in extrapolation.
 }
 \references{
 %% ~put references to the literature/web site here ~
