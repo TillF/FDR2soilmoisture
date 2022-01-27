@@ -5,7 +5,7 @@
 compare_eps2theta_equations
 }
 \description{
-Compare different equations for converting epsilon to theta by creating a plot and showing R2-values. The function uses the equations included in \code{\link{eps2theta}}, some of them with customized coefficients, plus some GLM variants using different link functions.
+Compare various equations for converting epsilon to theta by creating a plot and showing R2-values. The function uses the equations included in \code{\link{eps2theta}}. It also customizes some of them with fitted coefficients, plus some GLM variants using different link functions.
 }
 \usage{
 compare_eps2theta_equations(common_set, legend_args=NULL)
@@ -21,8 +21,8 @@ compare_eps2theta_equations(common_set, legend_args=NULL)
 }
 \details{
 The dataframe \code{common_set} holds measured values of epsilon and observed values of soil moisture (theta, e.g. obtained by gravimetric method). 
-Additionally, other explanatory variables (e.g. bulk density) can be contained (see details in \code{\link{eps2theta}}).
-The function applies all equations supported by \code{\link{eps2theta}}, where possible with the provided datsa. It also adjusts the coefficients of these equations to better match the data, yielding equations variants with suffix "_adj". Whenever coefficients cannot be estimated (e.g. when the column BD is all set to the same value), the values of the original equation is used.
+Additionally, other explanatory variables (e.g. bulk density, clay contents, etc.) can be contained (see details in \code{\link{eps2theta}}).
+The \code{compare_eps2theta_equations} applies all equations supported by \code{\link{eps2theta}}, where possible with the provided datsa. It also adjusts the coefficients of these equations to better match the data, yielding equations variants with suffix "_adj". Whenever some coefficients cannot be estimated (e.g. when the column of bulk density is all set to the same value), the value of the original equation is used.
 
 The dataframe \code{common_set} may hold a logical column \code{training}. If present, the custom model fits (see above) are based on this subset only; the remaining data are also displayed and their R2-values ("testing") reported.
 
@@ -33,7 +33,7 @@ For plotting, the dataframe \code{common_set} may hold columns \code{col} and \c
 \value{
 A list with the elements \code{r2_train, r2_test, eps2theta_function}, each holding the computed R2-values and the conversion functions, respectively.
 
-Additionally, the function generates a matrix of plots showing the tested equations and the respective R2-values (training and testing).
+Additionally, the function generates two figures: a matrix of plots showing the tested equations and the respective R2-values (training and testing); and a plot showing the behaviour of the equations over the range of epsilon-values (other data averaged). The latter plot can help to identify equations with implausible behaviour in extrapolation.
 }
 \references{
 %% ~put references to the literature/web site here ~
@@ -51,8 +51,18 @@ Till Francke
 \code{\link{eps2theta}}
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
+#create some fake data
+  set.seed(1)
+  observations = data.frame(epsilon    = runif(n=100, min=5,   max=30), 
+                            BD         = runif(n=100, min=0.8, max=1.7),
+                            clay_perc  = runif(n=100, min=1, max=40),
+                            om_perc    = runif(n=100, min=0, max=30)
+                            )
+  observations$theta = sqrt(observations$eps) * runif(n=100, min=0.8, max=1.2)
+  observations$theta = observations$theta / max(observations$theta)
+  observations$training   = c(rep(TRUE, 50), rep(FALSE, 50)) #use the fisrt 50 for training, the rest for validation
+
+res = compare_eps2theta_equations(common_set=observations)
+
 }
 

@@ -1,7 +1,8 @@
 #compare various equations for eps2theta conversion
 compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=NULL)
 {  
-    if (is.null(common_set$theta)) stop("common_set must contain a column 'theta'")
+  if (is.null(common_set$theta))   stop("common_set must contain a column 'theta'")
+  if (is.null(common_set$epsilon)) stop("common_set must contain a column 'epsilon'")
   
     common_set  = common_set[!is.na(common_set$theta),] #discard NAs in theta
   
@@ -346,20 +347,49 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
     #Drnevich et al (2005) adjusted ####
     required_fields = eps2theta(equation = "list")$DrnevichEtal2005
     if (all(required_fields %in% names(common_set)) &
-        length(unique(common_set$cohesive))>1 & #there must be at least two different classes, otherwise, the fitting fails
           any(grepl(eq_subset, pattern = "Drnevich")))
     {
       eq="theta_Drnevich_adj"
-      fmla = "theta ~ (sqrt(epsilon) / BD - (cohesive*a_coh + (1-cohesive)*a_ncoh)) /
-                     (cohesive*b_coh + (1-cohesive)*b_ncoh)"
+      #there must be at least two different classes, otherwise, the fitting fails
+      #start=lower=upper=NULL
+      fmla = "theta ~ (sqrt(epsilon) / BD - (cohesive*a_coh + (1-cohesive)*a_ncoh )) /
+                     (cohesive*b_coh + (1-cohesive)*b_ncoh )"
     
+      start = c(a_coh=1, a_ncoh=1, b_coh=1, b_ncoh=1)
+      lower = c(a_coh=0.01, a_ncoh=0.01, b_coh=0.01, b_ncoh=0.01)
+      upper = c(a_coh=100, a_ncoh=100, b_coh=100, b_ncoh=100)
+      
+      
+      if (sum(common_set$cohesive==1) == 0)   #no cohesive
+      {
+        #remove cohesive terms 
+        fmla = gsub(fmla, pattern="cohesive\\*[^ ]*", repl="0") #remove cohesive coefficients
+        remove_this = !grepl(names(start), pattern = "_coh")
+        start = start[remove_this]
+        lower = lower[remove_this]
+        upper = upper[remove_this]
+      }  
+      
+      if (sum(common_set$cohesive==0) == 0)   #no non-cohesive
+      {
+        #remove non-cohesive terms 
+        fmla = gsub(fmla, pattern="\\(1-cohesive\\)\\*[^ ]*", repl="0") #remove cohesive coefficients
+        
+        remove_this = !grepl(names(start), pattern = "_ncoh")
+        start = start[remove_this]
+        lower = lower[remove_this]
+        upper = upper[remove_this]
+      }  
+      
+      
+        
       fmla = formula(fmla) #convert to formula object
       lm_all = nls(formula = fmla, 
                    data = common_set[common_set$training,], 
                    #start = c(a_coh=0.95, a_ncoh=1, b_coh=8.8, b_ncoh=8.5),
-                   start = c(a_coh=1, a_ncoh=1, b_coh=1, b_ncoh=1),
-                   lower = c(a_coh=0.01, a_ncoh=0.01, b_coh=0.01, b_ncoh=0.01), 
-                   upper = c(a_coh=100, a_ncoh=100, b_coh=100, b_ncoh=100), 
+                   start = start,
+                   lower = lower,
+                   upper = upper,
                    algorithm =  "port",
                    nls.control(maxiter = 100, warnOnly = FALSE))  
       mod_list = assign(paste0("lm_", eq),lm_all, envir = globvars) #keep this lm for later use
