@@ -637,7 +637,14 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
 
  
     
-
+ # compare R2-values in single scatterplot ####
+    windows()
+    xcoords = pmax(-0.1, r2_train)
+    ycoords = pmax(-0.1, r2_test)
+    plot(xcoords, ycoords, xlab="R2 training", ylab="R2 test")
+    text(xcoords, ycoords, sub(names(r2_train), pattern="theta_", repl=""), cex=0.7, adj = c(0.5,0))
+    abline(v=0)
+    abline(h=0)
        
     
   # compare results in scatterplot matrix #### 
@@ -675,7 +682,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
 #    legend("topleft", legend=c("mineral", "organic", "testdata", "1:1"), col=c(palette()[1:2], "black", "black"), pch=c(20, 20, 20, NA), lty=c(0,0,0,1))
   
 
-# compare equations by plotting "characteristic" curves into a single diagram  
+# compare equations by plotting "characteristic" curves into a single diagram #### 
   windows(width = 40, height = 30) #open largest possible window in 4:3 format
   models = names(common_set_plot_train)
   models = models[grepl(models, pattern = "theta_")]
@@ -710,5 +717,8 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
          pch=NA, lty=c("solid","solid", lty), lwd=c(2, 1, rep(2, length(models))))
   
   
+
+  
   return(list(r2_train=r2_train, r2_test=r2_test, eps2theta_function=eps2theta_function_list))
 }  
+
