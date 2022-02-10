@@ -369,8 +369,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
       eq="theta_Drnevich_adj"
       #there must be at least two different classes, otherwise, the fitting fails
       #start=lower=upper=NULL
-      (sqrt(epsdata$epsilon) - a * epsdata$BD) / b
-      
+
       fmla = "theta ~ (sqrt(epsilon) - (cohesive*a_coh + (1-cohesive)*a_ncoh ) * BD) /
                      (cohesive*b_coh + (1-cohesive)*b_ncoh )"
     
