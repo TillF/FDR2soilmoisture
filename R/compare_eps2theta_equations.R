@@ -739,7 +739,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
   
   palette(pal)
   
-  plot(1, 1, xlim=range(eps_range), ylim=c(0.00,1.2), type="n", xlab="epsilon [-]", ylab="theta, predicted [-]")
+  plot(1, 1, xlim=range(eps_range), ylim=c(0.00,1.2), type="n", xlab="epsilon [-]", ylab="theta, predicted [-]", log="x")
   
   
   for (i in 1:n)    
