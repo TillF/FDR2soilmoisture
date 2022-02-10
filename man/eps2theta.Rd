@@ -60,10 +60,12 @@ Delta-T Devices Ltd, 1998:
 \theta =  (\sqrt(\epsilon)-a_0)/a_1.
 } with a_0=1.6 and a_1=8.4 for mineral soils, a_0=1.3 and a_1=7.7 for organic soils, 
 
+    theta = (sqrt(epsdata$epsilon) - a * epsdata$BD) / b
+
 Drnevich et al., 2005:
-\deqn{\theta =  \frac{\frac{\sqrt{\epsilon}{\BD}-\a}}{\b}
+\deqn{\theta =  \frac{\sqrt{\epsilon}-\frac{\a}{\BD}}{\b}
 }{%
-\theta = (\sqrt(\epsilon) / BD - a) / b)
+\theta = (\sqrt(\epsilon) - a * BD) / b
 } with a=0.95 and b=8.8 for cohesive soils, a=1 and b=8.5 for non-cohesive soils, 
 
 Fersch et al. 2017:

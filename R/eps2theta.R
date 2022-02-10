@@ -107,12 +107,12 @@ eps2theta = function(epsdata, equation)
       3.7*1e-2*epsdata$BD + 7.36*1e-4*epsdata$clay_perc + 47.7*1e-4 * epsdata$om_perc
   }
   
-  #Drnevich et al (2005) from Zhao et al., 2016
+  #Drnevich et al (2005) from Zhao et al., 2016, eq. 21
   if (equation=="DrnevichEtal2005")
   {
     a = ifelse(epsdata$cohesive, 0.95, 1)    
     b = ifelse(epsdata$cohesive, 8.8, 8.5)    
-    theta = (sqrt(epsdata$epsilon) / epsdata$BD - a) / b
+    theta = (sqrt(epsdata$epsilon) - a * epsdata$BD) / b
   }
   
   #Zhao et al., 2016
