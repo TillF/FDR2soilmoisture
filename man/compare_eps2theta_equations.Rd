@@ -33,7 +33,7 @@ For plotting, the dataframe \code{common_set} may hold columns \code{col} and \c
 }
 
 \value{
-A list with the elements \code{r2_train, r2_train_ex, r2_test, eps2theta_function}, each holding the computed R2-values and the conversion functions, respectively.
+A list with the elements \code{r2_train, r2_train_ex, r2_test, rmse_train, rmse_test, eps2theta_function}, each holding the computed R2-values and the conversion functions, respectively.
 
 Additionally, the function generates three figures:
 
