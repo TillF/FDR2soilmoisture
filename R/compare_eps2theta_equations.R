@@ -57,20 +57,44 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
     }
     
     #generate "average" data for plotting
-    numeric_cols = sapply(common_set, class) == "numeric" #index to numeric columns
-    modus = function(x)
-    { if (all(is.na(x))) return (NA)
-      return (names(sort(-table(x)))[1])}
+    #numeric_cols = sapply(common_set, class) == "numeric" #index to numeric columns
+    median_modus = function(x)
+    { if (all(is.na(x))) 
+        return(NA) else
+      if(class(x) == "numeric" | class(x) == "logical")
+        res = median(x, na.rm=TRUE) else #median
+        res = names(sort(-table(x)))[1] #modus
+        
+      if(class(x) == "factor" )
+      res = factor(res, levels=levels(x)) else
+      class(res)=class(x) #force the same data type as the input
+      
+      #as(res, Class = class(x))
+      return(res)  
+    }
     eps_range = seq(from=1.1, to=80, by=1)
     
     
-    #prepare arrays for plotting curves later using mean/modus properties
+    #prepare arrays for plotting curves later using median/modus properties
     #browser()
-    common_set_plot_train = sapply(common_set[common_set$training, numeric_cols], median, na.rm=TRUE)
-    a = t(common_set_plot_train)
-    b = t(sapply(common_set[common_set$training, !numeric_cols], modus, simplify = TRUE))
+    #clumsy, but "apply()" doesn't preserve column type
+    common_set_plot_train = common_set[1,]
+    for (cc in names(common_set))
+        common_set_plot_train[1,cc] = median_modus(common_set[common_set$training, cc])
+      
+    # common_set_plot_train = t(sapply(common_set[common_set$training, numeric_cols], median_modus))
+    # sapply(common_set[common_set$training,], median_modus, simplify = TRUE)
+    # 
+    # apply(common_set[common_set$training,], MAR=2, median_modus, simplify = FALSE)
+    # 
+    # median_modus(common_set[common_set$training,1])
+    # 
+    # browser()
+    # a = t(common_set_plot_train)
+    # b = t(sapply(common_set[common_set$training, !numeric_cols], modus, simplify = TRUE))
+    # 
+    # common_set_plot_train = data.frame(a, b)
     
-    common_set_plot_train = data.frame(a, b)
     common_set_plot_train$epsilon = NULL #discard original epsilon column
     common_set_plot_train = cbind(common_set_plot_train, epsilon=eps_range)
     
@@ -78,8 +102,15 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
     if (all(common_set$training))
       common_set_plot_test=common_set_plot_train[1,][-1,] else #empty dataframe
     {    
-      common_set_plot_test = sapply(common_set[!common_set$training, numeric_cols], median, na.rm=TRUE)
-      common_set_plot_test = data.frame(t(common_set_plot_test), t(sapply(common_set[!common_set$training, !numeric_cols, drop=FALSE], modus)))
+      #clumsy, but "apply()" doesn't preserve column type
+      common_set_plot_test = common_set[1,]
+      for (cc in names(common_set))
+        common_set_plot_test[1,cc] = median_modus(common_set[common_set$training, cc])
+      
+      #common_set_plot_test = sapply(common_set[!common_set$training, numeric_cols], median, na.rm=TRUE)
+      #common_set_plot_test = data.frame(t(common_set_plot_test), t(sapply(common_set[!common_set$training, !numeric_cols, drop=FALSE], modus)))
+      #common_set_plot_test = sapply(common_set[!common_set$training, ], median_modus)
+
       common_set_plot_test$epsilon = NULL
       common_set_plot_test = cbind(common_set_plot_test, epsilon=eps_range)
     }
@@ -394,7 +425,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
       lower = c(a_coh=0.01, a_ncoh=0.01, b_coh=0.01, b_ncoh=0.01)
       upper = c(a_coh=100, a_ncoh=100, b_coh=100, b_ncoh=100)
       
-      #adjsut formula, in case only one class (cohesive/non-cohesive) is present
+      #adjust formula, in case only one class (cohesive/non-cohesive) is present
       if (sum(common_set$cohesive==1) == 0)   #no cohesive
       {
         #remove cohesive terms 
