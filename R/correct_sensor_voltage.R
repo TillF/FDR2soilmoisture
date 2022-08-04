@@ -35,21 +35,77 @@ correct_sensor_voltage = function(V, serial_no=NULL, probe_id=NULL, ring_no=1, c
     unique_settings[ss, "type"] = tt$type
   
     #check consistency between maximum recorded voltages and calibration voltage for water
-    Vmax_measured = quantile(V[cur_rows], probs = 0.99, na.rm=TRUE) #get maximum voltage measured, discarding outliers
-    Vmin_measured = quantile(V[cur_rows], probs = 0.01, na.rm=TRUE) #get minimum voltage measured, discarding outliers
+    V_range_measured = quantile(V[cur_rows], probs = c(0.01, 0.99), na.rm=TRUE) #get range of voltage measured, discarding outliers
+    Vmax_measured = V_range_measured[1] #get maximum voltage measured, discarding outliers
+    Vmin_measured = V_range_measured[2] #get minimum voltage measured, discarding outliers
     
-    if (adjust_range) #update calibration values with measurements
-    {  
-      if (Vmax_measured > unique_settings[ss, "V_h2o_meas"])
-      {
-        warning(paste0("Max V in time series (", Vmax_measured, " V) larger than reference V for water (", unique_settings[ss, "V_h2o_meas"]," V). Consider updating calibration data for ",
-                       ifelse(is.null(unique_settings$probe_id), paste0("ser_no '",unique_settings$serial_no[ss]), paste0("probe-id '", unique_settings$probe_id[ss])),"', ring '", unique_settings$ring_no[ss], "'. Using new max."))
-        unique_settings[ss, "V_h2o_meas"] = Vmax_measured
-      }
-    } else #discard measurements outside calibration range
+    #prepare warning message
+    probe_id_str = paste0(ifelse(is.null(unique_settings$probe_id), paste0("ser_no '",unique_settings$serial_no[ss]), paste0("probe-id '", unique_settings$probe_id[ss])),"', ring '", unique_settings$ring_no[ss])
+
+    sign = ifelse(unique_settings[ss, "type"] == "SMT100", -1, 1) #for SMT100, "voltage" (actually "counts") are negatively correalted to epsilon
+
+    if (sign == 1) #for PR2 and ThetaProbe: raw value (voltages) increases with permittivity
     {
-       V[(V > unique_settings[ss, "V_h2o_meas"]) | (V < unique_settings[ss, "V_air_meas"]) ] = NA
-    }  
+      beyond_air   = Vmin_measured < unique_settings[ss, "V_air_meas"]
+      beyond_water = Vmax_measured > unique_settings[ss, "V_h2o_meas"]
+      
+      if (beyond_air)
+      {  
+        warn_str = paste0("Min V in time series (", Vmin_measured, " V) smaller than reference V for air (", unique_settings[ss, "V_air_meas"]," V). Consider updating calibration data for ",
+                          probe_id_str, "'.")
+        if (adjust_range)
+        {  
+          unique_settings[ss, "V_air_meas"] = Vmin_measured #update calibration values with measurements
+          warn_str = paste0("Using this new min.")
+        }
+        warning(warn_str)
+      }
+      if (beyond_water)
+      {  
+        warn_str = paste0("Max V in time series (", Vmax_measured, " V) larger than reference V for water (", unique_settings[ss, "V_h2o_meas"]," V). Consider updating calibration data for ",
+                          probe_id_str, "'.")
+        if (adjust_range)
+        {  
+          unique_settings[ss, "V_h2o_meas"] = Vmax_measured #update calibration values with measurements
+          warn_str = paste0("Using this new max.")
+        }
+        warning(warn_str)
+      }  
+    } else
+     #(sign ==--1: for SMT100: raw value (counts) decrease with permittivity
+    {
+      beyond_air   = Vmax_measured >  unique_settings[ss, "V_air_meas"]
+      beyond_water = Vmin_measured <  unique_settings[ss, "V_h2o_meas"]
+      
+      if (beyond_air)
+      {  
+        warn_str = paste0("Max V in time series (", Vmax_measured, " V) larger than reference V for air (", unique_settings[ss, "V_air_meas"]," V). Consider updating calibration data for ",
+                          probe_id_str, "'.")
+        if (adjust_range)
+        {  
+          unique_settings[ss, "V_air_meas"] = Vmax_measured #update calibration values with measurements
+          warn_str = paste0("Using this new max.")
+        }
+        warning(warn_str)
+      }
+      if (beyond_water)
+      {  
+        warn_str = paste0("Min V in time series (", Vmin_measured, " V) smaller than reference V for water (", unique_settings[ss, "V_h2o_meas"]," V). Consider updating calibration data for ",
+                          probe_id_str, "'.")
+        if (adjust_range)
+        {  
+          unique_settings[ss, "V_h2o_meas"] = Vmin_measured #update calibration values with measurements
+          warn_str = paste0("Using this new min.")
+        }
+        warning(warn_str)
+      }  
+    } 
+      
+    #discard measurements outside calibration range
+    if (!adjust_range)
+        V[(V < min(unique_settings[ss, c("V_air_meas", "V_h2o_meas")])) |
+          (V > max(unique_settings[ss, c("V_air_meas", "V_h2o_meas")])) ] = NA
+
     V_corrected[cur_rows] = V_corr(V = V[cur_rows], V_air_meas = unique_settings[ss, "V_air_meas"], V_h2o_meas = unique_settings[ss, "V_h2o_meas"], type=unique_settings[ss, "type"])
     
   }

@@ -31,7 +31,8 @@ correct_sensor_voltage(V, serial_no=NULL, probe_id=NULL, ring_no=1, calib_data)
 }
 
   \item{adjust_range=TRUE}{
-  When this option is enabled, the 99-percentile of voltages supplied in \code{V} that is above the the calibration voltages \code{voltage_water_mV}, \code{voltage_water_mV} is enlarged accordingly, i.e. assuming there is a higher maximum value to be used. If disabled, voltages outside the interval are converted to NA.
+  When this option is enabled, the 99-percentile of voltages supplied in \code{V} that is above the the calibration voltages \code{voltage_water_mV}, \code{voltage_water_mV} is enlarged accordingly, i.e. assuming that this is a higher maximum value thyat should rather be used. Analoguous to values below \code{voltage_air_mV}.
+  If disabled, voltages outside the interval are converted to NA.
 }
 }
 \details{
