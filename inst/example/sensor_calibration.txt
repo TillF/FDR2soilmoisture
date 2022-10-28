@@ -234,5 +234,16 @@ mq_3_3	1	44	1102	Budach	Theta Probe	333-077	15.06.2020
 mq_3_4	1	43	1105	Budach	Theta Probe	333-083	16.06.2020
 mq_3_1	1	38	1113	Budach	Theta Probe	333-076	17.06.2020
 mq_3_2	1	8	1089	Budach	Theta Probe	56-037	18.06.2020
-999	1	0	1081	Döpper	Theta Probe	003-256	27.08.2020
+999	1	0	1081	D÷pper	Theta Probe	003-256	27.08.2020
 999	1	-1	959	Bauer S.	Theta Probe	321/086	19.11.2021
+999	1	10000	900000	Ba Bernhardt	SMT	SMT1	05.05.2022
+999	1	0	1109	Dimitrova	Theta Probe	321/043	28.10.2022
+999	1	14	1096	Dimitrova	Theta Probe	323/004	29.10.2022
+999	1	9	1111	Dimitrova	Theta Probe	323/013	30.10.2022
+999	1	2	1114	Dimitrova	Theta Probe	114/095	31.10.2022
+999	1	4	1090	Dimitrova	Theta Probe	323/005	01.11.2022
+999	1	2	1098	Dimitrova	Theta Probe	327/084	02.11.2022
+999	1	-1	1110	Dimitrova	Theta Probe	321/044	03.11.2022
+999	1	-3	1060	Dimitrova	Theta Probe	327/085	04.11.2022
+999	1	-2	1109	Dimitrova	Theta Probe	321/026	05.11.2022
+999	1	15	1107	Dimitrova	Theta Probe	323/008	06.11.2022
