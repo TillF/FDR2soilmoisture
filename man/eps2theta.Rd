@@ -49,10 +49,9 @@ The following columns in the data frame \code{epsdata} are supported and may be 
 \item{cohesive} { is the soil cohesive? [0/1]}
 }
    
-\code{theta2eps} is the inverse of \code{eps2theta}. However, currently only implemented for \code{equation="deltaT_minorg"}.
+\code{theta2eps} is the inverse of \code{eps2theta}. However, currently only implemented for \code{equation=c("deltaT_minorg", "SchaapEtal1997", "ToppEtal1980"} by piecewise linear interpolation.
    
 The respective equations used are:
-
 
 Delta-T Devices Ltd, 1998:
 \deqn{\theta =  \frac{\sqrt{\epsilon}-\a_0}{\a_1}

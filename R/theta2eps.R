@@ -3,11 +3,11 @@
 theta2eps = function(thetadata, equation)
 {
   required_fields = list(
-    deltaT_minorg = c("theta", "soil") #,
+    deltaT_minorg = c("theta", "soil"), #,
     # FerschEtal2017 = c("theta", "n"),
-    # ToppEtal1980 = c("theta"),
+     ToppEtal1980 = c("theta"),
     # RothEtal1992 = c("theta", "soil"),
-    # SchaapEtal1997 = c("theta"),
+     SchaapEtal1997 = c("theta")
     # MalickiEtal1996 = c("theta", "BD"),
     # Jacobsen_Schjonning1993= c("theta", "BD", "clay_perc", "om_perc"),    
     # DrnevichEtal2005= c("theta", "BD", "cohesive"),
@@ -49,7 +49,21 @@ theta2eps = function(thetadata, equation)
     eps[!min_ix] = (thetadata$theta[!min_ix] * a1 + a0)^2  #ThetaProbe manual, eq. 6
     
   }
-
+  
+  
+  if (equation %in% c("SchaapEtal1997", "ToppEtal1980")) #invertible conversions
+  {
+    epsilon = seq(from=0.9, to=81, by=0.1)
+    theta = eps2theta(data.frame(epsilon), equation)
+    inverse_fun = approxfun(y=epsilon, x=theta)  
+    eps = inverse_fun(thetadata$theta)
+  }
+  
+  #epsilon = seq(from=2, to=79, by=0.1)
+  #theta = eps2theta(data.frame(epsilon=epsilon), equation="ToppEtal1980")
+  #eps2=theta2eps(thetadata=data.frame(theta=theta),equation="ToppEtal1980")
+  #plot(epsilon, eps2)
+  
   #   #Kargas & Kerkides 2008seem to give a similar eq.
   # 
   # if (equation=="FerschEtal2017")
