@@ -30,7 +30,12 @@ correct_sensor_voltage = function(V, serial_no=NULL, probe_id=NULL, ring_no=1, c
     names(args)[1] = id_argument
     tt = do.call(get_reference_voltage, args = args) #get the reference voltage
     cur_rows = get(id_argument) == unique_settings[ss, id_argument] & ring_no == unique_settings$ring_no[ss] 
-    
+    if (all(is.na(V[cur_rows]))) #only NA-values, nothing to do here
+    {
+        V_corrected[cur_rows] = NA
+        next
+    }    
+
     unique_settings[ss, c("V_air_meas", "V_h2o_meas")] = c(tt$V_air_meas, tt$V_h2o_meas)
     unique_settings[ss, "type"] = tt$type
   
