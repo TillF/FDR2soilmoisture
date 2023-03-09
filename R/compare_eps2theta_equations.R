@@ -718,8 +718,10 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
     
  # compare R2-values in single scatterplot ####
     windows()
-    xcoords = pmax(-0.1, r2_train_ex)
-    ycoords = pmax(-0.1, r2_test)
+    llimit = min(0, quantile(r2_train_ex, probs=0.1, na.rm=TRUE))
+    xcoords = pmax(llimit, r2_train_ex)
+    llimit = min(0, quantile(r2_test, probs=0.1, na.rm=TRUE))
+    ycoords = pmax(llimit, r2_test)
     xlab = ifelse(all(common_set$excluded==FALSE), "R2_training", "R2 training!ex")
     plot(xcoords, ycoords, xlab=xlab, ylab="R2 test")
     text(xcoords, ycoords, sub(names(r2_train_ex), pattern="theta_", repl=""), cex=0.7, adj = c(0.5,0))
