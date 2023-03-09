@@ -14,11 +14,11 @@ get_reference_voltage = function(serial_no=NULL, probe_id=NULL, ring_no=1, calib
     
     
     if (length(cur_row)== 0) #no entry found?
-        stop(paste0("Probe with ", arg, " ", get(arg), " and ring-no ", ring_no, " not found in calibration data. Please add a dummy record with sensor type and NAs.")) 
+        stop(paste0("Probe with ", arg, "='", get(arg), "' and ring-no='", ring_no, "' not found in calibration data. Please add a dummy record with sensor type and NAs, if you want to use  medians of same type and ring number.")) 
       
     if (length(cur_row)> 1) 
     {  
-      warning(paste0("Multiple probes with ", arg, " ", get(arg), " and ring-no ", ring_no, " found in calibration data (lines ", paste(cur_row, collapse=", "), "), using last entry."))
+      warning(paste0("Multiple records with ", arg, "='", get(arg), "' and ring-no='", ring_no, "' found in calibration data (lines ", paste(cur_row, collapse=", "), "), using last record."))
       cur_row = max(cur_row)
     }  
     
@@ -26,25 +26,48 @@ get_reference_voltage = function(serial_no=NULL, probe_id=NULL, ring_no=1, calib
     V_h2o_meas = calib_data$voltage_water_mV[cur_row] / 1000
     type = calib_data$type[cur_row]
     
+    use_medians=FALSE
     if (is.na(V_air_meas + V_h2o_meas))
       if (warnOnly)
-        warning(paste0("NA-coefficients for ", arg, " '", get(arg), "' and ring-no '", ring_no, "'. Using medians of same type and ring.")) else
-        stop(paste0("NA-coefficients for ", arg, " '", get(arg), "' and ring-no '", ring_no, "'. Use 'warnOnly=TRUE' to get medians of same type and ring.")) 
+      {  
+        use_medians=TRUE 
+        fill_V_h20="found"
+        fill_V_air="found"
+      }  
+      else
+        stop(paste0("NA-coefficients for ", arg, "='", get(arg), "' and ring-no='", ring_no, "'. Use 'warnOnly=TRUE' to use medians instead.")) 
             
     
-    #if coefficients are missing for SOME rings, use the median of all rings of this probe
+    #if coefficients are missing for SOME rings, use the median of all rings of *this* probe
     cur_row = calib_data[, arg] == get(arg)
     if (is.na(V_air_meas))
+    {  
       V_air_meas = median(calib_data$voltage_air_mV  [cur_row], na.rm=TRUE) / 1000
+      fill_V_air = "median(this probe)"
+    }  
     if (is.na(V_h2o_meas))
+    {  
       V_h2o_meas = median(calib_data$voltage_water_mV[cur_row], na.rm=TRUE) / 1000
+      fill_V_h20 = "median(this probe, all rings)"
+    }  
     
     #if coefficients are missing for ALL rings, use the median of all probes of this type
     cur_row = calib_data$ring_no == ring_no & calib_data$type == type
     if (is.na(V_air_meas))
+    {
       V_air_meas = median(calib_data$voltage_air_mV  [cur_row], na.rm=TRUE) / 1000
+      fill_V_air = paste0("median(type='", type,"', ring_no='", ring_no)
+    }
     if (is.na(V_h2o_meas))
+    {
       V_h2o_meas = median(calib_data$voltage_water_mV[cur_row], na.rm=TRUE) / 1000
+      fill_V_h20 = paste0("median(type='", type,"', ring_no='", ring_no)
+    }
+    if (use_medians)
+      warning(paste0("Found NA-coefficient(s) for ", arg, "='", get(arg), "' and ring-no='", ring_no, 
+      "'.\nV_air_", fill_V_air, ")=", V_air_meas, 
+        "\nV_h2o_", fill_V_h20, ")=", V_h2o_meas))
+    
     
     return(list(V_air_meas=V_air_meas, V_h2o_meas=V_h2o_meas, type=type))
 }

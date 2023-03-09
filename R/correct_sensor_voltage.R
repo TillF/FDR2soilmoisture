@@ -40,7 +40,7 @@ correct_sensor_voltage = function(V, serial_no=NULL, probe_id=NULL, ring_no=1, c
     unique_settings[ss, "type"] = tt$type
   
     #check consistency between maximum recorded voltages and calibration voltage for water
-    V_range_measured = quantile(V[cur_rows], probs = c(0.01, 0.99), na.rm=TRUE) #get range of voltage measured, discarding outliers
+    V_range_measured = quantile(V[cur_rows], probs = c(0.01, 0.999), na.rm=TRUE) #get range of voltage measured, discarding outliers
     Vmax_measured = V_range_measured[1] #get maximum voltage measured, discarding outliers
     Vmin_measured = V_range_measured[2] #get minimum voltage measured, discarding outliers
     
