@@ -55,7 +55,7 @@ With \code{warnOnly=TRUE} if coefficients are missing for SOME rings, the median
 uncalibrated devices by supplying placeholders for \code{serial_num}, which refernece to a dummy records with all coefficients being NA. 
 
 }
-}
+
 
 \value{
  Corrected voltage value [V]
