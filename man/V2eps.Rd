@@ -21,18 +21,22 @@ eps2V(eps, type)
 permittivity epsilon [-].
 }
   \item{type}{
-Type of sensor. Must be "Theta Probe", "Theta Probe polynomial" OR "PR2".
+Type of sensor. Must be "Theta Probe", "Theta Probe polynomial" OR "PR2". See details for explaination.
 }
 }
 \details{
-Applies the manufacturer's conversion functions or its inverse. V: voltage in [V] 
+Applies the manufacturer's conversion functions or its inverse. \code{V}: voltage in [V]; \code{eps}: epsilon [-]
 
+Values for \code{type}:
+
+"PR2":
 PR2 default equation according to manual (PR2_user_manual_version_5.0.pdf, eq. 2), (PR2_SDI-12-_User_Manual_version_4_1.pdf, eq. 2):
 \deqn{\sqrt{\epsilon} = 1.125 - 5.53*\V + 67.17*\V^2 - 234.42*\V^3 + 413.56*\V^4 - 356.68*\V^5 + 121.53*\V^6
 }{%
 \sqrt\epsilon = 1.125 - 5.53*V + 67.17*V^2 - 234.42*V^3 + 413.56*V^4 - 356.68*V^5 + 121.53*V^6
 }
-    
+
+"Theta Probe polynomial":    
 Theta Probe polynomial* (ThetaProbe user manual, eq. 3. ):
 \deqn{\epsilon = 1.07 + 6.4*\V-6.4*\V^2+4.7*\V^3 
 }{%
@@ -40,9 +44,8 @@ Theta Probe polynomial* (ThetaProbe user manual, eq. 3. ):
 }
 Don't use for U > 1 V or theta > 0.5, see below!
 
-Theta Probe (ThetaProbe user manual, linearisation table p. 14):
-derived from data table, see details below
-
+"Theta Probe":
+interpolated lookup data table from ThetaProbe user manual table p. 14), see details below
 
 }
 \value{
