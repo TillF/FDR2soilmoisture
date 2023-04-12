@@ -59,9 +59,9 @@ correct_sensor_voltage = function(V, serial_no=NULL, probe_id=NULL, ring_no=1, c
         warn_str = paste0("Min V in time series (", Vmin_measured, " V) smaller than reference V for air (", unique_settings[ss, "V_air_meas"]," V). Consider updating calibration data for ",
                           probe_id_str, "'.")
         if (adjust_range)
-        {  
+        { 
+          warn_str = paste0("Min V in time series (", Vmin_measured, " V) smaller than reference V for air (", unique_settings[ss, "V_air_meas"]," V). New min is used instead.")
           unique_settings[ss, "V_air_meas"] = Vmin_measured #update calibration values with measurements
-          warn_str = paste0("Using this new min.")
         }
         warning(warn_str)
       }
@@ -71,8 +71,8 @@ correct_sensor_voltage = function(V, serial_no=NULL, probe_id=NULL, ring_no=1, c
                           probe_id_str, "'.")
         if (adjust_range)
         {  
+          warn_str = paste0("Max V in time series (", Vmax_measured, " V) larger than reference V for water (", unique_settings[ss, "V_h2o_meas"]," V). New max is used instead.")
           unique_settings[ss, "V_h2o_meas"] = Vmax_measured #update calibration values with measurements
-          warn_str = paste0("Using this new max.")
         }
         warning(warn_str)
       }  
@@ -88,8 +88,8 @@ correct_sensor_voltage = function(V, serial_no=NULL, probe_id=NULL, ring_no=1, c
                           probe_id_str, "'.")
         if (adjust_range)
         {  
+          warn_str = paste0("Max V in time series (", Vmax_measured, " V) larger than reference V for air (", unique_settings[ss, "V_air_meas"]," V). New max is used instead.")
           unique_settings[ss, "V_air_meas"] = Vmax_measured #update calibration values with measurements
-          warn_str = paste0("Using this new max.")
         }
         warning(warn_str)
       }
@@ -99,8 +99,8 @@ correct_sensor_voltage = function(V, serial_no=NULL, probe_id=NULL, ring_no=1, c
                           probe_id_str, "'.")
         if (adjust_range)
         {  
+          warn_str = paste0("Min V in time series (", Vmin_measured, " V) smaller than reference V for water (", unique_settings[ss, "V_h2o_meas"]," V). New min is used instead.")
           unique_settings[ss, "V_h2o_meas"] = Vmin_measured #update calibration values with measurements
-          warn_str = paste0("Using this new min.")
         }
         warning(warn_str)
       }  
