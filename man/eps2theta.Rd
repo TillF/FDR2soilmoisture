@@ -22,17 +22,17 @@ dataframe holding at least a column \code{theta} (volumetric water content, [-])
 }
   \item{equation}{
 Equation to be used. Must be one of 
-"deltaT_minorg", 
-"DrnevichEtal2005",
-"FerschEtal2017", 
-"Jacobsen_Schjonning1993",
-"JuEtal2010",
-"MalickiEtal1996",
-"RothEtal1992",
-"SchaapEtal1997",
-"SinghEtal2017",
-"ToppEtal1980", 
-"ZhaoEtal2016".
+\code{"deltaT_minorg"}, 
+\code{"DrnevichEtal2005"},
+\code{"FerschEtal2017"}, 
+\code{"Jacobsen_Schjonning1993"},
+\code{"JuEtal2010"},
+\code{"MalickiEtal1996"},
+\code{"RothEtal1992"},
+\code{"SchaapEtal1997"},
+\code{"SinghEtal2017"},
+\code{"ToppEtal1980"}, 
+\code{"ZhaoEtal2016"}.
 
 }
 }
@@ -40,104 +40,107 @@ Equation to be used. Must be one of
 Applies various equations, most of which are listed in Mohamed & Paleologos, 2018.
 The following columns in the data frame \code{epsdata} are supported and may be required, depending on the choice of the equation:
 \itemize{
-\item{epsilon} { Electric permittivity. [-]} 
-\item{soil} { Soil type indicator. \code{"mineral", "organic"}} 
-\item{n} { Soil porosity. [-]}
-\item{BD} { dry bulk density. [g/cm³]}
-\item{clay_perc} { Percent clay. [\%]}
-\item{om_perc} { Percent organic matter. [\%]}
-\item{cohesive} { is the soil cohesive? [0/1]}
+\item{\var{epsilon}:} { Electric permittivity. [-]} 
+\item{\var{soil}:} { Soil type indicator. \code{"mineral", "organic"}} 
+\item{\var{n}:} { Soil porosity. [-]}
+\item{\var{BD}:} { dry bulk density. [g/cm³]}
+\item{\var{clay_perc}:} { Percent clay. [\%]}
+\item{\var{om_perc}:} { Percent organic matter. [\%]}
+\item{\var{cohesive}:} { is the soil cohesive? [0/1]}
 }
    
 \code{theta2eps} is the inverse of \code{eps2theta}. However, currently only implemented for \code{equation=c("deltaT_minorg", "SchaapEtal1997", "ToppEtal1980"} by piecewise linear interpolation.
-   
+  
+\subsection{Equations}{   
 The respective equations used are:
 
-Delta-T Devices Ltd, 1998:
-\deqn{\theta =  \frac{\sqrt{\epsilon}-\a_0}{\a_1}
-}{%
-\theta =  (\sqrt(\epsilon)-a_0)/a_1.
-} with a_0=1.6 and a_1=8.4 for mineral soils, a_0=1.3 and a_1=7.7 for organic soils, 
+\itemize{
 
-    theta = (sqrt(epsdata$epsilon) - a * epsdata$BD) / b
-
-Drnevich et al., 2005:
-\deqn{\theta =  \frac{\sqrt{\epsilon}-\frac{\a}{\BD}}{\b}
-}{%
-\theta = (\sqrt(\epsilon) - a * BD) / b
-} with a=0.95 and b=8.8 for cohesive soils, a=1 and b=8.5 for non-cohesive soils, 
-
-Fersch et al. 2017:
-\deqn{\theta =  \frac{(\sqrt(\epsilon) - (1 - n* \sqrt(3.29)) - n * 1)}{
-      (\sqrt(80) - \sqrt(1))}
-}{%
-\theta = (\sqrt(\epsilon) - (1 - n* \sqrt(3.29)) - n * 1) /
-      (\sqrt(80) - \sqrt(1))
-}, 
-
-Jacobsen & Schjonning, 1993:
-\deqn{\theta =  -3.41*1e-2 +3.45*1e-2*\epsilon-11.4*1e-4*\epsilon^2 + 17.1*1e-6*\epsilon^3- 3.7*1e-2*\BD + 7.36*1e-4*\clay_perc + 47.7*1e-4 * \om_perc
-}{%
-\theta = -3.41*1e-2 +3.45*1e-2*\epsilon-11.4*1e-4*\epsilon^2 + 17.1*1e-6*\epsilon^3-
-      3.7*1e-2*BD + 7.36*1e-4*clay_perc + 47.7*1e-4 * om_perc
-}, 
-
-Ju et al., 2010:
-\deqn{\theta =  0.1228*\sqrt{\epsilon} - 0.1322*BD -0.0152
-}{%
-\theta = 0.1228*\sqrt(\epsilon) - 0.1322*BD -0.0152
-}, 
-
-
-Malicki et al., 1996:
-\deqn{\theta =  \frac{\sqrt{\epsilon}-0.819-0.168\BD-0.159\BD^2}{7.17+1.18\BD}
-}{%
-\theta =  (\sqrt(\epsilon)-0.819-0.168 BD-0.159 BD^2)/(7.17+1.18 BD)
-},
-
-Roth et al., 1992:
-\deqn{\theta =  (\a_1 + \a_2*{\epsilon} +\a_3 *{\epsilon}^2 + \a_4*{\epsilon}^3)
-}{%
-\theta =  (a_1 + a_2*\epsilon +a_3 *\epsilon^2 + a_4*\epsilon^3)
-},
-
- with a_1 = -0.0728, a_2 = 0.0448, a_3 = -0.00195, a_4= 0.0000361 for mineral soils, a_1 =  0.0233, a_2 = 0.0285, a_3 = -0.000431, a_4 = 0.00000304 for organic soils, 
-
-Schaap et al. 1997 (eq. 2b in Vaz et al. 2013):
-\deqn{\theta =  (0.133*\sqrt{\epsilon} -0.146)^0.885
-}{%
-\theta = (0.133*\sqrt(\epsilon) -0.146)^0.885
-},  
+  \item \code{"deltaT_minorg"} (Delta-T Devices Ltd, 1998):
+  \deqn{\theta =  \frac{\sqrt{\epsilon}-a_0}{a_1}}{%
+  \theta =  (\sqrt(\epsilon)-a_0)/a_1.
+  } with \eqn{a_0=1.6} and \eqn{a_1=8.4} for mineral soils, \eqn{a_0=1.3} and \eqn{a_1=7.7} for organic soils 
   
-Singh et al. 2019 (version for CS655):
-\deqn{\theta =  \theta = a*\sqrt{\epsilon} + b
-}{%
-\theta = a*\sqrt(\epsilon) + b
+  
+  \item \code{"DrnevichEtal2005"} (Drnevich et al., 2005):
+  \deqn{\theta =  \frac{\sqrt{\epsilon}-\frac{a}{BD}}{b}
+  }{%
+  \theta = (\sqrt(\epsilon) - a * BD) / b
+  } with \eqn{a=0.95} and \eqn{b=8.8} for cohesive soils, \eqn{a=1} and \eqn{b=8.5} for non-cohesive soils, 
+  
+  
+  \item \code{"FerschEtal2017"} (Fersch et al. 2017):
+  \deqn{\theta =  \frac{(\sqrt(\epsilon) - (1 - n* \sqrt(3.29)) - n * 1)}{
+        (\sqrt(80) - \sqrt(1))}
+  }{%
+  \theta = (\sqrt(\epsilon) - (1 - n* \sqrt(3.29)) - n * 1) /
+        (\sqrt(80) - \sqrt(1))
+  } 
+  
+  \item \code{"Jacobsen_Schjonning1993"} (Jacobsen & Schjonning, 1993):
+  \deqn{\theta =  -3.41*1e-2 +3.45*1e-2*\epsilon-11.4*1e-4*\epsilon^2 + 17.1*1e-6*\epsilon^3- 3.7*1e-2*BD + 7.36*1e-4*clay\_perc + 47.7*1e-4 * om\_perc
+  }{%
+  \theta = -3.41*1e-2 +3.45*1e-2*\epsilon-11.4*1e-4*\epsilon^2 + 17.1*1e-6*\epsilon^3-
+        3.7*1e-2*BD + 7.36*1e-4*clay_perc + 47.7*1e-4 * om_perc
+  } 
+  
+  \item \code{"JuEtal2010"} (Ju et al., 2010):
+  \deqn{\theta =  0.1228*\sqrt{\epsilon} - 0.1322*BD -0.0152
+  }{%
+  \theta = 0.1228*\sqrt(\epsilon) - 0.1322*BD -0.0152
+  } 
+  
+  
+  \item \code{"MalickiEtal1996"} (Malicki et al., 1996):
+  \deqn{\theta =  \frac{\sqrt{\epsilon}-0.819-0.168*BD-0.159*BD^2}{7.17+1.18*BD}
+  }{%
+  \theta =  (\sqrt(\epsilon)-0.819-0.168 BD-0.159 BD^2)/(7.17+1.18 BD)
+  }
+  
+  \item \code{"RothEtal1992"} (Roth et al., 1992):
+  \deqn{\theta =  (a_1 + a_2*{\epsilon} +a_3 *{\epsilon}^2 + a_4*{\epsilon}^3)
+  }{%
+  \theta =  (a_1 + a_2*\epsilon +a_3 *\epsilon^2 + a_4*\epsilon^3)
+  }
+   with \eqn{a_1 = -0.0728, a_2 = 0.0448, a_3 = -0.00195, a_4= 0.0000361} for mineral soils and \eqn{a_1 =  0.0233, a_2 = 0.0285, a_3 = -0.000431, a_4 = 0.00000304} for organic soils 
+  
+  \item \code{"SchaapEtal1997"} (Schaap et al. 1997 [eq. 2b in Vaz et al. 2013]):
+  \deqn{\theta =  (0.133*\sqrt{\epsilon} -0.146)^0.885
+  }{%
+  \theta = (0.133*\sqrt(\epsilon) -0.146)^0.885
+  }  
+    
+  \item \code{"SinghEtal2017"} (Singh et al. 2019 (version for CS655)):
+  \deqn{\theta =  \theta = a*\sqrt{\epsilon} + b
+  }{%
+  \theta = a*\sqrt(\epsilon) + b
+  }
+  with 
+  \deqn{a = a_1*clay\_perc^2 + a2*clay\_perc + a_3
+  }{%
+  	a = a1*clay_perc^2 + a_2*clay_perc + a_3
+  }
+  \deqn{b = b_1*clay\_perc^2 + b_2*clay\_perc + b_3
+  }{%
+  	b = b_1*clay_perc^2 + b_2*clay_perc + b3
+  }  
+   and the coefficients for CS655 (\eqn{a_1=-3.33e-5, a_2=1.14e-3, a_3=0.108, b_1=6.52e-5, b_2=-2.48e-3, b_3=-0.16})
+  	
+     
+  \item \code{"ToppEtal1980"} (Topp et al., 1980):
+  \deqn{\theta =  -0.053+ 2.93e-2*\epsilon -5.5e-4*\epsilon^2 + 4.3e-6*\epsilon^3
+  }{%
+  \theta = -0.053+ 2.93e-2*\epsilon -5.5e-4*\epsilon^2 + 4.3e-6*\epsilon^3
+  }
+  
+  \item \code{"ZhaoEtal2016"} (Zhao et al., 2016):
+  \deqn{\theta =  \frac{0.3039 * \BD - 2.1851 + \sqrt{\epsilon}}{(18.0283 * BD - 17.9531) + (-0.6806 * BD + 1.8351) * \sqrt{\epsilon}}
+  }{%
+  \theta = (0.3039 * BD - 2.1851 + \sqrt(\epsilon))/((18.0283 * BD - 17.9531) + (-0.6806 * BD + 1.8351) * \sqrt(\epsilon))
+  }
 }
-with 
-\deqn{a = a1*clay_perc^2 + a2*clay_perc + a3
-}{%
-	a = a1*clay_perc^2 + a2*clay_perc + a3
+
 }
-\deqn{b = b1*clay_perc^2 + b2*clay_perc + b3
-}{%
-	b = b1*clay_perc^2 + b2*clay_perc + b3
-}  
- and the coefficients for CS655 (a1=-3.33e-5, a2=1.14e-3, a3=0.108, b1=6.52e-5, b2=-2.48e-3, b3=-0.16),
-	
-   
-Topp et al., 1980:
-\deqn{\theta =  -0.053+ 2.93e-2*\epsilon -5.5e-4*\epsilon^2 + 4.3e-6*\epsilon^3
-}{%
-\theta = -0.053+ 2.93e-2*\epsilon -5.5e-4*\epsilon^2 + 4.3e-6*\epsilon^3
-},
-
-Zhao et al., 2016:
-\deqn{\theta =  \frac{0.3039 * \BD - 2.1851 + \sqrt{\epsilon}}{(18.0283 * \BD - 17.9531) + (-0.6806 * \BD + 1.8351) * \sqrt{\epsilon}}
-}{%
-\theta = (0.3039 * BD - 2.1851 + \sqrt(\epsilon))/((18.0283 * BD - 17.9531) + (-0.6806 * BD + 1.8351) * \sqrt(\epsilon))
-}.
-
 
 }
 \value{

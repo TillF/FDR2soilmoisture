@@ -21,7 +21,7 @@ eps2V(eps, type)
 permittivity epsilon [-].
 }
   \item{type}{
-Type of sensor. Must be "Theta Probe", "Theta Probe polynomial" OR "PR2". See details for explaination.
+Type of sensor. Must be \code{"Theta Probe"}, \code{"Theta Probe polynomial"} OR \code{"PR2"}. See details for explanation.
 }
 }
 \details{
@@ -29,39 +29,50 @@ Applies the manufacturer's conversion functions or its inverse. \code{V}: voltag
 
 Values for \code{type}:
 
-"PR2":
-PR2 default equation according to manual (PR2_user_manual_version_5.0.pdf, eq. 2), (PR2_SDI-12-_User_Manual_version_4_1.pdf, eq. 2):
-\deqn{\sqrt{\epsilon} = 1.125 - 5.53*\V + 67.17*\V^2 - 234.42*\V^3 + 413.56*\V^4 - 356.68*\V^5 + 121.53*\V^6
-}{%
-\sqrt\epsilon = 1.125 - 5.53*V + 67.17*V^2 - 234.42*V^3 + 413.56*V^4 - 356.68*V^5 + 121.53*V^6
+\itemize{
+
+  \item{\code{"PR2"}: PR2 default equation according to manual (PR2_user_manual_version_5.0.pdf, eq. 2), (PR2_SDI-12-_User_Manual_version_4_1.pdf, eq. 2):
+  \deqn{\sqrt{\epsilon} = 1.125 - 5.53*V + 67.17*V^2 - 234.42*V^3 + 413.56*V^4 - 356.68*V^5 + 121.53*V^6
+  }{%
+  \sqrt\epsilon = 1.125 - 5.53*V + 67.17*V^2 - 234.42*V^3 + 413.56*V^4 - 356.68*V^5 + 121.53*V^6
+  }
+  }
+  
+  \item{\code{"Theta Probe polynomial":}    
+  Theta Probe polynomial* (ThetaProbe user manual, eq. 3. ):
+  \deqn{\epsilon = 1.07 + 6.4*V-6.4*V^2+4.7*V^3 
+  }{%
+  \epsilon = 1.07 + 6.4*V-6.4*V^2+4.7*V^3 
+  }
+  Don't use for voltage > 1 V or theta > 0.5, see below!
+  }
+  
+  \item{
+  \code{"Theta Probe":}
+  interpolated lookup data table from ThetaProbe user manual table (p. 14), see details below
+  }
 }
 
-"Theta Probe polynomial":    
-Theta Probe polynomial* (ThetaProbe user manual, eq. 3. ):
-\deqn{\epsilon = 1.07 + 6.4*\V-6.4*\V^2+4.7*\V^3 
-}{%
-\epsilon = 1.07 + 6.4*V-6.4*V^2+4.7*V^3 
 }
-Don't use for U > 1 V or theta > 0.5, see below!
 
-"Theta Probe":
-interpolated lookup data table from ThetaProbe user manual table p. 14), see details below
-
-}
 \value{
 Permittivity value (epsilon) [-] or sensor voltage [V].
 }
 \section{Warning}{
-"Theta Probe polynomial":
+\itemize{
+*\code{"Theta Probe polynomial"} from ThetaProbe user manual:
 
-*ThetaProbe user manual, p. 10 states:
-"In the range 0 to 1 Volt (corresponding to a soil moisture range 0 to ~ 0.55 by volume),
-this relationship can be fitted very precisely by a 3rd order polynomial"
+\item{p. 10 states: \dQuote{In the range 0 to 1 Volt (corresponding to a soil moisture range 0 to ~ 0.55 by volume),
+this relationship can be fitted very precisely by a 3rd order polynomial}}
 
-p. 11 states:
-"For very high moisture contents (θ > 0.5 m3.m-3), the polynomial equation should be used. This is usually only necessary for organic soils."
-This is obviously wrong (see 'example 1', below): The polynom obviously differs considerably from the points in the linearization table, especially for U > 1 V or theta > 0.5, so only the statement on page 10 seems correct. For U > 1 V, use "Theta Probe" (i.e. based on the table) rather than "Theta Probe polynomial".
+\item{p. 11 states: \dQuote{For very high moisture contents (θ > 0.5 m3.m-3), the polynomial equation should be used. This is usually only necessary for organic soils.}}
+
 }
+\bold{The statement on p. 11 is  obviously wrong} (see 'example 1', below): The polynom obviously differs considerably from the points in the linearization table, especially for voltage > 1 V or theta > 0.5, so only the statement on page 10 seems correct.
+
+\bold{ -> For U > 1 V, use "Theta Probe" (i.e. based on the table) rather than "Theta Probe polynomial".}
+}
+
 
 \references{
 Delta-T Devices Ltd, 1998. ThetaProbe SOIL MOISTURE SENSOR TYPE ML2 USER MANUAL (ML2-UM-1). Delta-T Devices Ltd, Cambridge, UK.

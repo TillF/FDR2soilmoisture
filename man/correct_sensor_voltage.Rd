@@ -32,7 +32,7 @@ correct_sensor_voltage(V, serial_no=NULL, probe_id=NULL, ring_no=1, calib_data)
 
   \item{adjust_range=TRUE}{
   When this option is enabled, the 99-percentile of voltages supplied in \code{V} that is above the the calibration voltages \code{voltage_water_mV}, \code{voltage_water_mV} is enlarged accordingly, i.e. assuming that this is a higher maximum value that should rather be used. Analoguously for values below \code{voltage_air_mV}.
-  If disabled, voltages outside the interval are converted to NA.
+  If disabled, voltages outside the in the \code{calib_data} given interval are converted to NA.
 }
 }
 \details{
@@ -40,14 +40,14 @@ In spite of the manufacturer's specifications, Theta Probe and PR2-instruments u
 
 \itemize{
 \code{calib_data}: Data frame with calibration data. The following columns must be present:
-\item{\code{probe_id}}{User-ID of probe corresponding to argument \item{probe_id}. Can be blank if \code{serial_no} is given.} 
-\item{\code{serial_no}}{Manufacturer serial number of probe corresponding to argument \item{serial_no}. Can be blank if \code{probe_id} is given.} 
-\item{\code{ring_no}}{Sensor/Ring number of probe for multi-sensor probes (e.g. 1-6 for PR2). Set to \item{1} for all single-sensor probes (e.g. for ThetaProbes).}
-\item{\code{voltage_air_mV}}{Sensor output when sensor is in the air [mV].} 
-\item{\code{voltage_water_mV}}{Sensor output when sensor is in the water [mV].} 
-\item{\code{remarks}}{(optional)} 
-\item{\code{type}}{must contain the substrings "Theta Probe" OR "PR2". Used for selecting the corresponding manufacturer's conversion functions.} 
-\item{\code{date}}{Date of calibration.} 
+\item{\code{probe_id}: User-ID of probe corresponding to argument \code{probe_id}. Can be blank if \code{serial_no} is given.} 
+\item{\code{serial_no}: Manufacturer serial number of probe corresponding to argument \code{serial_no}. Can be blank if \code{probe_id} is given.} 
+\item{\code{ring_no}: Sensor/Ring number of probe for multi-sensor probes (e.g. 1-6 for PR2). Set to \code{1} for all single-sensor probes (e.g. for ThetaProbes).}
+\item{\code{voltage_air_mV}: Sensor output when sensor is in the air [mV].} 
+\item{\code{voltage_water_mV}: Sensor output when sensor is in the water [mV].} 
+\item{\code{remarks}: (optional)} 
+\item{\code{type}: must contain the substrings "Theta Probe" OR "PR2". Used for selecting the corresponding manufacturer's conversion functions.} 
+\item{\code{date}: Date of calibration.} 
 }
 The directory \code{example} of the package holds an example text file.
 
