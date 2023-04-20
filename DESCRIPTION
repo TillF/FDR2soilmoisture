@@ -1,7 +1,7 @@
 Package: FDR2soilmoisture
 Type: Package
 Title: Processing data of FDR-measurements to obtain soil moisture
-Version: 0.164
+Version: 0.165
 Date: 2023-03-09
 Author: Till Francke
 Maintainer: Till Francke <francke@uni-potsdam.de>

@@ -1,16 +1,23 @@
 \name{correct_sensor_voltage}
 \alias{correct_sensor_voltage}
+\alias{correct_sensor_values}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-correct_sensor_voltage
+Correct sensor outputs (Voltage, Permittivity)
 }
 \description{
-Convert measured the sensor voltage output to "should-be" values stated by the manufacturer using user-supplied calibration values
+Convert measured the sensor output (voltage, permittivity) to "should-be" values stated by the manufacturer using user-supplied calibration values
 }
 \usage{
-correct_sensor_voltage(V, serial_no=NULL, probe_id=NULL, ring_no=1, calib_data)
+correct_sensor_voltage(V, serial_no=NULL, probe_id=NULL, ring_no=1, calib_data, warnOnly=FALSE, adjust_range=TRUE)
+
+correct_sensor_values(values, serial_no=NULL, probe_id=NULL,var_type=NULL, ring_no=1, calib_data, warnOnly=FALSE, adjust_range=TRUE)
+
 }
 \arguments{
+  \item{values}{
+  raw values from sensor to be corrected. Type of values must be specified in \code{var_type} - either Voltage [V], Permittivity [-] or Counts [-].
+  }
   \item{V}{
 	raw voltage from sensor [V] to be corrected
 }
@@ -20,6 +27,9 @@ correct_sensor_voltage(V, serial_no=NULL, probe_id=NULL, ring_no=1, calib_data)
   \item{probe_id}{
 	Serial number of probe. The number is serves for finding the respective records in \code{calib_data}. Either \code{serial_no} OR \code{probe_id} must be specified.
 }
+  \item{var_type}{
+  Type of meassured input variable from sensor. Must be one of \code{"Voltage","Permittivity","Counts"} and also be part of the used \code{calib_data}.
+  }
   \item{ring_no}{
 	Ring number (only relevant for PR2-probes, i.e. with multiple sensor rings). The number is serves for finding the respective records in \code{calib_data}. 
 }
@@ -38,6 +48,9 @@ correct_sensor_voltage(V, serial_no=NULL, probe_id=NULL, ring_no=1, calib_data)
 \details{
 In spite of the manufacturer's specifications, Theta Probe and PR2-instruments usually yield output voltage deviating from the specifications. This deviation seems especially pronounced for higher water contents (see 'example 2b and 2c' in examples of \link{eps2theta}) and the analogue PR2 probes, with varying offsets along the length of the rod. We assume this mismatch in voltage to be linear. Thus, it can be corrected with two reference points. The function takes these from the user calibration data (\code{calib_data}), which must contain two measurements (in air and water, respectively) for each sensor. Thus, the given raw input \code{V} is linearly transformed in a way, that the manufacture's conversion of Voltage to Permittivity (epsilon) holds for air and water.
 
+UPDATE:
+With \code{correct_sensor_values()} corrections with two refference points can also be applied on directly measured "Permittivity" ("Theta Probe", "PR2", "TDR", "SMT100") or "Counts" (SMT100). Therfore \code{var_type} must be specified in the function and \code{calib_data}.
+
 \itemize{
 \code{calib_data}: Data frame with calibration data. The following columns must be present:
 \item{\code{probe_id}: User-ID of probe corresponding to argument \code{probe_id}. Can be blank if \code{serial_no} is given.} 
@@ -47,7 +60,8 @@ In spite of the manufacturer's specifications, Theta Probe and PR2-instruments u
 \item{\code{voltage_water_mV}: Sensor output when sensor is in the water [mV].} 
 \item{\code{remarks}: (optional)} 
 \item{\code{type}: must contain the substrings "Theta Probe" OR "PR2". Used for selecting the corresponding manufacturer's conversion functions.} 
-\item{\code{date}: Date of calibration.} 
+\item{\code{date}: Date of calibration.}
+\item{\code{var_type}: Type of meassured variable ("Voltage"," Permittivity" or "Counts"). Necessary for \code{correct_sensor_values()}}
 }
 The directory \code{example} of the package holds an example text file.
 
@@ -58,13 +72,14 @@ uncalibrated devices by supplying placeholders for \code{serial_num}, which refe
 
 
 \value{
- Corrected voltage value [V]
+ \code{correct_sensor_value()}: Respective corrected input values [V or -]
+ \code{correct_sensor_voltage()}: Corrected voltage value [V]
 }
 \references{
 %% ~put references to the literature/web site here ~
 }
 \author{
-Till Francke
+Till Francke, Jakob Terschlüsen
 }
 \note{
 %%  ~~further notes~~
