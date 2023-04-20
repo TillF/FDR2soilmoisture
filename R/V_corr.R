@@ -23,7 +23,7 @@ var_corr = function(x, var_air_meas, var_h2o_meas, type, var_type)
   } else{
     var_air_nominal = NA #theoretical value for epsilon in air
     var_h2o_nominal = NA #theoretical value for epsilon in water
-    warning("Only Voltage and Permittivity are yet implemented, giving NA for other input variables")
+    warning("Only Voltage and Permittivity are yet implemented, giving NA for other input variables.\n")
   }
     
   var_corr = (var_h2o_nominal - var_air_nominal) / (var_h2o_meas - var_air_meas) * (x - var_air_meas) + var_air_nominal

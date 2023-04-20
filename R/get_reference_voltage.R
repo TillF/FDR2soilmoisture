@@ -71,3 +71,92 @@ get_reference_voltage = function(serial_no=NULL, probe_id=NULL, ring_no=1, calib
     
     return(list(V_air_meas=V_air_meas, V_h2o_meas=V_h2o_meas, type=type))
 }
+
+
+
+# new function, implementing also the other variables
+## adding therefore an additional input variable "var_type":
+
+get_reference_values<-function(serial_no=NULL, probe_id=NULL,var_type = NULL, ring_no=1, calib_data, warnOnly=FALSE)
+  #retrieve the values of calibration voltage from the supplied data frame
+{
+  if (!is.null(serial_no) & !is.null(probe_id)) stop("Either serial_no OR probe_id must be specified")
+  if (!is.null(serial_no) & !is.null(probe_id)) stop("Either serial_no OR probe_id must be specified")
+  if (is.null(calib_data$voltage_air_mV)   | any(!is.numeric(calib_data$voltage_air_mV  ))) stop("'calib_data' must have a numeric column 'voltage_air_mV'")
+  if (is.null(calib_data$voltage_water_mV) | any(!is.numeric(calib_data$voltage_water_mV))) stop("'calib_data' must have a numeric column 'voltage_air_mV'")
+  
+  if (is.null(calib_data$var_type) | any(!is.character(calib_data$var_type))) stop("'calib_data' must have a character column 'var_type'")
+  
+  if (!is.null(serial_no))
+    arg = "serial_no"    else
+      arg = "probe_id"
+    
+    cur_row = which(calib_data[, arg] == get(arg) & calib_data$ring_no == ring_no & calib_data$var_type == var_type ) 
+    
+    
+    if (length(cur_row)== 0) #no entry found?
+      stop(paste0("Probe with ", arg, "='", get(arg), "', ring-no='", ring_no, "' and var_type='", var_type, "' not found in calibration data. Please add a dummy record with sensor type and NAs, if you want to use  medians of same type and ring number.")) 
+    
+    if (length(cur_row)> 1) 
+    {  
+      warning(paste0("Multiple records with ", arg, "='", get(arg), "', ring-no='", ring_no, "' and var_type='", var_type, "' found in calibration data (lines ", paste(cur_row, collapse=", "), "), using last record."))
+      cur_row = max(cur_row)
+    }  
+    #since volatge in calib data is in mV
+    
+    V_air_meas = calib_data$voltage_air_mV  [cur_row]
+    V_h2o_meas = calib_data$voltage_water_mV[cur_row]
+    
+    
+    type = calib_data$type[cur_row]
+    
+    use_medians=FALSE
+    if (is.na(V_air_meas + V_h2o_meas))
+      if (warnOnly)
+      {  
+        use_medians=TRUE 
+        fill_V_h20="found"
+        fill_V_air="found"
+      }  
+    else
+      stop(paste0("NA-coefficients for ", arg, "='", get(arg), "' and ring-no='", ring_no, "'. Use 'warnOnly=TRUE' to use medians instead.")) 
+    
+    
+    #if coefficients are missing for SOME rings, use the median of all rings of *this* probe
+    cur_row = calib_data[, arg] == get(arg) & calib_data$var_type == var_type
+    if (is.na(V_air_meas))
+    {  
+      V_air_meas = median(calib_data$voltage_air_mV[cur_row], na.rm=TRUE)
+      fill_V_air = "median(this probe)"
+    }  
+    if (is.na(V_h2o_meas))
+    {  
+      V_h2o_meas = median(calib_data$voltage_water_mV[cur_row], na.rm=TRUE)
+      fill_V_h20 = "median(this probe, all rings)"
+    }  
+    
+    #if coefficients are missing for ALL rings, use the median of all probes of this type
+    cur_row = calib_data$ring_no == ring_no & calib_data$type == type & calib_data$var_type == var_type
+    if (is.na(V_air_meas))
+    {
+      V_air_meas = median(calib_data$voltage_air_mV  [cur_row], na.rm=TRUE)
+      fill_V_air = paste0("median(type='", type,"', ring_no='", ring_no)
+    }
+    if (is.na(V_h2o_meas))
+    {
+      V_h2o_meas = median(calib_data$voltage_water_mV[cur_row], na.rm=TRUE)
+      fill_V_h20 = paste0("median(type='", type,"', ring_no='", ring_no)
+    }
+    if (use_medians)
+      warning(paste0("Found NA-coefficient(s) for ", arg, "='", get(arg), "' and ring-no='", ring_no, 
+                     "'.\nV_air_", fill_V_air, ")=", V_air_meas, 
+                     "\nV_h2o_", fill_V_h20, ")=", V_h2o_meas))
+    
+    # Since calibdata for voltage are in mV
+    if(var_type=="Voltage"){
+      V_air_meas = V_air_meas / 1000
+      V_h2o_meas = V_h2o_meas / 1000
+    }    
+
+    return(list(V_air_meas=V_air_meas, V_h2o_meas=V_h2o_meas, type=type))
+}
