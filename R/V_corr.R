@@ -20,10 +20,13 @@ var_corr = function(x, var_air_meas, var_h2o_meas, type, var_type)
   } else if(var_type=="Permittivity"){
     var_air_nominal = eps_air #theoretical value for epsilon in air
     var_h2o_nominal = eps_h2o #theoretical value for epsilon in water
+  } else if(var_type=="Counts"){
+    var_air_nominal = eps2counts(perm = eps_air) #theoretical value for epsilon in air
+    var_h2o_nominal = eps2counts(perm = eps_h2o) #theoretical value for epsilon in water
   } else{
     var_air_nominal = NA #theoretical value for epsilon in air
     var_h2o_nominal = NA #theoretical value for epsilon in water
-    warning("Only Voltage and Permittivity are yet implemented, giving NA for other input variables.\n")
+    warning("Only Voltage, Permittivity and Counts are yet implemented, giving NA for other input variables.\n")
   }
     
   var_corr = (var_h2o_nominal - var_air_nominal) / (var_h2o_meas - var_air_meas) * (x - var_air_meas) + var_air_nominal
