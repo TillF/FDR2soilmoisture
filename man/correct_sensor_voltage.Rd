@@ -44,6 +44,9 @@ correct_sensor_values(values, serial_no=NULL, probe_id=NULL,var_type=NULL, ring_
   When this option is enabled, the 99-percentile of voltages supplied in \code{V} that is above the the calibration voltages \code{voltage_water_mV}, \code{voltage_water_mV} is enlarged accordingly, i.e. assuming that this is a higher maximum value that should rather be used. Analoguously for values below \code{voltage_air_mV}.
   If disabled, voltages outside the in the \code{calib_data} given interval are converted to NA.
 }
+\item{...}{
+  Further individual callibraion parameters for SMT100 code{alpha}, code{beta}, code{gamma} to pass to \code{\link{counts2eps}}
+}
 }
 \details{
 In spite of the manufacturer's specifications, Theta Probe and PR2-instruments usually yield output voltage deviating from the specifications. This deviation seems especially pronounced for higher water contents (see 'example 2b and 2c' in examples of \link{eps2theta}) and the analogue PR2 probes, with varying offsets along the length of the rod. We assume this mismatch in voltage to be linear. Thus, it can be corrected with two reference points. The function takes these from the user calibration data (\code{calib_data}), which must contain two measurements (in air and water, respectively) for each sensor. Thus, the given raw input \code{V} is linearly transformed in a way, that the manufacture's conversion of Voltage to Permittivity (epsilon) holds for air and water.

@@ -1,28 +1,36 @@
-#linear correction of sensor voltage using measured voltages in air and water
+#linear correction of sensor values using measured voltages in air and water
 
-#V_corr = function(V, V_air_meas, V_h2o_meas, type)
-#{
-#  V_air_nominal = eps2V(eps_air, type) #theoretical value for voltage in air [V]
-#  V_h2o_nominal = eps2V(eps_h2o, type) #theoretical value for voltage in water  [V]
-#  
-#  V_corr = (V_h2o_nominal - V_air_nominal) / (V_h2o_meas - V_air_meas) * (V - V_air_meas) + V_air_nominal
-#  return(V_corr)
-#}
-
-# add function for different inputs
-#here the function should depend on the input variable, e.g. counts/perm/etc
-var_corr = function(x, var_air_meas, var_h2o_meas, type, var_type)
+#function depend on the input variable, e.g. counts/perm/etc
+var_corr = function(x, var_air_meas, var_h2o_meas, type, var_type, ...)
 {
+  # processing additional arguments
+  alpha_set <- -0.1305
+  beta_set <- 0.2549
+  gamma_set <- 1.8342
+  if (!is.null(list(...)$alpha)) {
+    alpha_set <- list(...)$alpha
+  }
+  if (!is.null(list(...)$beta)) {
+    beta_set <- list(...)$beta
+  }
+  if (!is.null(list(...)$gamma)) {
+    gamma_set <- list(...)$gamma
+  }
+  
+  
   #here the function should depend on the input variable, e.g. counts/perm/etc
   if (var_type=="Voltage"){
     var_air_nominal = eps2V(eps_air, type) #theoretical value for voltage in air [V]
     var_h2o_nominal = eps2V(eps_h2o, type) #theoretical value for voltage in water [V]
+    
   } else if(var_type=="Permittivity"){
     var_air_nominal = eps_air #theoretical value for epsilon in air
     var_h2o_nominal = eps_h2o #theoretical value for epsilon in water
+    
   } else if(var_type=="Counts"){
-    var_air_nominal = eps2counts(perm = eps_air) #theoretical value for epsilon in air
-    var_h2o_nominal = eps2counts(perm = eps_h2o) #theoretical value for epsilon in water
+    var_air_nominal = eps2counts(perm = eps_air, alpha = alpha_set, beta = beta_set, gamma = gamma_set) #theoretical value for epsilon in air
+    var_h2o_nominal = eps2counts(perm = eps_h2o, alpha = alpha_set, beta = beta_set, gamma = gamma_set) #theoretical value for epsilon in water
+    
   } else{
     var_air_nominal = NA #theoretical value for epsilon in air
     var_h2o_nominal = NA #theoretical value for epsilon in water
