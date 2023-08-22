@@ -105,18 +105,18 @@ The respective equations used are:
    with \eqn{a_1 = -0.0728, a_2 = 0.0448, a_3 = -0.00195, a_4= 0.0000361} for mineral soils and \eqn{a_1 =  0.0233, a_2 = 0.0285, a_3 = -0.000431, a_4 = 0.00000304} for organic soils 
   
   \item \code{"SchaapEtal1997"} (Schaap et al. 1997 [eq. 2b in Vaz et al. 2013]):
-  \deqn{\theta =  (0.133*\sqrt{\epsilon} -0.146)^0.885
+  \deqn{\theta =  (0.133*\sqrt{\epsilon} -0.146)^{0.885}s
   }{%
-  \theta = (0.133*\sqrt(\epsilon) -0.146)^0.885
+  \theta = (0.133*\sqrt(\epsilon) -0.146)^{0.885}
   }  
     
   \item \code{"SinghEtal2017"} (Singh et al. 2019 (version for CS655)):
-  \deqn{\theta =  \theta = a*\sqrt{\epsilon} + b
+  \deqn{\theta = a*\sqrt{\epsilon} + b
   }{%
   \theta = a*\sqrt(\epsilon) + b
   }
   with 
-  \deqn{a = a_1*clay\_perc^2 + a2*clay\_perc + a_3
+  \deqn{a = a_1*clay\_perc^2 + a_2*clay\_perc + a_3
   }{%
   	a = a1*clay_perc^2 + a_2*clay_perc + a_3
   }
@@ -134,7 +134,7 @@ The respective equations used are:
   }
   
   \item \code{"ZhaoEtal2016"} (Zhao et al., 2016):
-  \deqn{\theta =  \frac{0.3039 * \BD - 2.1851 + \sqrt{\epsilon}}{(18.0283 * BD - 17.9531) + (-0.6806 * BD + 1.8351) * \sqrt{\epsilon}}
+  \deqn{\theta =  \frac{0.3039 * BD - 2.1851 + \sqrt{\epsilon}}{(18.0283 * BD - 17.9531) + (-0.6806 * BD + 1.8351) * \sqrt{\epsilon}}
   }{%
   \theta = (0.3039 * BD - 2.1851 + \sqrt(\epsilon))/((18.0283 * BD - 17.9531) + (-0.6806 * BD + 1.8351) * \sqrt(\epsilon))
   }
@@ -238,11 +238,11 @@ eps2theta(epsdata = NULL, equation = "list")
   calib_data = calib_data[calib_data$type=="Theta Probe",] #only use calibration data from Theta Probes
   
   #plot the point obtained from the calibration records
-  points(calib_data$voltage_air_mV/1000, rep(0, nrow(calib_data)), col="red")
-  points(calib_data$voltage_water_mV/1000, sqrt(rep(1, nrow(calib_data))), col="red")
+  points(calib_data$air_measurement/1000, rep(0, nrow(calib_data)), col="red")
+  points(calib_data$water_measurement/1000, sqrt(rep(1, nrow(calib_data))), col="red")
 
   #compute corresponding corrected voltage for all sensors in calibration list
-  V_corr = sapply(FUN = correct_sensor_voltage, X = calib_data$serial_no,  V=V, calib_data=calib_data, adjust_range = FALSE)
+  V_corr = sapply(FUN = correct_sensor_values, X = calib_data$serial_no,  V=V, calib_data=calib_data, adjust_range = FALSE,var_type = "Voltage")
   #...and the respective epsilon
   eps_corr = apply(FUN = V2eps, X =  V_corr,  MARGIN = 1, type="Theta Probe")
   #...and the respective theta

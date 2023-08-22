@@ -31,18 +31,20 @@ Values for \code{type}:
 
 \itemize{
 
-  \item{\code{"PR2"}: PR2 default equation according to manual (PR2_user_manual_version_5.0.pdf, eq. 2), (PR2_SDI-12-_User_Manual_version_4_1.pdf, eq. 2):
-  \deqn{\sqrt{\epsilon} = 1.125 - 5.53*V + 67.17*V^2 - 234.42*V^3 + 413.56*V^4 - 356.68*V^5 + 121.53*V^6
+  \item{\code{"PR2"}: PR2 default equation according to manual (PR2\_user\_manual\_version\_5.0.pdf, eq. 2), (PR2\_SDI-12-\_User\_Manual\_version\_4\_1.pdf, eq. 2):
+  \deqn{
+    \sqrt{\epsilon} = 1.125 - 5.53*V + 67.17*V^2 - 234.42*V^3 + 413.56*V^4 - 356.68*V^5 + 121.53*V^6
   }{%
-  \sqrt\epsilon = 1.125 - 5.53*V + 67.17*V^2 - 234.42*V^3 + 413.56*V^4 - 356.68*V^5 + 121.53*V^6
+    \sqrt(\epsilon) = 1.125 - 5.53*V + 67.17*V^2 - 234.42*V^3 + 413.56*V^4 - 356.68*V^5 + 121.53*V^6
   }
   }
   
   \item{\code{"Theta Probe polynomial":}    
-  Theta Probe polynomial* (ThetaProbe user manual, eq. 3. ):
-  \deqn{\epsilon = 1.07 + 6.4*V-6.4*V^2+4.7*V^3 
+  Theta Probe polynomial* (ThetaProbe user manual, eq. 3.):
+  \deqn{
+    \epsilon = 1.07 + 6.4*V - 6.4*V^2 + 4.7*V^3 
   }{%
-  \epsilon = 1.07 + 6.4*V-6.4*V^2+4.7*V^3 
+    \epsilon = 1.07 + 6.4*V - 6.4*V^2 + 4.7*V^3 
   }
   Don't use for voltage > 1 V or theta > 0.5, see below!
   }
@@ -52,6 +54,7 @@ Values for \code{type}:
   interpolated lookup data table from ThetaProbe user manual table (p. 14), see details below
   }
 }
+
 
 }
 
@@ -84,9 +87,9 @@ Delta-T Devices Ltd, 2016. User Manual for the Profile Probe type PR2 (PR2-UM-5.
 \author{
 Till Francke
 }
-\note{
+%\note{
 %%  ~~further notes~~
-}
+%}
 
 
 \seealso{
@@ -125,8 +128,8 @@ V2eps(V= 1.1, type = "Theta Probe") #convert to epsilon, eq. 1 of Theta-Probe us
   
   calib_data = calib_data[calib_data$type=="Theta Probe",]
   
-  points(calib_data$voltage_air_mV/1000, rep(1, nrow(calib_data)), col="blue")
-  points(calib_data$voltage_water_mV/1000, sqrt(rep(81, nrow(calib_data))), col="blue")
+  points(calib_data$air_measurement/1000, rep(1, nrow(calib_data)), col="blue")
+  points(calib_data$water_measurement/1000, sqrt(rep(81, nrow(calib_data))), col="blue")
   
   
 }

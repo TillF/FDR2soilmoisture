@@ -11,7 +11,7 @@ Convert measured the sensor output (voltage, permittivity) to "should-be" values
 \usage{
 correct_sensor_voltage(V, serial_no=NULL, probe_id=NULL, ring_no=1, calib_data, warnOnly=FALSE, adjust_range=TRUE)
 
-correct_sensor_values(values, serial_no=NULL, probe_id=NULL,var_type=NULL, ring_no=1, calib_data, warnOnly=FALSE, adjust_range=TRUE)
+correct_sensor_values(values, serial_no=NULL, probe_id=NULL,var_type=NULL, ring_no=1, calib_data, warnOnly=FALSE, adjust_range=TRUE, ...)
 
 }
 \arguments{
@@ -97,7 +97,7 @@ Till Francke, Jakob Terschlüsen
 
 calib_file = system.file("example", "sensor_calibration.txt", package = "FDR2soilmoisture") #replace this by your own calibration file
 calib_data = read.table(calib_file, nrow=-1, sep="\t", stringsAsFactors = FALSE, header=TRUE, na.strings = c("NA",""))  #load the file
-V_corr = correct_sensor_voltage(V=0.8, serial_no = "114/035", calib_data = calib_data) #apply sensor-specific voltage calibration
+V_corr = correct_sensor_values(values=0.8, serial_no = "114/035", calib_data = calib_data, var_type = "Voltage") #apply sensor-specific voltage calibration
 
 }
 

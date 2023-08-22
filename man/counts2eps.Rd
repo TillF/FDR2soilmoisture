@@ -33,7 +33,7 @@ The function uses as default average parameters for \code{alpha}, \code{beta} an
 Permittivity value (epsilon) [-] or sensor counts [-].
 }
 \references{
-Bogena, H.R.; Huisman, J.A.; Schilling, B.; Weuthen, A.; Vereecken, H. Effective Calibration of Low-Cost Soil Water Content Sensors. Sensors 2017, 17, 208. \link{https://doi.org/10.3390/s17010208}
+Bogena, H.R.; Huisman, J.A.; Schilling, B.; Weuthen, A.; Vereecken, H. Effective Calibration of Low-Cost Soil Water Content Sensors. Sensors 2017, 17, 208. https://doi.org/10.3390/s17010208
 
 }
 \author{
