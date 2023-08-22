@@ -6,7 +6,7 @@
   for (probe in c("Theta Probe")) #for PR2, this problem does not exist
   {
     lin_file = system.file("example", paste0("linearization_", sub(probe, pattern = " ", repl="_"), ".txt"), package = "FDR2soilmoisture") #Linearisation table from DeltaT ThetaProbe manual. p. 14
-    lin_data = read.table(lin_file, nrow=-1, sep="\t", stringsAsFactors = FALSE, header=TRUE, na.strings = c("NA",""))  #load the file
+    lin_data = utils::read.table(lin_file, nrow=-1, sep="\t", stringsAsFactors = FALSE, header=TRUE, na.strings = c("NA",""))  #load the file
     
     if (probe =="Theta Probe")
       lin_data = lin_data[-c(1, nrow(lin_data)),] #remove first and last entry that served for extrapolation only
@@ -27,7 +27,7 @@
     
     eps_org = lin_data_org$epsilon
     #get epsilon values for the same voltages as in "organic"
-    eps_min = approx(x=lin_data_min$voltage, y=lin_data_min$epsilon, xout = V)$y
+    eps_min = stats::approx(x=lin_data_min$voltage, y=lin_data_min$epsilon, xout = V)$y
     
     #do averaging between "mineral" and "organic", disregarding NAs
     eps_mean = apply(X = cbind(eps_min, eps_org), MAR=1, FUN=mean, na.rm=TRUE)
@@ -37,13 +37,13 @@
       V_mean = c(eps2V(eps = eps_mean[1], type = paste0(probe, " polynomial")), V)  
       
     #update V2eps-function
-    #globvars$V2eps_Theta_Probe_table = approxfun(x=V_mean, y = eps_mean)
-    #assign(".V2eps_Theta_Probe_table", value = approxfun(x=V_mean, y = eps_mean), envir = parent.env(environment())) 
-    assign(paste0(".V2eps_", sub(probe, pattern = " ", repl="_"), "_table"), value = approxfun(x=V_mean, y = eps_mean), envir = parent.env(environment())) 
+    #globvars$V2eps_Theta_Probe_table = stats::approxfun(x=V_mean, y = eps_mean)
+    #assign(".V2eps_Theta_Probe_table", value = stats::approxfun(x=V_mean, y = eps_mean), envir = parent.env(environment())) 
+    assign(paste0(".V2eps_", sub(probe, pattern = " ", repl="_"), "_table"), value = stats::approxfun(x=V_mean, y = eps_mean), envir = parent.env(environment())) 
     #.V2eps_PR2_table(v = 1.067)
     #update eps2V-function
     tt = .eps2V #get current values of list of conversion functions
-    tt[[probe]] = approxfun(y=V_mean, x = eps_mean) #update inverse function (so far, this was a dummy)
+    tt[[probe]] = stats::approxfun(y=V_mean, x = eps_mean) #update inverse function (so far, this was a dummy)
     #tt[[probe]](v=81)
     
     assign(".eps2V", value = tt, envir = parent.env(environment())) 

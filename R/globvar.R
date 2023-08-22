@@ -1,6 +1,6 @@
 #package-global variables
 eps_air =1.00059     #permittivity of air
-eps_h2o =81          #permittivity of water at 20 °C
+eps_h2o =80.2          #permittivity of water at 20 °C
 
 globvars <- new.env()
 # globvars2 <- new.env(parent = emptyenv())
