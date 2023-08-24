@@ -1,1 +1,13 @@
 exportPattern("^[[:alpha:]]+") # all functions in package whose names start with letters will be exported
+
+
+# imports
+importFrom(stats, coef, formula, glm, lm, lowess, median, nls, nls.control, optim, predict, quantile, approxfun, gaussian, quasibinomial)
+
+#importFrom(nlmrt, nlxb)
+
+importFrom(grDevices, extendrange, palette, windows, dev.new)
+
+importFrom(graphics, abline, legend, lines, mtext, par, points, text)
+
+importFrom(RColorBrewer, brewer.pal)
