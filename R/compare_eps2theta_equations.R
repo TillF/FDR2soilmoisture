@@ -1,5 +1,5 @@
 #compare various equations for eps2theta conversion
-compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=NULL)
+compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=NULL, plot_extern=TRUE)
 {  
   if (is.null(common_set$theta))   stop("common_set must contain a column 'theta'")
   if (is.null(common_set$epsilon)) stop("common_set must contain a column 'epsilon'")
@@ -11,7 +11,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
     if (is.null(common_set$training)) common_set$training   = TRUE #default: use all as training, none as test
     
     f_all_equal = function(x){all(is.na(x) | x[1]==x)} #test if all values in a vector are equal
-    all_equal = apply(FUN = f_all_equal, X = common_set, MAR=2)
+    all_equal = apply(FUN = f_all_equal, X = common_set, MARGIN =2)
     
     if (all_equal["epsilon"]) stop("epsilon-values mustn't be all equal.")
 
@@ -52,26 +52,34 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
     check_fields = function(required_fields, common_set)
     {
       if (!all(required_fields %in% names(common_set))) return(FALSE)
-      if (any(apply(X = common_set[, required_fields, drop=FALSE], MAR=2, FUN=function(x){all(is.na(x))}))) return (FALSE)
+      if (any(apply(X = common_set[, required_fields, drop=FALSE], MARGIN =2, FUN=function(x){all(is.na(x))}))) return (FALSE)
           return(TRUE)
     }
     
     #generate "average" data for plotting
     #numeric_cols = sapply(common_set, class) == "numeric" #index to numeric columns
-    median_modus = function(x)
-    { if (all(is.na(x))) 
-        return(NA) else
-      if(class(x) == "numeric" | class(x) == "logical")
-        res = median(x, na.rm=TRUE) else #median
-        res = names(sort(-table(x)))[1] #modus
+    median_modus = function(x){
+      if (all(is.na(x))) 
+        return(NA)
+      else {
+        if (inherits(x, "numeric") || inherits(x, "logical")) {
+          res <- median(x, na.rm = TRUE)  #median
+        } else {
+          res <- names(sort(-table(x)))[1]  #mode
+        }
         
-      if(class(x) == "factor" )
-      res = factor(res, levels=levels(x)) else
-      class(res)=class(x) #force the same data type as the input
+        if (inherits(x, "factor")) {
+          res <- factor(res, levels = levels(x))
+        } else {
+          class(res) <- class(x)  #force the same data type as the input
+        }
+        
+        # as(res, Class = class(x))
+        return(res)  
+      }
       
-      #as(res, Class = class(x))
-      return(res)  
     }
+    
     eps_range = seq(from=1.1, to=80, by=1)
     
     
@@ -85,7 +93,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
     # common_set_plot_train = t(sapply(common_set[common_set$training, numeric_cols], median_modus))
     # sapply(common_set[common_set$training,], median_modus, simplify = TRUE)
     # 
-    # apply(common_set[common_set$training,], MAR=2, median_modus, simplify = FALSE)
+    # apply(common_set[common_set$training,], MARGIN=2, median_modus, simplify = FALSE)
     # 
     # median_modus(common_set[common_set$training,1])
     # 
@@ -429,7 +437,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
       if (sum(common_set$cohesive==1) == 0)   #no cohesive
       {
         #remove cohesive terms 
-        fmla = gsub(fmla, pattern="cohesive\\*[^ ]*", repl="0") #remove cohesive coefficients
+        fmla = gsub(fmla, pattern="cohesive\\*[^ ]*", replacement="0") #remove cohesive coefficients
         remove_this = !grepl(names(start), pattern = "_coh")
         start = start[remove_this]
         lower = lower[remove_this]
@@ -439,7 +447,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
       if (sum(common_set$cohesive==0) == 0)   #no non-cohesive
       {
         #remove non-cohesive terms 
-        fmla = gsub(fmla, pattern="\\(1-cohesive\\)\\*[^ ]*", repl="0") #remove cohesive coefficients
+        fmla = gsub(fmla, pattern="\\(1-cohesive\\)\\*[^ ]*", replacement="0") #remove cohesive coefficients
         
         remove_this = !grepl(names(start), pattern = "_ncoh")
         start = start[remove_this]
@@ -521,7 +529,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
                      nls.control(maxiter = 100, warnOnly = TRUE)             )
       }, silent=TRUE
       )
-      if (class(tt) =="try-error")
+      if (inherits(tt, "try-error"))
       {
         warning(paste0("Failed to fit ", eq," (", attr(tt, "condition"),")"))
       } else
@@ -583,13 +591,13 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
   
       
       #refine with nlxb, the improved version of nls
-      library(nlmrt) #the regular nls is not robust here
+      #library(nlmrt) #the regular nls is not robust here
       ignore = is.na(common_set$clay_perc + common_set$theta + common_set$epsilon) #mask NAs
-      lm_all = nlxb(formula = theta ~ (a1*clay_perc^2 + a2*clay_perc + a3)*sqrt(epsilon) + (b1*clay_perc^2 + b2*clay_perc + b3), 
+      lm_all = nlmrt::nlxb(formula = theta ~ (a1*clay_perc^2 + a2*clay_perc + a3)*sqrt(epsilon) + (b1*clay_perc^2 + b2*clay_perc + b3), 
                     data = common_set[common_set$training & !ignore,], 
                     start = res$par,
-                    upper = apply(X=ranges, MAR=1, FUN=max), 
-                    lower = apply(X=ranges, MAR=1, FUN=min), 
+                    upper = apply(X=ranges, MARGIN=1, FUN=max), 
+                    lower = apply(X=ranges, MARGIN=1, FUN=min), 
                     #alg="port",
                     trace=FALSE,
                     nls.control(maxiter = 100, warnOnly = FALSE)  )
@@ -694,7 +702,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
     
     # #own glm_sqrt ####
     # {
-    #   form_str = sub(x = form_str, pattern = "theta", repl="sqrt(theta)")
+    #   form_str = sub(x = form_str, pattern = "theta", replacement="sqrt(theta)")
     #   eq="theta_glm_sqrt"
     #   
     #   lm_all = glm(formula = formula(form_str), data = common_set[common_set$training,], family=gaussian)
@@ -717,23 +725,37 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
  
     
  # compare R2-values in single scatterplot ####
-    windows()
+    if(plot_extern==TRUE){
+      if (Sys.info()["sysname"] == "Windows") {
+        windows(width = 40, height = 30) #open largest possible window in 4:3 format
+      }else{
+        dev.new(width = 40, height = 30) #open largest possible window in 4:3 format
+      }
+    }
     llimit = min(0, quantile(r2_train_ex, probs=0.1, na.rm=TRUE))
     xcoords = pmax(llimit, r2_train_ex)
     llimit = min(0, quantile(r2_test, probs=0.1, na.rm=TRUE))
     ycoords = pmax(llimit, r2_test)
     xlab = ifelse(all(common_set$excluded==FALSE), "R2_training", "R2 training!ex")
     plot(xcoords, ycoords, xlab=xlab, ylab="R2 test")
-    text(xcoords, ycoords, sub(names(r2_train_ex), pattern="theta_", repl=""), cex=0.7, adj = c(0.5,0))
+    text(xcoords, ycoords, sub(names(r2_train_ex), pattern="theta_", replacement=""), cex=0.7, adj = c(0.5,0))
     abline(v=0)
     abline(h=0)
+    
        
     
   # compare results in scatterplot matrix #### 
     models = names(common_set)
     models = models[grepl(models, pattern = "theta_")]
     
-  windows(width = 40, height = 30) #open largest possible window in 4:3 format
+    if(plot_extern==TRUE){
+      if (Sys.info()["sysname"] == "Windows") {
+        windows(width = 40, height = 30) #open largest possible window in 4:3 format
+      }else{
+        dev.new(width = 40, height = 30) #open largest possible window in 4:3 format
+      }
+    }      
+
     par(mfrow=c(length(models) %/% 4 +1, 4), oma=c(2.3,2.3,0,0), mar=c(1, 1.6, 4.2, 0.5), cex=0.6)
   for (mm in models)    
   {
@@ -778,22 +800,29 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
   
 
 # compare equations by plotting "characteristic" curves into a single diagram #### 
-  windows(width = 40, height = 30) #open largest possible window in 4:3 format
+  
+  if(plot_extern==TRUE){
+    if (Sys.info()["sysname"] == "Windows") {
+      windows(width = 40, height = 30) #open largest possible window in 4:3 format
+    }else{
+      dev.new(width = 40, height = 30) #open largest possible window in 4:3 format
+    }
+  }
   models = names(common_set_plot_train)
   models = models[grepl(models, pattern = "theta_")]
-  
+  par(mfrow=c(1, 1))
   
   #construct palette
-  library(RColorBrewer)
+  #library(RColorBrewer)
   n = length(models)
   #construct palette
-  pal = brewer.pal( min(n, 12), "Paired")
+  pal = RColorBrewer::brewer.pal( min(n, 12), "Paired")
   lty = rep("solid", min(n, 12))
   
   if (n > 12)
   {
-        pal = c(pal, pal)
-        lty = c(lty, rep("dashed", max(n-12, 0)))
+    pal = c(pal, pal)
+    lty = c(lty, rep("dashed", max(n-12, 0)))
   }      
   
   palette(pal)
@@ -811,8 +840,6 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
   legend("topleft", legend=c("train", "test", models), col=c("black", "black", pal[1:n]), 
          pch=NA, lty=c("solid","solid", lty), lwd=c(2, 1, rep(2, length(models))))
   
-  
-
   
   return(list(r2_train=r2_train, r2_train_ex=r2_train_ex, r2_test=r2_test, eps2theta_function=eps2theta_function_list))
 }  

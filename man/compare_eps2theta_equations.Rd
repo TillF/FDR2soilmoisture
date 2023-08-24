@@ -8,14 +8,20 @@ compare_eps2theta_equations
 Compare various equations for converting epsilon to theta by creating a plot and showing R2-values. The function uses the equations included in \code{\link{eps2theta}}. It also customizes some of them with fitted coefficients, plus some GLM variants using different link functions.
 }
 \usage{
-compare_eps2theta_equations(common_set, legend_args=NULL)
+compare_eps2theta_equations(common_set, legend_args=NULL,eq_subset=NULL, plot_extern = TRUE)
 }
 \arguments{
   \item{common_set}{
 	Data frame with observed data. See details. 
-}
-\item{legend_args}{
+  }
+  \item{legend_args}{
 	Arguments passed to \code{\link{legend}()} to create the legend for the plots. 
+  }
+  \item{eq_subset}{
+	Vector of equations to be used. See \code{\link{eps2theta}}
+	}
+  \item{plot_extern}{
+  Eneable to plot each plot in a seperate window
 }
 
 }
@@ -73,7 +79,7 @@ Till Francke
   observations$theta = observations$theta / max(observations$theta)
   observations$training   = c(rep(TRUE, 50), rep(FALSE, 50)) #use the fisrt 50 for training, the rest for validation
 
-res = compare_eps2theta_equations(common_set=observations)
+res = compare_eps2theta_equations(common_set=observations, plot_extern=FALSE)
 
 }
 
