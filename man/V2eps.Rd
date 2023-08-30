@@ -25,7 +25,7 @@ Type of sensor. Must be \code{"Theta Probe"}, \code{"Theta Probe polynomial"} OR
 }
 }
 \details{
-Applies the manufacturer's conversion functions or its inverse. \code{V}: voltage in [V]; \code{eps}: epsilon [-]
+Applies the manufacturers conversion functions or its inverse. \code{V}: voltage in [V]; \code{eps}: epsilon [-]
 
 Values for \code{type}:
 
@@ -35,7 +35,7 @@ Values for \code{type}:
   \deqn{
     \sqrt{\epsilon} = 1.125 - 5.53*V + 67.17*V^2 - 234.42*V^3 + 413.56*V^4 - 356.68*V^5 + 121.53*V^6
   }{%
-    \sqrt(\epsilon) = 1.125 - 5.53*V + 67.17*V^2 - 234.42*V^3 + 413.56*V^4 - 356.68*V^5 + 121.53*V^6
+    \u221a \epsilon = 1.125 - 5.53*V + 67.17*V^2 - 234.42*V^3 + 413.56*V^4 - 356.68*V^5 + 121.53*V^6
   }
   }
   
@@ -65,10 +65,10 @@ Permittivity value (epsilon) [-] or sensor voltage [V].
 \itemize{
 *\code{"Theta Probe polynomial"} from ThetaProbe user manual:
 
-\item{p. 10 states: \dQuote{In the range 0 to 1 Volt (corresponding to a soil moisture range 0 to ~ 0.55 by volume),
+\item{p. 10 states: \dQuote{In the range 0 to 1 Volt (corresponding to a soil moisture range 0 to ~0.55 by volume),
 this relationship can be fitted very precisely by a 3rd order polynomial}}
 
-\item{p. 11 states: \dQuote{For very high moisture contents (θ > 0.5 m3.m-3), the polynomial equation should be used. This is usually only necessary for organic soils.}}
+\item{p. 11 states: \dQuote{For very high moisture contents (\eqn{\theta \,>\,0.5\, m^3 \cdot \, m^{-3}}{theta > 0.5 m^3*m^-3}), the polynomial equation should be used. This is usually only necessary for organic soils.}}
 
 }
 \bold{The statement on p. 11 is  obviously wrong} (see 'example 1', below): The polynom obviously differs considerably from the points in the linearization table, especially for voltage > 1 V or theta > 0.5, so only the statement on page 10 seems correct.
@@ -99,15 +99,19 @@ Till Francke
 V2eps(V= 1.1, type = "Theta Probe") #convert to epsilon, eq. 1 of Theta-Probe user manual
 
   eps_air =1.00059     #permittivity of air
-  eps_h2o =81          #permittivity of water at 20 °C
-  eps2V(eps_air, type = "Theta Probe")  #display voltages that would be expected when measuring in air and water
+  eps_h2o =81          #permittivity of water at 20 degree C
+  #display voltages that would be expected when measuring in air and water
+  eps2V(eps_air, type = "Theta Probe")  
   eps2V(eps_h2o, type = "Theta Probe") 
 
 
 # example 1: reproducing the figure on p.11,  Theta-Probe user manual (voltage vs. sqrt(eps)) ####
   V = seq(from=0.0, to=1.3, by=0.02)
   eps = V2eps(V, type = "Theta Probe polynomial") #polynomial equation (eq. 1)
-  plot(1, xlim=c(0, 1.4), ylim=c(0,9), type="n", xlab="voltage [V]", ylab="sqrt(epsilon) [-]", main = "Theta Probe, voltage-to-epsilon conversion")
+  
+  plot(1, xlim=c(0, 1.4), ylim=c(0,9), type="n", 
+  xlab="voltage [V]", ylab="sqrt(epsilon) [-]", 
+  main = "Theta Probe, voltage-to-epsilon conversion")
   lines(V, sqrt(eps), ylim=c(0,9), type="l", lty=2, col="red")
   abline(a=1.1, b=4.44, col="green") #linearized version (eq. 2)
   eps = V2eps(V, type = "Theta Probe") #polynomial equation (eq. 1)
@@ -117,14 +121,19 @@ V2eps(V= 1.1, type = "Theta Probe") #convert to epsilon, eq. 1 of Theta-Probe us
   abline(v=1, lty=2) #show  extent of the original figure
   abline(h=6, lty=2)
   
-  legend("topleft", legend=c("polynomial", "linearized", "lookup, linear interpolation", "extent of orig. figure", "calibration data"),
-         lty=c(2,1,1,2,0), pch=c(NA,NA, NA, NA, 21), col=c("red", "green", "red", "black", "blue"))
+  legend("topleft", legend=c("polynomial", "linearized", "lookup, linear interpolation",
+  "extent of orig. figure", "calibration data"),
+         lty=c(2,1,1,2,0), pch=c(NA,NA, NA, NA, 21),
+         col=c("red", "green", "red", "black", "blue"))
   
 
 
 # example 1b: add examples from device-specific calibration to plot ####
-  calib_file = system.file("example", "sensor_calibration.txt", package = "FDR2soilmoisture") #replace this by your own calibration file
-  calib_data = read.table(calib_file, nrow=-1, sep="\t", stringsAsFactors = FALSE, header=TRUE, na.strings = c("NA",""))  #load the file
+  #replace this by your own calibration file
+  calib_file = system.file("example", "sensor_calibration.txt", package = "FDR2soilmoisture")
+  #load the file
+  calib_data = read.table(calib_file, nrow=-1, sep="\t",
+  stringsAsFactors = FALSE, header=TRUE, na.strings = c("NA",""))  
   
   calib_data = calib_data[calib_data$type=="Theta Probe",]
   

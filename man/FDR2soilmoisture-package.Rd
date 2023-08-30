@@ -8,9 +8,9 @@
 \description{
 \packageDescription{FDR2soilmoisture}
 }
-\details{
-The DESCRIPTION file:
-\packageDESCRIPTION{FDR2soilmoisture}
+%\details{
+%The DESCRIPTION file:
+%\packageDESCRIPTION{FDR2soilmoisture}
 %\packageIndices{FDR2soilmoisture}
 %~~ An overview of how to use the package, including the most important functions ~~
 }

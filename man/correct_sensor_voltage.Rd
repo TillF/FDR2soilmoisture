@@ -1,17 +1,23 @@
 \name{correct_sensor_voltage}
 \alias{correct_sensor_voltage}
 \alias{correct_sensor_values}
+\alias{correct_sensor_values_all}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Correct sensor outputs (Voltage, Permittivity)
 }
 \description{
-Convert measured the sensor output (voltage, permittivity) to "should-be" values stated by the manufacturer using user-supplied calibration values
+\code{correct_sensor_values} converts the measured sensor output (voltage, permittivity, counts) to "should-be" values stated by the manufacturer using user-supplied calibration values.
+
+\code{correct_sensor_values_all} does correct alsp values outside the in calibdata provided reference values (see \code{adjust_range}).
+
 }
 \usage{
-correct_sensor_voltage(V, serial_no=NULL, probe_id=NULL, ring_no=1, calib_data, warnOnly=FALSE, adjust_range=TRUE)
-
 correct_sensor_values(values, serial_no=NULL, probe_id=NULL,var_type=NULL, ring_no=1, calib_data, warnOnly=FALSE, adjust_range=TRUE, ...)
+
+correct_sensor_values_all(values, serial_no=NULL, probe_id=NULL,var_type=NULL, ring_no=1, calib_data, warnOnly=FALSE, adjust_range=TRUE, ...)
+
+correct_sensor_voltage(V, serial_no=NULL, probe_id=NULL, ring_no=1, calib_data, warnOnly=FALSE, adjust_range=TRUE)
 
 }
 \arguments{
@@ -36,18 +42,18 @@ correct_sensor_values(values, serial_no=NULL, probe_id=NULL,var_type=NULL, ring_
   \item{calib_data}{
 	Data frame with calibration data. See details. }
 	
-  \item{warnOnly=FALSE}{
-  If no data for the specified probe are found, an error is raised. With \code{warnOnly=TRUE}, instead, a warning is issued and median values are used. See details.
+  \item{warnOnly}{
+  \code{=FALSE} If no data for the specified probe are found, an error is raised. With \code{warnOnly=TRUE}, instead, a warning is issued and median values are used. See details.
 }
 
-  \item{adjust_range=TRUE}{
-  When this option is enabled, the 99-percentile of voltages supplied in \code{V} that is above the the calibration voltages \code{voltage_water_mV}, \code{voltage_water_mV} is enlarged accordingly, i.e. assuming that this is a higher maximum value that should rather be used. Analoguously for values below \code{voltage_air_mV}.
+  \item{adjust_range}{
+  \code{=True}: When this option is enabled, the 99-percentile of voltages supplied in \code{V} that is above the the calibration voltages \code{voltage_water_mV}, \code{voltage_water_mV} is enlarged accordingly, i.e. assuming that this is a higher maximum value that should rather be used. Analoguously for values below \code{voltage_air_mV}.
   If disabled, voltages outside the in the \code{calib_data} given interval are converted to NA.
 }
 \item{...}{
-  Further individual callibraion parameters for SMT100 code{alpha}, code{beta}, code{gamma} to pass to \code{\link{counts2eps}}
+  Further individual callibraion parameters for SMT100 \code{alpha}, \code{beta}, \code{gamma} to pass to \code{\link{counts2eps}} and not default permittivity reference values for the two callibration points "air" \code{epsilon_0} and "water" \code{epsilon_1}}
 }
-}
+
 \details{
 In spite of the manufacturer's specifications, Theta Probe and PR2-instruments usually yield output voltage deviating from the specifications. This deviation seems especially pronounced for higher water contents (see 'example 2b and 2c' in examples of \link{eps2theta}) and the analogue PR2 probes, with varying offsets along the length of the rod. We assume this mismatch in voltage to be linear. Thus, it can be corrected with two reference points. The function takes these from the user calibration data (\code{calib_data}), which must contain two measurements (in air and water, respectively) for each sensor. Thus, the given raw input \code{V} is linearly transformed in a way, that the manufacture's conversion of Voltage to Permittivity (epsilon) holds for air and water.
 
@@ -69,20 +75,23 @@ With \code{correct_sensor_values()} corrections with two refference points can a
 The directory \code{example} of the package holds an example text file.
 
 With \code{warnOnly=TRUE} if coefficients are missing for SOME rings, the median of all rings of *this* probe wil be used. If coefficients are missing for ALL rings, the median values of all probes of this type is used. This can be used for 
-uncalibrated devices by supplying placeholders for \code{serial_num}, which refernece to a dummy records with all coefficients being NA. 
+uncalibrated devices by supplying placeholders for \code{serial_num}, which refernece to a dummy records with all coefficients being NA.
+
+\code{correct_sensor_values_all()} can be used if a correction of values outside the in the calib_data given interval interval is desired and an adjustment of highest and lowest values to the 99--percentile (\code{adjust_range=TRUE}) is not useful.
 
 }
 
 
 \value{
  \code{correct_sensor_value()}: Respective corrected input values [V or -]
+ \code{correct_sensor_value_all()}: Respective corrected input values [V or -]
  \code{correct_sensor_voltage()}: Corrected voltage value [V]
 }
 \references{
 %% ~put references to the literature/web site here ~
 }
 \author{
-Till Francke, Jakob Terschlüsen
+Till Francke, Jakob Terschluesen
 }
 \note{
 %%  ~~further notes~~

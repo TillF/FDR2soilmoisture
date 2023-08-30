@@ -43,7 +43,7 @@ The following columns in the data frame \code{epsdata} are supported and may be 
 \item{\var{epsilon}:} { Electric permittivity. [-]} 
 \item{\var{soil}:} { Soil type indicator. \code{"mineral", "organic"}} 
 \item{\var{n}:} { Soil porosity. [-]}
-\item{\var{BD}:} { dry bulk density. [g/cm³]}
+\item{\var{BD}:} { dry bulk density. [\eqn{g/\text{cm}^3}{g/cm^3}]}
 \item{\var{clay_perc}:} { Percent clay. [\%]}
 \item{\var{om_perc}:} { Percent organic matter. [\%]}
 \item{\var{cohesive}:} { is the soil cohesive? [0/1]}
@@ -152,23 +152,23 @@ For \code{equation=="list"}, a named list of all supported equations is returned
 \references{
 Delta-T Devices Ltd, 1998. ThetaProbe SOIL MOISTURE SENSOR TYPE ML2 USER MANUAL (ML2-UM-1). Delta-T Devices Ltd, Cambridge, UK.
 
-Drnevich, V.P., Ashmawy, A.K., Yu, X., Sallam, A.M., 2005. Time domain reflectometry for water content and density of soils: study of soil-dependent calibration constants. Can. Geotech. J. 42, 1053–1065. https://doi.org/10.1139/T05-047
+Drnevich, V.P., Ashmawy, A.K., Yu, X., Sallam, A.M., 2005. Time domain reflectometry for water content and density of soils: study of soil-dependent calibration constants. Can. Geotech. J. 42, 1053-1065. \url{https://doi.org/10.1139/T05-047}
 
-Fersch, B., Jagdhuber, T., Schroen, M., Voelksch, I., Jaeger, M., 2018. Synergies for Soil Moisture Retrieval Across Scales From Airborne Polarimetric SAR, Cosmic Ray Neutron Roving, and an In Situ Sensor Network. Water Resour. Res. 54, 9364–9383. https://doi.org/10.1029/2018WR023337
+Fersch, B., Jagdhuber, T., Schroen, M., Voelksch, I., Jaeger, M., 2018. Synergies for Soil Moisture Retrieval Across Scales From Airborne Polarimetric SAR, Cosmic Ray Neutron Roving, and an In Situ Sensor Network. Water Resour. Res. 54, 9364-9383. \url{https://doi.org/10.1029/2018WR023337}
 
-Jacobsen, O., Schjonning, P., 1993. A Laboratory Calibration of Time-Domain Reflectometry for Soil-Water Measurement Including Effects of Bulk-Density and Texture. J. Hydrol. 151, 147–157. https://doi.org/10.1016/0022-1694(93)90233-Y
+Jacobsen, O., Schjonning, P., 1993. A Laboratory Calibration of Time-Domain Reflectometry for Soil-Water Measurement Including Effects of Bulk-Density and Texture. J. Hydrol. 151, 147-157. \url{https://doi.org/10.1016/0022-1694(93)90233-Y}
 
-Ju, Z., Liu, X., Ren, T., & Hu, C., 2010. Measuring Soil Water Content With Time Domain Reflectometry. Soil Science, 175(10), 469–473. doi:10.1097/ss.0b013e3181f55aa3 
+Ju, Z., Liu, X., Ren, T., & Hu, C., 2010. Measuring Soil Water Content With Time Domain Reflectometry. Soil Science, 175(10), 469-473. \url{doi:10.1097/ss.0b013e3181f55aa3} 
 
-Malicki, M.A., Plagge, R., Roth, C.H., 1996. Improving the calibration of dielectric TDR soil moisture determination taking into account the solid soil. Eur. J. Soil Sci. 47, 357–366. https://doi.org/10.1111/j.1365-2389.1996.tb01409.x
+Malicki, M.A., Plagge, R., Roth, C.H., 1996. Improving the calibration of dielectric TDR soil moisture determination taking into account the solid soil. Eur. J. Soil Sci. 47, 357-366. \url{https://doi.org/10.1111/j.1365-2389.1996.tb01409.x}
 
-Mohamed, A.-M.O., Paleologos, E.K., 2018. Dielectric Permittivity and Moisture Content, in: Fundamentals of Geoenvironmental Engineering. Elsevier, pp. 581–637. https://doi.org/10.1016/B978-0-12-804830-6.00016-8
+Mohamed, A.-M.O., Paleologos, E.K., 2018. Dielectric Permittivity and Moisture Content, in: Fundamentals of Geoenvironmental Engineering. Elsevier, pp. 581-637. \url{https://doi.org/10.1016/B978-0-12-804830-6.00016-8}
 
-Singh, J., Lo, T., Rudnick, D.R., Irmak, S., Blanco-Canqui, H., 2019. Quantifying and correcting for clay content effects on soil water measurement by reflectometers. Agric. Water Manage. 216, 390–399. https://doi.org/10.1016/j.agwat.2019.02.024
+Singh, J., Lo, T., Rudnick, D.R., Irmak, S., Blanco-Canqui, H., 2019. Quantifying and correcting for clay content effects on soil water measurement by reflectometers. Agric. Water Manage. 216, 390-399. \url{https://doi.org/10.1016/j.agwat.2019.02.024}
 
-Topp, G., Davis, J., Annan, A., 1980. Electromagnetic Determination of Soil-Water Content - Measurements in Coaxial Transmission-Lines. Water Resour. Res. 16, 574–582. https://doi.org/10.1029/WR016i003p00574
+Topp, G., Davis, J., Annan, A., 1980. Electromagnetic Determination of Soil-Water Content - Measurements in Coaxial Transmission-Lines. Water Resour. Res. 16, 574-582. \url{https://doi.org/10.1029/WR016i003p00574}
 
-Zhao, Y., Ling, D., Wang, Y., Huang, B., Wang, H., 2016. Study on a calibration equation for soil water content in field tests using time domain reflectometry. J. Zhejiang Univ.-SCI A 17, 240–252. https://doi.org/10.1631/jzus.A1500065
+Zhao, Y., Ling, D., Wang, Y., Huang, B., Wang, H., 2016. Study on a calibration equation for soil water content in field tests using time domain reflectometry. J. Zhejiang Univ.-SCI A 17, 240-252. \url{https://doi.org/10.1631/jzus.A1500065}
 
 }
 \author{
@@ -225,7 +225,7 @@ eps2theta(epsdata = NULL, equation = "list")
   # "In the range 0 to 1 Volt (corresponding to a soil moisture range 0 to ~ 0.55 by volume),
   # this relationship can be fitted very precisely by a 3rd order polynomial"
   #manual, p. 11 states:
-  #"For very high moisture contents (θ > 0.5 m3.m-3), the polynomial equation should be used.  This is usually only necessary for organic soils."
+  #"For very high moisture contents (theta > 0.5 m3*m-3), the polynomial equation should be used.  This is usually only necessary for organic soils."
   # However, the polynom obviously differs considerably from the points in the linearization table
   # especially for U > 1 V or theta > 0.5, so only the statement on page 10 seems correct.
   
