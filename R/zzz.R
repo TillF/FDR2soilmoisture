@@ -5,7 +5,7 @@
   # replace polynom (inappropriate over 0.55 V(Theta Probe) ) with converted lookup table ####
   for (probe in c("Theta Probe")) #for PR2, this problem does not exist
   {
-    lin_file = system.file("example", paste0("linearization_", sub(probe, pattern = " ", repl="_"), ".txt"), package = "FDR2soilmoisture") #Linearisation table from DeltaT ThetaProbe manual. p. 14
+    lin_file = system.file("example", paste0("linearization_", sub(probe, pattern = " ", replacement="_"), ".txt"), package = "FDR2soilmoisture") #Linearisation table from DeltaT ThetaProbe manual. p. 14
     lin_data = utils::read.table(lin_file, nrow=-1, sep="\t", stringsAsFactors = FALSE, header=TRUE, na.strings = c("NA",""))  #load the file
     
     if (probe =="Theta Probe")
@@ -30,7 +30,7 @@
     eps_min = stats::approx(x=lin_data_min$voltage, y=lin_data_min$epsilon, xout = V)$y
     
     #do averaging between "mineral" and "organic", disregarding NAs
-    eps_mean = apply(X = cbind(eps_min, eps_org), MAR=1, FUN=mean, na.rm=TRUE)
+    eps_mean = apply(X = cbind(eps_min, eps_org), MARGIN =1, FUN=mean, na.rm=TRUE)
     
     #extend data table to epsilon=eps_air using manufacturer's equation
       eps_mean = c(eps_air, eps_mean)
@@ -39,7 +39,7 @@
     #update V2eps-function
     #globvars$V2eps_Theta_Probe_table = stats::approxfun(x=V_mean, y = eps_mean)
     #assign(".V2eps_Theta_Probe_table", value = stats::approxfun(x=V_mean, y = eps_mean), envir = parent.env(environment())) 
-    assign(paste0(".V2eps_", sub(probe, pattern = " ", repl="_"), "_table"), value = stats::approxfun(x=V_mean, y = eps_mean), envir = parent.env(environment())) 
+    assign(paste0(".V2eps_", sub(probe, pattern = " ", replacement="_"), "_table"), value = stats::approxfun(x=V_mean, y = eps_mean), envir = parent.env(environment())) 
     #.V2eps_PR2_table(v = 1.067)
     #update eps2V-function
     tt = .eps2V #get current values of list of conversion functions
