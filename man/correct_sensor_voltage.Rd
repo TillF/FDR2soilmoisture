@@ -9,7 +9,7 @@ Correct sensor outputs (Voltage, Permittivity)
 \description{
 \code{correct_sensor_values} converts the measured sensor output (voltage, permittivity, counts) to "should-be" values stated by the manufacturer using user-supplied calibration values.
 
-\code{correct_sensor_values_all} does correct alsp values outside the in calibdata provided reference values (see \code{adjust_range}).
+\code{correct_sensor_values_all} does correct also values outside the in calibdata provided reference values (see \code{adjust_range}).
 
 }
 \usage{
