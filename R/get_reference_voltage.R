@@ -21,6 +21,10 @@ get_reference_values<-function(serial_no=NULL, probe_id=NULL,var_type = NULL, ri
   
   if (is.null(calib_data$var_type) | any(!is.character(calib_data$var_type))) stop("'calib_data' must have a character column 'var_type'")
   
+  if(is.null(calib_data$Temp)){
+    calib_data$Temp = rep(NA,nrow(calib_data))
+  }
+  
   # check if calibration for specific probe or with serial  number
   if (!is.null(serial_no))
     arg = "serial_no"    else
@@ -41,7 +45,7 @@ get_reference_values<-function(serial_no=NULL, probe_id=NULL,var_type = NULL, ri
   
   var_air_meas = calib_data$air_measurement[cur_row]
   var_h2o_meas = calib_data$water_measurement[cur_row]
-  
+  temp_meas = calib_data$Temp[cur_row]
   
   type = calib_data$type[cur_row]
   
@@ -52,9 +56,8 @@ get_reference_values<-function(serial_no=NULL, probe_id=NULL,var_type = NULL, ri
       use_medians=TRUE 
       fill_var_h2o="found"
       fill_var_air="found"
-    }  
-  else
-    stop(paste0("NA-coefficients for ", arg, "='", get(arg), "' and ring-no='", ring_no, "'. Use 'warnOnly=TRUE' to use medians instead.")) 
+    }else
+      stop(paste0("NA-coefficients for ", arg, "='", get(arg), "' and ring-no='", ring_no, "'. Use 'warnOnly=TRUE' to use medians instead.")) 
   
   
   #if coefficients are missing for SOME rings, use the median of all rings of *this* probe
@@ -68,7 +71,11 @@ get_reference_values<-function(serial_no=NULL, probe_id=NULL,var_type = NULL, ri
   {  
     var_h2o_meas = median(calib_data$water_measurement[cur_row], na.rm=TRUE)
     fill_var_h2o = "median(this probe, all rings)"
-  }  
+  }
+  if (is.na(temp_meas))
+  {
+    temp_meas = median(calib_data$Temp[cur_row], na.rm=TRUE)
+  }
   
   #if coefficients are missing for ALL rings, use the median of all probes of this type
   cur_row = calib_data$ring_no == ring_no & calib_data$type == type & calib_data$var_type == var_type
@@ -82,6 +89,12 @@ get_reference_values<-function(serial_no=NULL, probe_id=NULL,var_type = NULL, ri
     var_h2o_meas = median(calib_data$water_measurement[cur_row], na.rm=TRUE)
     fill_var_h2o = paste0("median(type='", type,"', ring_no='", ring_no)
   }
+  if (is.na(temp_meas))
+  {
+    temp_meas = median(calib_data$Temp[cur_row], na.rm=TRUE)
+  }
+  
+  
   if (use_medians)
     warning(paste0("Found NA-coefficient(s) for ", arg, "='", get(arg), "' and ring-no='", ring_no, 
                    "'.\nvar_air_", fill_var_air, ")=", var_air_meas, 
@@ -93,7 +106,7 @@ get_reference_values<-function(serial_no=NULL, probe_id=NULL,var_type = NULL, ri
     var_h2o_meas = var_h2o_meas / 1000
     }
     
-  return(list(var_air_meas=var_air_meas, var_h2o_meas=var_h2o_meas, type=type))
+  return(list(var_air_meas=var_air_meas, var_h2o_meas=var_h2o_meas, type=type, temp_meas=temp_meas))
 }
 
 
@@ -102,12 +115,19 @@ get_reference_voltage = function(serial_no=NULL, probe_id=NULL, ring_no=1, calib
 
 { warning("You are using an outdated function. Please use get_reference_values().")
   
+  #check for var_type in calibdata
   if(!("vartype" %in% colnames(calib_data))){
     calib_data$vartype = rep("Voltage",nrow(calib_data))
   }
   
-  if(colnames(calib_data) != c("probe_id", "ring_no", "air_measurement", "water_measurement", "remarks", "type", "serial_no", "date","var_type")){
-    colnames(calib_data) = c("probe_id", "ring_no", "air_measurement", "water_measurement", "remarks", "type", "serial_no", "date","var_type")
+  #check for Temperature column in calibdata
+  if(!("Temp" %in% colnames(calib_data))){
+    calib_data$Temp = rep(NA,nrow(calib_data))
+  }
+  
+  #rename columns
+  if(colnames(calib_data) != c("probe_id", "ring_no", "air_measurement", "water_measurement", "remarks", "type", "serial_no", "date","var_type","Temp")){
+    colnames(calib_data) = c("probe_id", "ring_no", "air_measurement", "water_measurement", "remarks", "type", "serial_no", "date","var_type","Temp")
   }
   
   #call new function

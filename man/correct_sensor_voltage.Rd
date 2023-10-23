@@ -71,6 +71,7 @@ With \code{correct_sensor_values()} corrections with two refference points can a
 \item{\code{type}: must contain the substrings "Theta Probe" OR "PR2". Used for selecting the corresponding manufacturer's conversion functions.} 
 \item{\code{date}: Date of calibration.}
 \item{\code{var_type}: Type of meassured variable ("Voltage"," Permittivity" or "Counts"). Necessary for \code{correct_sensor_values()}}
+\item{\code{Temp}: Temperature of water (default 20 degree Celsius)
 }
 The directory \code{example} of the package holds an example text file.
 

@@ -53,6 +53,7 @@ correct_sensor_values = function(values, serial_no=NULL, probe_id=NULL,var_type=
       
       unique_settings[ss, c("var_air_meas", "var_h2o_meas")] = c(tt$var_air_meas, tt$var_h2o_meas)
       unique_settings[ss, "type"] = tt$type
+      unique_settings[ss, "temp_meas"] = tt$temp_meas
       
       #check consistency between maximum recorded voltages and calibration voltage for water
       V_range_measured = quantile(values[cur_rows], probs = c(0.01, 0.99), na.rm=TRUE) #get range of voltage measured, discarding outliers
@@ -145,14 +146,16 @@ correct_sensor_values = function(values, serial_no=NULL, probe_id=NULL,var_type=
                                          var_air_meas = unique_settings[ss, "var_air_meas"],
                                          var_h2o_meas = unique_settings[ss, "var_h2o_meas"],
                                          type=unique_settings[ss, "type"],
-                                         var_type=unique_settings[ss, "var_type"], ...)
+                                         var_type=unique_settings[ss, "var_type"],
+                                         temp = unique_settings[ss, "temp_meas"], ...)
       } else{
         #use normal values
         V_corrected[cur_rows] = var_corr(x = values[cur_rows], 
                                          var_air_meas = unique_settings[ss, "var_air_meas"],
                                          var_h2o_meas = unique_settings[ss, "var_h2o_meas"],
                                          type=unique_settings[ss, "type"],
-                                         var_type=unique_settings[ss, "var_type"], ...)
+                                         var_type=unique_settings[ss, "var_type"],
+                                         temp = unique_settings[ss, "temp_meas"], ...)
       }
       
     }
@@ -240,6 +243,7 @@ correct_sensor_values_all = function(values, serial_no=NULL, probe_id=NULL,var_t
       
       unique_settings[ss, c("var_air_meas", "var_h2o_meas")] = c(tt$var_air_meas, tt$var_h2o_meas)
       unique_settings[ss, "type"] = tt$type
+      unique_settings[ss, "temp_meas"] = tt$temp_meas
       
       #check consistency between maximum recorded voltages and calibration voltage for water
       values_range_measured = quantile(values[cur_rows], probs = c(0.01, 0.99), na.rm=TRUE) #get range of voltage measured, discarding outliers
@@ -332,14 +336,16 @@ correct_sensor_values_all = function(values, serial_no=NULL, probe_id=NULL,var_t
                                               var_air_meas = unique_settings[ss, "var_air_meas"],
                                               var_h2o_meas = unique_settings[ss, "var_h2o_meas"],
                                               type=unique_settings[ss, "type"],
-                                              var_type=unique_settings[ss, "var_type"], ...)
+                                              var_type=unique_settings[ss, "var_type"],
+                                              temp = unique_settings[ss, "temp_meas"],...)
       } else{
         #use normal values
         values_corrected[cur_rows] = var_corr(x = values[cur_rows], 
                                               var_air_meas = unique_settings[ss, "var_air_meas"],
                                               var_h2o_meas = unique_settings[ss, "var_h2o_meas"],
                                               type=unique_settings[ss, "type"],
-                                              var_type=unique_settings[ss, "var_type"], ...)
+                                              var_type=unique_settings[ss, "var_type"],
+                                              temp = unique_settings[ss, "temp_meas"],...)
       }
       
     }
