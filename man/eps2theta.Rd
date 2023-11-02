@@ -128,9 +128,9 @@ The respective equations used are:
   	
      
   \item \code{"ToppEtal1980"} (Topp et al., 1980):
-  \deqn{\theta =  -0.053+ 2.93e-2*\epsilon -5.5e-4*\epsilon^2 + 4.3e-6*\epsilon^3
+  \deqn{\theta =  -0.053+ 2.92e-2*\epsilon -5.5e-4*\epsilon^2 + 4.3e-6*\epsilon^3
   }{%
-  \theta = -0.053+ 2.93e-2*\epsilon -5.5e-4*\epsilon^2 + 4.3e-6*\epsilon^3
+  \theta = -0.053+ 2.92e-2*\epsilon -5.5e-4*\epsilon^2 + 4.3e-6*\epsilon^3
   }
   
   \item \code{"ZhaoEtal2016"} (Zhao et al., 2016):
@@ -167,6 +167,8 @@ Mohamed, A.-M.O., Paleologos, E.K., 2018. Dielectric Permittivity and Moisture C
 Singh, J., Lo, T., Rudnick, D.R., Irmak, S., Blanco-Canqui, H., 2019. Quantifying and correcting for clay content effects on soil water measurement by reflectometers. Agric. Water Manage. 216, 390-399. \url{https://doi.org/10.1016/j.agwat.2019.02.024}
 
 Topp, G., Davis, J., Annan, A., 1980. Electromagnetic Determination of Soil-Water Content - Measurements in Coaxial Transmission-Lines. Water Resour. Res. 16, 574-582. \url{https://doi.org/10.1029/WR016i003p00574}
+
+Vaz, C. & Jones, Scott & Meding, Stephen & Tuller, Markus. (2013). Evaluation of Standard Calibration Functions for Eight Electromagnetic Soil Moisture Sensors. Vadose Zone Journal. 12. 10.2136/vzj2012.0160. \url{https://doi.org/10.2136/vzj2012.0160}
 
 Zhao, Y., Ling, D., Wang, Y., Huang, B., Wang, H., 2016. Study on a calibration equation for soil water content in field tests using time domain reflectometry. J. Zhejiang Univ.-SCI A 17, 240-252. \url{https://doi.org/10.1631/jzus.A1500065}
 
