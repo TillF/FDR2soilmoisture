@@ -4,7 +4,7 @@
 get_reference_values<-function(serial_no=NULL, probe_id=NULL,var_type = NULL, ring_no=1, calib_data, warnOnly=FALSE)
   #retrieve the values of calibration voltage from the supplied data frame
 {
-  # prevent colname error
+  # prevent colname error from older scripts
   if(("voltage_air_mV" %in% colnames(calib_data))){
     colnames(calib_data)[colnames(calib_data)=="voltage_air_mV"] = "air_measurement"
   }
@@ -12,17 +12,21 @@ get_reference_values<-function(serial_no=NULL, probe_id=NULL,var_type = NULL, ri
     colnames(calib_data)[colnames(calib_data)=="voltage_water_mV"] = "water_measurement"
   }
   
-  
-  # check if everythin gis given correctly
+  # check if everything is given correctly
   if (!is.null(serial_no) & !is.null(probe_id)) stop("Either serial_no OR probe_id must be specified")
   if (!is.null(serial_no) & !is.null(probe_id)) stop("Either serial_no OR probe_id must be specified")
   if (is.null(calib_data$air_measurement)   | any(!is.numeric(calib_data$air_measurement  ))) stop("'calib_data' must have a numeric column 'air_measurement'")
-  if (is.null(calib_data$water_measurement) | any(!is.numeric(calib_data$water_measurement))) stop("'calib_data' must have a numeric column 'air_measurement'")
+  if (is.null(calib_data$water_measurement) | any(!is.numeric(calib_data$water_measurement))) stop("'calib_data' must have a numeric column 'water_measurement'")
   
   if (is.null(calib_data$var_type) | any(!is.character(calib_data$var_type))) stop("'calib_data' must have a character column 'var_type'")
   
-  if(is.null(calib_data$Temp)){
-    calib_data$Temp = rep(NA,nrow(calib_data))
+  if(is.null(calib_data$temp)){
+    calib_data$temp = rep(NA,nrow(calib_data))
+  }
+  
+  #last check
+  if(!all(c("probe_id", "ring_no", "air_measurement", "water_measurement", "remarks", "type", "serial_no", "date", "var_type", "temp") %in% colnames(calib_data))){
+    stop("'calib_data' is not correctly given, please see help")
   }
   
   # check if calibration for specific probe or with serial  number
@@ -45,7 +49,7 @@ get_reference_values<-function(serial_no=NULL, probe_id=NULL,var_type = NULL, ri
   
   var_air_meas = calib_data$air_measurement[cur_row]
   var_h2o_meas = calib_data$water_measurement[cur_row]
-  temp_meas = calib_data$Temp[cur_row]
+  temp_meas = calib_data$temp[cur_row]
   
   type = calib_data$type[cur_row]
   
@@ -74,7 +78,7 @@ get_reference_values<-function(serial_no=NULL, probe_id=NULL,var_type = NULL, ri
   }
   if (is.na(temp_meas))
   {
-    temp_meas = median(calib_data$Temp[cur_row], na.rm=TRUE)
+    temp_meas = median(calib_data$temp[cur_row], na.rm=TRUE)
   }
   
   #if coefficients are missing for ALL rings, use the median of all probes of this type
@@ -91,7 +95,7 @@ get_reference_values<-function(serial_no=NULL, probe_id=NULL,var_type = NULL, ri
   }
   if (is.na(temp_meas))
   {
-    temp_meas = median(calib_data$Temp[cur_row], na.rm=TRUE)
+    temp_meas = median(calib_data$temp[cur_row], na.rm=TRUE)
   }
   
   
@@ -116,22 +120,22 @@ get_reference_voltage = function(serial_no=NULL, probe_id=NULL, ring_no=1, calib
 { warning("You are using an outdated function. Please use get_reference_values().")
   
   #check for var_type in calibdata
-  if(!("vartype" %in% colnames(calib_data))){
-    calib_data$vartype = rep("Voltage",nrow(calib_data))
+  if(!("var_type" %in% colnames(calib_data))){
+    calib_data$var_type = rep("Voltage",nrow(calib_data))
   }
   
   #check for Temperature column in calibdata
-  if(!("Temp" %in% colnames(calib_data))){
-    calib_data$Temp = rep(NA,nrow(calib_data))
+  if(!("temp" %in% colnames(calib_data))){
+    calib_data$temp = rep(NA,nrow(calib_data))
   }
   
-  #rename columns
-  if(colnames(calib_data) != c("probe_id", "ring_no", "air_measurement", "water_measurement", "remarks", "type", "serial_no", "date","var_type","Temp")){
-    colnames(calib_data) = c("probe_id", "ring_no", "air_measurement", "water_measurement", "remarks", "type", "serial_no", "date","var_type","Temp")
-  }
+  #rename columns if not the same
+  #if(sum(colnames(calib_data) != c("probe_id", "ring_no", "air_measurement", "water_measurement", "remarks", "type", "serial_no", "date", "var_type", "temp")) != 0){
+  #  colnames(calib_data) = c("probe_id", "ring_no", "air_measurement", "water_measurement", "remarks", "type", "serial_no", "date", "var_type", "temp")
+  #}
   
   #call new function
-  output=get_reference_values(serial_no=serial_no, probe_id=probe_id,var_type = "Voltage", ring_no=1, calib_data=calib_data, warnOnly=warnOnly)
+  output=get_reference_values(serial_no=serial_no, probe_id=probe_id,var_type = "Voltage", ring_no = ring_no, calib_data=calib_data, warnOnly=warnOnly)
     
   return(list(output))
 }

@@ -1,4 +1,4 @@
-probe_id	ring_no	air_measurement	water_measurement	remarks	type	serial_no	date	var_type	Temp
+probe_id	ring_no	air_measurement	water_measurement	remarks	type	serial_no	date	var_type	temp
 999	1			dummy placeholder, to be used for unknown devices	Theta Probe	Theta Probe	01.01.2000	Voltage	
 999	1			dummy placeholder, to be used for unknown devices	PR2, analogue	PR2, analogue	01.01.2000	Voltage	
 999	2			dummy placeholder, to be used for unknown devices	PR2, analogue	PR2, analogue	01.01.2000	Voltage	
@@ -260,6 +260,9 @@ B2_2	1	8	1129	Grosse	Theta Probe	56/029	24.05.2023	Voltage
 B2_3	1	0	1154	Grosse	Theta Probe	323/005	24.05.2023	Voltage	
 C1_1	1	-2	1140	Grosse	Theta Probe	49/042	24.05.2023	Voltage	
 C2_1	1	7	1124	Grosse	Theta Probe	78/012	24.05.2023	Voltage	
+999	1	NA	NA		PR2, SDI-12	042-081	20.12.2022	Voltage	
+31.1	1	NA	NA		PR2, SDI-12	042-082	20.12.2022	Voltage	
+32.1	1	NA	NA		PR2, SDI-12	039-034	20.12.2022	Voltage	
 999	1	0	1081	Bauer	Theta Probe	97/084	20.09.2023	Voltage	21.3
 999	1	0	1075	Bauer	Theta Probe	327/084	20.09.2023	Voltage	21.3
 999	1	1	1081	Bauer	Theta Probe	321/044	20.09.2023	Voltage	21.3
