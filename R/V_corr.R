@@ -22,26 +22,28 @@ var_corr = function(x, var_air_meas, var_h2o_meas, type, var_type, temp, ...)
   eps_0 <- eps_air
   eps_1 <- eps_h2o
   
-  if(is.na(temp)){
-    temp = 20
-    warning("Since no temperature \"temp\" is given in calib_data, permittivity of water at a temperature of 20 degree is used as default\n")
-  }
-  
-  #use iapws equation if package is installed
-  if(!require("iapws", quietly = TRUE)){
-    eps_1 <- eps_water(T=temp, equ ="Weast86")
-    warning("eps_water(T=20, equ =\"Weast86\") is used to calculate the temperature dependece of epsilon.
+  if (is.na(temp)) {
+    # temp = 20
+    warning("Since no temperature \"temp\" is given in calib_data, a permittivity of 81 (ca. 18°C) is used for water as default\n")
+  } else {
+    #use iapws equation if package is installed
+    if (!requireNamespace("iapws", quietly = TRUE)) {
+      eps_1 <- eps_water(T = temp, equ = "Weast86")
+      warning("eps_water(equ =\"Weast86\") is used to calculate the temperature dependece of epsilon.
             Consider the installation of the iapws package (see ?eps_water) or the usage of individual permittivity reference values (see ?correct_sensor_values).")
-  }else{
-    eps_1 <- eps_water(T=temp, equ ="iapws")
+    } else {
+      eps_1 <- eps_water(T = temp, equ = "iapws")
+    }
   }
   
+  # in case individual permittivity values were given
   if (!is.null(list(...)$epsilon_0)) {
     eps_0 <- list(...)$epsilon_0
     #print("You are using your own reference values")
     }
   if (!is.null(list(...)$epsilon_1)) {
     eps_1 <- list(...)$epsilon_1
+    #print("You are using your own reference values")
     }
   
 

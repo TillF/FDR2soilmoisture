@@ -76,10 +76,10 @@ get_reference_values<-function(serial_no=NULL, probe_id=NULL,var_type = NULL, ri
     var_h2o_meas = median(calib_data$water_measurement[cur_row], na.rm=TRUE)
     fill_var_h2o = "median(this probe, all rings)"
   }
-  if (is.na(temp_meas))
-  {
-    temp_meas = median(calib_data$temp[cur_row], na.rm=TRUE)
-  }
+  #if (is.na(temp_meas))
+  #{
+  #  temp_meas = median(calib_data$temp[cur_row], na.rm=TRUE)
+  #}
   
   #if coefficients are missing for ALL rings, use the median of all probes of this type
   cur_row = calib_data$ring_no == ring_no & calib_data$type == type & calib_data$var_type == var_type
@@ -93,23 +93,22 @@ get_reference_values<-function(serial_no=NULL, probe_id=NULL,var_type = NULL, ri
     var_h2o_meas = median(calib_data$water_measurement[cur_row], na.rm=TRUE)
     fill_var_h2o = paste0("median(type='", type,"', ring_no='", ring_no)
   }
-  if (is.na(temp_meas))
-  {
-    temp_meas = median(calib_data$temp[cur_row], na.rm=TRUE)
-  }
+  #if (is.na(temp_meas))
+  #{
+  #  temp_meas = median(calib_data$temp[cur_row], na.rm=TRUE)
+  #}
   
+    # Since calibdata for voltage are in mV
+  if(var_type=="Voltage"){
+    var_air_meas = var_air_meas / 1000
+    var_h2o_meas = var_h2o_meas / 1000
+    }
   
   if (use_medians)
     warning(paste0("Found NA-coefficient(s) for ", arg, "='", get(arg), "' and ring-no='", ring_no, 
                    "'.\nvar_air_", fill_var_air, ")=", var_air_meas, 
                    "\nvar_h2o_", fill_var_h2o, ")=", var_h2o_meas))
   
-  # Since calibdata for voltage are in mV
-  if(var_type=="Voltage"){
-    var_air_meas = var_air_meas / 1000
-    var_h2o_meas = var_h2o_meas / 1000
-    }
-    
   return(list(var_air_meas=var_air_meas, var_h2o_meas=var_h2o_meas, type=type, temp_meas=temp_meas))
 }
 
