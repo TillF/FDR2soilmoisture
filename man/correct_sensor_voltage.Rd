@@ -1,7 +1,6 @@
 \name{correct_sensor_voltage}
 \alias{correct_sensor_voltage}
 \alias{correct_sensor_values}
-\alias{correct_sensor_values_all}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Correct sensor outputs (Voltage, Permittivity)
@@ -9,13 +8,9 @@ Correct sensor outputs (Voltage, Permittivity)
 \description{
 \code{correct_sensor_values} converts the measured sensor output (voltage, permittivity, counts) to "should-be" values stated by the manufacturer using user-supplied calibration values.
 
-\code{correct_sensor_values_all} does correct also values outside the in calibdata provided reference values (see \code{adjust_range}).
-
 }
 \usage{
-correct_sensor_values(values, serial_no=NULL, probe_id=NULL,var_type=NULL, ring_no=1, calib_data, warnOnly=FALSE, adjust_range=TRUE, ...)
-
-correct_sensor_values_all(values, serial_no=NULL, probe_id=NULL,var_type=NULL, ring_no=1, calib_data, warnOnly=FALSE, adjust_range=TRUE, ...)
+correct_sensor_values(values, serial_no=NULL, probe_id=NULL,var_type=NULL, ring_no=1, calib_data, warnOnly=FALSE, adjust_range=TRUE, discard_outlier=TRUE, ...)
 
 correct_sensor_voltage(V, serial_no=NULL, probe_id=NULL, ring_no=1, calib_data, warnOnly=FALSE, adjust_range=TRUE)
 
@@ -47,10 +42,13 @@ correct_sensor_voltage(V, serial_no=NULL, probe_id=NULL, ring_no=1, calib_data, 
 }
 
   \item{adjust_range}{
-  \code{=True}: When this option is enabled, the 99-percentile of voltages supplied in \code{V} that is above the the calibration voltages \code{voltage_water_mV}, \code{voltage_water_mV} is enlarged accordingly, i.e. assuming that this is a higher maximum value that should rather be used. Analoguously for values below \code{voltage_air_mV}.
-  If disabled, voltages outside the in the \code{calib_data} given interval are converted to NA.
+  \code{=True}: If the option is enabled and the 99th percentile of the in \code{values} given values is outside the interval [\code{air_measurement}, \code{water_measurement}] (calib_data), \code{air_measurement} and \code{water_measurement} are extended to the 99th percentile accordingly, i.e. assuming that this is a higher maximum or lower minimum value that should rather be used. When disabled values outside the interval are treated as defined in \code{discard_outlier}.
 }
-\item{...}{
+  \item{discard_outlier}{
+  \code{=True}: If enabled, all values outside the possible adjusted interval between \code{air_measurement} and \code{water_measurement} (see \code{adjust_range}), will be set to \code{NA}.
+  If disabled all \code{values} are corrected.
+}
+  \item{...}{
   Further individual calibraion parameters for SMT100 \code{alpha}, \code{beta}, \code{gamma} to pass to \code{\link{counts2eps}} and not default permittivity reference values for the two calibration points "air" \code{epsilon_0} and "water" \code{epsilon_1}}
 }
 
@@ -71,15 +69,12 @@ With \code{correct_sensor_values()} corrections with two reference points can al
 \item{\code{type}: must contain the substrings "Theta Probe" OR "PR2". Used for selecting the corresponding manufacturer's conversion functions.} 
 \item{\code{date}: Date of calibration.}
 \item{\code{var_type}: Type of meassured variable ("Voltage"," Permittivity" or "Counts"). Necessary for \code{correct_sensor_values()}}
-\item{\code{temp}: Temperature of water (default 20 degree Celsius)}
+\item{\code{temp}: Temperature of water}
 
 The directory \code{example} of the package holds an example text file
 }
 
-With \code{warnOnly=TRUE} if coefficients are missing for SOME rings, the median of all rings of *this* probe wil be used. If coefficients are missing for ALL rings, the median values of all probes of this type is used. This can be used for 
-uncalibrated devices by supplying placeholders for \code{serial_num}, which refernece to a dummy records with all coefficients being NA.
-
-\code{correct_sensor_values_all()} can be used if a correction of values outside the in the calib_data given interval interval is desired and an adjustment of highest and lowest values to the 99--percentile (\code{adjust_range=TRUE}) is not useful.
+With \code{warnOnly=TRUE} if coefficients are missing for SOME rings, the median of all rings of *this* probe wil be used. If coefficients are missing for ALL rings, the median values of all probes of this type is used. This can be used for uncalibrated devices by supplying placeholders for \code{serial_num}, which refernece to a dummy records with all coefficients being NA.
 
 With the additional arguments of \code{epsilon_0 =} and \code{epsilon_1 = } it is possbile to set own permittivity values for the two calibration points. This provides the possiblility to use the two point correction also for other calibration mediums, changing also the calibdata columns (\code{air_measurement} and \code{water_measurement} to the used calibration mediums accordingly.
 
@@ -89,7 +84,6 @@ With the additional arguments of \code{epsilon_0 =} and \code{epsilon_1 = } it i
 
 \value{
  \code{correct_sensor_value()}: Respective corrected input values [V or -]
- \code{correct_sensor_value_all()}: Respective corrected input values [V or -]
  \code{correct_sensor_voltage()}: Corrected voltage value [V]
 }
 \references{
@@ -102,7 +96,9 @@ Till Francke, Jakob Terschluesen
 %%  ~~further notes~~
 }
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
+\section{Warnings}{
+If you are using the correction for mutiple sensors in a loop, it is possible that you get multiple warnings of the same type, especially using the outdated function \code{correct_sensor_voltage()}. It can help to set \code{options(nwarnings = 10000)} before you apply the function and use \code{summary(warnings())} afterwards to get an overview.
+}
 
 \seealso{
 %% ~~objects to See Also as \code{\link{help}}, ~~~
@@ -111,7 +107,7 @@ Till Francke, Jakob Terschluesen
 
 calib_file = system.file("example", "sensor_calibration.txt", package = "FDR2soilmoisture") #replace this by your own calibration file
 calib_data = read.table(calib_file, nrow=-1, sep="\t", stringsAsFactors = FALSE, header=TRUE, na.strings = c("NA",""))  #load the file
-V_corr = correct_sensor_values(values=0.8, serial_no = "114/035", calib_data = calib_data, var_type = "Voltage") #apply sensor-specific voltage calibration
+V_corr = correct_sensor_values(values=0.8, serial_no = "114/035", calib_data = calib_data, var_type = "Voltage", warnOnly=FALSE, adjust_range=TRUE, discard_outlier=TRUE) #apply sensor-specific voltage calibration
 
 }
 
