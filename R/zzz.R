@@ -8,14 +8,14 @@
     lin_file = system.file("example", paste0("linearization_", sub(probe, pattern = " ", replacement="_"), ".txt"), package = "FDR2soilmoisture") #Linearisation table from DeltaT ThetaProbe manual. p. 14
     lin_data = utils::read.table(lin_file, nrow=-1, sep="\t", stringsAsFactors = FALSE, header=TRUE, na.strings = c("NA",""))  #load the file
     
-    if (probe =="Theta Probe")
-      lin_data = lin_data[-c(1, nrow(lin_data)),] #remove first and last entry that served for extrapolation only
+    #if (probe =="Theta Probe")
+    #  lin_data = lin_data[-c(1, nrow(lin_data)),] #remove first and last entry that served for extrapolation only
     
     #reconstruct epsilon values
     epsilon_org = theta2eps(thetadata = data.frame(theta=lin_data$theta, 
-                                                   soil=rep("organic", nrow(lin_data))), equation = "deltaT_minorg")
+                                                   soil=rep("organic", nrow(lin_data))), equation = "deltaT_minorg",check_range = FALSE)
     epsilon_min = theta2eps(thetadata = data.frame(theta=lin_data$theta, 
-                                                   soil=rep("mineral", nrow(lin_data))), equation = "deltaT_minorg")
+                                                   soil=rep("mineral", nrow(lin_data))), equation = "deltaT_minorg",check_range = FALSE)
     
     #put into data frames
     lin_data_min = data.frame(epsilon=epsilon_min, voltage = lin_data$V_min)

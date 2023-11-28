@@ -10,7 +10,7 @@ Convert between epsilon (permittivity) and theta (volumetric water content) usin
 }
 \usage{
 eps2theta(epsdata,   equation)
-theta2eps(thetadata, equation)
+theta2eps(thetadata, equation, check_range = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -34,6 +34,9 @@ Equation to be used. Must be one of
 \code{"ToppEtal1980"}, 
 \code{"ZhaoEtal2016"}.
 
+}
+
+\item{check_range}{= TRUE. Raise error if theta is outside [0,1]
 }
 }
 \details{

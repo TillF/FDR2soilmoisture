@@ -1,6 +1,6 @@
 # functions for converting volumetric water content [%] to sensor permittivity [-]
 
-theta2eps <- function(thetadata, equation) {
+theta2eps <- function(thetadata, equation, check_range = TRUE) {
   required_fields <- list(
     deltaT_minorg = c("theta", "soil"), # ,
     # FerschEtal2017 = c("theta", "n"),
@@ -28,7 +28,8 @@ theta2eps <- function(thetadata, equation) {
     if (!(all(required_fields[[eq]] %in% names(thetadata)))) stop(paste0("Equation '", eq, "' needs the column(s) '", paste0(required_fields[[eq]], collapse = "', '"), "' in thetadata."))
   }
 
-  if (any(!is.na(thetadata$theta) & (
+  
+  if (check_range & any(!is.na(thetadata$theta) & (
     (thetadata$theta > 1) | (thetadata$theta < 0)
   ))) {
     stop("theta must be within [0..1] (volumetric water content).")
