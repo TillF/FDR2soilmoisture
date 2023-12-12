@@ -24,7 +24,7 @@ var_corr = function(x, var_air_meas, var_h2o_meas, type, var_type, temp, ...)
   
   if (is.na(temp)) {
     # temp = 20
-    warning("Since no temperature \"temp\" is given in calib_data, a permittivity of 81 (ca. 18°C) is used for water as default\n")
+    warning("Since no temperature \"temp\" is given in calib_data, a permittivity of 81 (ca. 18 degree Celsius) is used for water as default\n")
   } else {
     #use iapws equation if package is installed
     if (!requireNamespace("iapws", quietly = TRUE)) {

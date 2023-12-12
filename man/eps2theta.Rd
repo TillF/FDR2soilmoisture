@@ -247,7 +247,7 @@ eps2theta(epsdata = NULL, equation = "list")
   points(calib_data$water_measurement/1000, sqrt(rep(1, nrow(calib_data))), col="red")
 
   #compute corresponding corrected voltage for all sensors in calibration list
-  V_corr = sapply(FUN = correct_sensor_values, X = calib_data$serial_no,  V=V, calib_data=calib_data, adjust_range = FALSE,var_type = "Voltage")
+  V_corr = sapply(FUN = correct_sensor_values, X = calib_data$serial_no,  values= V, calib_data=calib_data, adjust_range = FALSE,var_type = "Voltage", discard_outlier=TRUE, warnOnly = TRUE)
   #...and the respective epsilon
   eps_corr = apply(FUN = V2eps, X =  V_corr,  MARGIN = 1, type="Theta Probe")
   #...and the respective theta
