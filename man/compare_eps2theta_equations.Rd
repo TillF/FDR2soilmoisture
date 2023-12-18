@@ -8,14 +8,20 @@ compare_eps2theta_equations
 Compare various equations for converting epsilon to theta by creating a plot and showing R2-values. The function uses the equations included in \code{\link{eps2theta}}. It also customizes some of them with fitted coefficients, plus some GLM variants using different link functions.
 }
 \usage{
-compare_eps2theta_equations(common_set, legend_args=NULL)
+compare_eps2theta_equations(common_set, legend_args=NULL,eq_subset=NULL, plot_extern = TRUE)
 }
 \arguments{
   \item{common_set}{
 	Data frame with observed data. See details. 
-}
-\item{legend_args}{
+  }
+  \item{legend_args}{
 	Arguments passed to \code{\link{legend}()} to create the legend for the plots. 
+  }
+  \item{eq_subset}{
+	Vector of equations to be used. See \code{\link{eps2theta}}
+	}
+  \item{plot_extern}{
+  Eneable to plot each plot in a seperate window
 }
 
 }
@@ -37,21 +43,24 @@ A list with the elements \code{r2_train, r2_train_ex, r2_test, rmse_train, rmse_
 
 Additionally, the function generates three figures:
 
-- a matrix of plots showing the tested equations and the respective R2-values (training and testing); 
+\enumerate{
+\item matrix of plots showing the tested equations and the respective R2-values (training and testing); 
 
-- a plot showing the behaviour of the equations over the range of epsilon-values (other data averaged). This plot can help to identify equations with implausible behaviour in extrapolation.
+\item a plot showing the behaviour of the equations over the range of epsilon-values (other data averaged). This plot can help to identify equations with implausible behaviour in extrapolation.
 
-- a scatterplot of R2-values (trimmed to at least -0.1) for all equations
+\item a scatterplot of R2-values (trimmed to at least -0.1) for all equations
 }
-\references{
+
+}
+%\references{
 %% ~put references to the literature/web site here ~
-}
+%}
 \author{
 Till Francke
 }
-\note{
+%\note{
 %%  ~~further notes~~
-}
+%}
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
@@ -70,7 +79,7 @@ Till Francke
   observations$theta = observations$theta / max(observations$theta)
   observations$training   = c(rep(TRUE, 50), rep(FALSE, 50)) #use the fisrt 50 for training, the rest for validation
 
-res = compare_eps2theta_equations(common_set=observations)
+res = compare_eps2theta_equations(common_set=observations, plot_extern=FALSE)
 
 }
 

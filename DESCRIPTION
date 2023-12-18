@@ -1,15 +1,18 @@
 Package: FDR2soilmoisture
 Type: Package
 Title: Processing data of FDR-measurements to obtain soil moisture
-Version: 0.163
-Date: 2023-03-09
-Author: Till Francke
+Version: 0.21
+Date: 2023-12-18
+Authors@R: c(person("Till", "Francke", role = c("aut", "cre"), email = "francke@uni-potsdam.de"),
+              person("Jakob", "Terschlüsen", role = "aut", email = "terschluesen@uni-potsdam.de")
+              )
+Author: Till Francke [aut, cre], Jakob Terschlüsen [aut]
 Maintainer: Till Francke <francke@uni-potsdam.de>
 Description: R-package for processing data of FDR-measurements (Frequency Domain Reflectometry) to obtain soil moisture. Obtain sensor specific calibrations, choose or create suitable conversion functions between voltage, permittivity and soil moisture. Customized for PR2 profile probes and Theta Probes (both produced by DeltaT). The following equations for converting epsilon (permittivity) to theta (volumetric water content) are included: deltaT, manufacturer's equation, Drnevich et al. (2005), Fersch et al. (2017), Jacobsen & Schjonning (1993), Ju et al. (2010), Malicki et al. (1996), Roth et al. (1992), Topp et al. (1980), Schaap et al. (1997), Zhao et al. (2016).
 License: WTFPL
-Depends: R (>= 3.2)
-Imports: RColorBrewer(>= 1.1-2)
-Suggests: nlmrt(>= 2016.3.2),
+Depends: R (>= 3.2.2)
+Imports: RColorBrewer(>= 1.1-2), utils, stats, graphics, grDevices
+Suggests: nlmrt(>= 2016.3.2), iapws(>= 1.1)
 URL: https://github.com/TillF/FDR2soilmoisture
 Keywords: FDR, frequency domain reflectometry, soil moisture, theta, permittivity, epsilon
 NeedsCompilation: no

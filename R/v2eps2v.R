@@ -49,7 +49,7 @@ V2eps = function(V, type)
   eps2V = function(eps, type) #wrapper for internal function created above
   {  
     #replace e.g. "PR2, analogue" by "PR2"
-    type = sub(x = type, pattern = paste0("^(", paste0(names(.eps2V), collapse="|" ), ").*"), repl="\\1") 
+    type = sub(x = type, pattern = paste0("^(", paste0(names(.eps2V), collapse="|" ), ").*"), replacement ="\\1") 
     if (!(type %in% names(.eps2V)))
       stop("Unknown probe type. Must be one of ('", paste0(names(.eps2V), collapse="', '"),"').")
     return(.eps2V[[type]](eps))

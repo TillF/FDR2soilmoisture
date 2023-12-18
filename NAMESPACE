@@ -1,1 +1,23 @@
-exportPattern("^[[:alpha:]]+")
+#exports
+#exportPattern("^[[:alpha:]]+") # all functions in package whose names start with letters will be exported
+
+export(
+  compare_eps2theta_equations,
+  correct_sensor_values, correct_sensor_voltage, 
+  counts2eps, eps2counts, eps2theta, eps2V, theta2eps, V2eps,
+  eps_water
+  )
+
+#only used inside package
+#export(eps_air, eps_h2o, V_corr, V_synth, var_corr, eps_synth, get_reference_values,get_reference_voltage, globvars, minV, probe_type)
+
+# imports
+importFrom(stats, coef, formula, glm, lm, lowess, median, nls, nls.control, optim, predict, quantile, approxfun, gaussian, quasibinomial)
+
+#importFrom(nlmrt, nlxb)
+
+importFrom(grDevices, extendrange, palette, windows, dev.new)
+
+importFrom(graphics, abline, legend, lines, mtext, par, points, text)
+
+importFrom(RColorBrewer, brewer.pal)
