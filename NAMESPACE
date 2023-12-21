@@ -5,7 +5,7 @@ export(
   compare_eps2theta_equations,
   correct_sensor_values, correct_sensor_voltage, 
   counts2eps, eps2counts, eps2theta, eps2V, theta2eps, V2eps,
-  eps_water
+  eps_water, globvars
   )
 
 #only used inside package
