@@ -38,7 +38,13 @@ eps2theta <- function(epsdata, equation) {
 
   theta <- NA
   if (equation == "deltaT_minorg") {
-    if (any(!(unique(epsdata$soil, na.rm = TRUE) %in% c("mineral", "organic", "clay")))) {
+    nas_soil = is.na(epsdata$soil) 
+    if (any(nas_soil | nas_clay))
+    {  
+      warning("Fields 'soil' contains NAs, assuming 'mineral'.")
+      epsdata$soil[nas_soil] = "mineral"
+    }  
+    if (any(!(unique(epsdata$soil) %in% c("mineral", "organic", "clay")))) {
       warning("Field 'soil' must be 'mineral' or 'organic'")
     }
     theta <- rep(NA, nrow(epsdata))
