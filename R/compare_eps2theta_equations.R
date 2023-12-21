@@ -141,6 +141,11 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
     for (i in 1:length(supported_eqs))
     {
       eq = names(supported_eqs)[i]
+      print(eq)
+      if (eq=="SinghEtal2019")
+      {  
+        b=33
+      }  
       missing_fields = setdiff (supported_eqs[[i]], names(common_set))
       if (length(missing_fields) > 0)
       {
@@ -420,7 +425,8 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
     #Drnevich et al (2005) adjusted ####
     required_fields = eps2theta(equation = "list")$DrnevichEtal2005
     if (all(required_fields %in% names(common_set)) &
-          any(grepl(eq_subset, pattern = "Drnevich")))
+          any(grepl(eq_subset, pattern = "Drnevich")) &
+        !all(is.na(common_set$cohesive)))
     {
       eq="theta_Drnevich_adj"
       #there must be at least two different classes, otherwise, the fitting fails
@@ -434,7 +440,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
       upper = c(a_coh=100, a_ncoh=100, b_coh=100, b_ncoh=100)
       
       #adjust formula, in case only one class (cohesive/non-cohesive) is present
-      if (sum(common_set$cohesive==1) == 0)   #no cohesive
+      if (sum(sapply(FUN=isTRUE, X=common_set$cohesive==1)) == 0)   #no cohesive
       {
         #remove cohesive terms 
         fmla = gsub(fmla, pattern="cohesive\\*[^ ]*", replacement="0") #remove cohesive coefficients
@@ -444,7 +450,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
         upper = upper[remove_this]
       }  
       
-      if (sum(common_set$cohesive==0) == 0)   #no non-cohesive
+      if (sum(sapply(FUN=isTRUE, X=common_set$cohesive==0)) == 0)   #no non-cohesive
       {
         #remove non-cohesive terms 
         fmla = gsub(fmla, pattern="\\(1-cohesive\\)\\*[^ ]*", replacement="0") #remove cohesive coefficients
@@ -732,10 +738,10 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
         dev.new(width = 40, height = 30) #open largest possible window in 4:3 format
       }
     }
-    llimit = min(0, quantile(r2_train_ex, probs=0.1, na.rm=TRUE))
+    llimit = min(0, quantile(r2_train_ex, probs=0.1, na.rm=TRUE), na.rm=TRUE)
     xcoords = pmax(llimit, r2_train_ex)
-    llimit = min(0, quantile(r2_test, probs=0.1, na.rm=TRUE))
-    ycoords = pmax(llimit, r2_test)
+    llimit = min(0, quantile(r2_test, probs=0.1, na.rm=TRUE), na.rm=TRUE)
+    ycoords = pmax(llimit, r2_test, na.rm=TRUE)
     xlab = ifelse(all(common_set$excluded==FALSE), "R2_training", "R2 training!ex")
     plot(xcoords, ycoords, xlab=xlab, ylab="R2 test")
     text(xcoords, ycoords, sub(names(r2_train_ex), pattern="theta_", replacement=""), cex=0.7, adj = c(0.5,0))

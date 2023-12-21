@@ -44,11 +44,11 @@ A list with the elements \code{r2_train, r2_train_ex, r2_test, rmse_train, rmse_
 Additionally, the function generates three figures:
 
 \enumerate{
-\item matrix of plots showing the tested equations and the respective R2-values (training and testing); 
+\item matrix of scatterplot illustrating the tested equations (theta_observed vs. theta_predicted) and the respective R2- and RMSE-values (*_train, *_train_ex, *_test); 
 
-\item a plot showing the behaviour of the equations over the range of epsilon-values (other data averaged). This plot can help to identify equations with implausible behaviour in extrapolation.
+\item a plot showing the behaviour of all equations over the range of epsilon-values (other data averaged). This plot can help to identify equations with implausible behaviour in extrapolation to low/high values of epsilon.
 
-\item a scatterplot of R2-values (trimmed to at least -0.1) for all equations
+\item a plot of R2-values of training vs. test (trimmed to at least -0.1) for all equations
 }
 
 }
