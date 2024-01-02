@@ -29,7 +29,7 @@ var_corr = function(x, var_air_meas, var_h2o_meas, type, var_type, temp, ...)
     #use iapws equation if package is installed
     if (!requireNamespace("iapws", quietly = TRUE)) {
       eps_1 <- eps_water(T = temp, equ = "Weast86")
-      warning("eps_water(equ =\"Weast86\") is used to calculate the temperature dependece of epsilon.
+      warning("eps_water(equ =\"Weast86\") is used to calculate the temperature dependence of epsilon.
             Consider the installation of the iapws package (see ?eps_water) or the usage of individual permittivity reference values (see ?correct_sensor_values).")
     } else {
       eps_1 <- eps_water(T = temp, equ = "iapws")

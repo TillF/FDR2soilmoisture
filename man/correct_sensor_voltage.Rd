@@ -1,16 +1,15 @@
-\name{correct_sensor_voltage}
+\name{correct_sensor_values}
 \alias{correct_sensor_voltage}
-\alias{correct_sensor_values}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Correct sensor outputs (Voltage, Permittivity)
+Correct sensor outputs (Voltage, Permittivity) with tow-point linear calibration. 
 }
 \description{
 \code{correct_sensor_values} converts the measured sensor output (voltage, permittivity, counts) to "should-be" values stated by the manufacturer using user-supplied calibration values.
 
 }
 \usage{
-correct_sensor_values(values, serial_no=NULL, probe_id=NULL,var_type=NULL, ring_no=1, calib_data, warnOnly=FALSE, adjust_range=TRUE, discard_outlier=TRUE, ...)
+correct_sensor_values(values, serial_no=NULL, probe_id=NULL, var_type=NULL, ring_no=1, calib_data, warnOnly=FALSE, adjust_range=TRUE, discard_outlier=TRUE, ...)
 
 correct_sensor_voltage(V, serial_no=NULL, probe_id=NULL, ring_no=1, calib_data, warnOnly=FALSE, adjust_range=TRUE)
 

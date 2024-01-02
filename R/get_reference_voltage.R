@@ -106,7 +106,7 @@ get_reference_values<-function(serial_no=NULL, probe_id=NULL,var_type = NULL, ri
   
   if (use_medians)
     warning(paste0("Found NA-coefficient(s) for ", arg, "='", get(arg), "' and ring-no='", ring_no, 
-                   "'.\nvar_air_", fill_var_air, ")=", var_air_meas, 
+                   "', using mean values for this combination:\nvar_air_", fill_var_air, ")=", var_air_meas, 
                    "\nvar_h2o_", fill_var_h2o, ")=", var_h2o_meas))
   
   return(list(var_air_meas=var_air_meas, var_h2o_meas=var_h2o_meas, type=type, temp_meas=temp_meas))

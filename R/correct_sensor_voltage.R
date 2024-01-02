@@ -1,5 +1,3 @@
-# new function, implementing next to Voltage also other variables
-
 correct_sensor_values <- function(values, serial_no=NULL, probe_id=NULL, var_type=NULL, ring_no=1, calib_data, warnOnly=FALSE, adjust_range=TRUE, discard_outlier=TRUE, ...)
 # converts sensor values of var_type (Voltage [V], Permittivity [-], Counts [-] ) according to calibration data in calib_data for the specified sensor and ring
 {
@@ -12,7 +10,7 @@ correct_sensor_values <- function(values, serial_no=NULL, probe_id=NULL, var_typ
   }
   if (!is.null(serial_no) & !is.null(probe_id)) stop("Either serial_no OR probe_id must be specified.")
 
-  if (is.null(var_type) & !is.null(serial_no)) stop("var_type must be specified for serial_no.")
+  if (is.null(var_type) & !is.null(serial_no)) stop("var_type must be specified.")
 
   if (!is.null(serial_no)) { # which option is used for identification? serial_no or probe_id?
     id_argument <- "serial_no"
