@@ -2,7 +2,7 @@
 \alias{correct_sensor_voltage}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Correct sensor outputs (Voltage, Permittivity) with tow-point linear calibration. 
+Correct sensor outputs (Voltage, Permittivity) with two-point linear calibration. 
 }
 \description{
 \code{correct_sensor_values} converts the measured sensor output (voltage, permittivity, counts) to "should-be" values stated by the manufacturer using user-supplied calibration values.
