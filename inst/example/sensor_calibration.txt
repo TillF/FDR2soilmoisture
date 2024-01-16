@@ -352,3 +352,4 @@ SMT100_223(2023)	1	1.08	80.00	Terschluesen	SMT100	223	01.01.2023	Permittivity	16
 999	6			dummy placeholder, to be used for unknown devices	PR2, SDI-12	PR2, SDI-12	01.05.2023	Permittivity	
 999	1			dummy placeholder, to be used for unknown devices	Theta Probe	Theta Probe	01.05.2023	Permittivity	
 999	1			dummy placeholder, to be used for unknown devices	TDR_CS645-L	TDR_CS645-L	01.05.2023	Permittivity	
+999	1	-2	1084	Grosse	Theta Probe	327-095	16.01.2024	Voltage	12.60
