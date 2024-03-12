@@ -342,6 +342,16 @@ SMT100_222(2022)	1	1.01	80.00	Terschluesen	SMT100	222	01.05.2022	Permittivity	17
 SMT100_222(2023)	1	1.04	79.00	Terschluesen	SMT100	222	01.01.2023	Permittivity	15
 SMT100_223(2022)	1	1.02	80.00	Terschluesen	SMT100	223	01.05.2022	Permittivity	17.34
 SMT100_223(2023)	1	1.08	80.00	Terschluesen	SMT100	223	01.01.2023	Permittivity	16
+PR2/4_013-053	1	1.104	36.566	Grosse	PR2, SDI-12	013-053	11.03.2024	Permittivity	18.3
+PR2/4_013-053	2	1.055	39.514	Grosse	PR2, SDI-12	013-053	11.03.2024	Permittivity	18.3
+PR2/4_013-053	3	1.168	42.166	Grosse	PR2, SDI-12	013-053	11.03.2024	Permittivity	18.3
+PR2/4_013-053	4	1.067	49.324	Grosse	PR2, SDI-12	013-053	11.03.2024	Permittivity	18.3
+PR2/6_035-004	1	4.8113	27.8945	Grosse	PR2, SDI-12	035-004	01.01.2023	Permittivity	18.3
+PR2/6_035-004	2	1.1145	39.0791	Grosse	PR2, SDI-12	035-004	01.01.2023	Permittivity	18.3
+PR2/6_035-004	3	1.0775	47.4057	Grosse	PR2, SDI-12	035-004	01.01.2023	Permittivity	18.3
+PR2/6_035-004	4	1.0911	55.5044	Grosse	PR2, SDI-12	035-004	01.01.2023	Permittivity	18.3
+PR2/6_035-004	5	1.7790	90.0198	Grosse	PR2, SDI-12	035-004	01.01.2023	Permittivity	18.3
+PR2/6_035-004	6	18.3263	20.8972	Grosse	PR2, SDI-12	035-004	01.01.2023	Permittivity	18.3
 999	1			dummy placeholder, to be used for unknown devices	SMT100	SMT100	01.05.2023	Permittivity	
 999	1			dummy placeholder, to be used for unknown devices	SMT100	SMT100	01.05.2023	Counts	
 999	1			dummy placeholder, to be used for unknown devices	PR2, SDI-12	PR2, SDI-12	01.05.2023	Permittivity	
