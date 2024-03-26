@@ -39,7 +39,7 @@ get_reference_values<-function(serial_no=NULL, probe_id=NULL,var_type = NULL, ri
   
   
   if (length(cur_row)== 0) #no entry found?
-    stop(paste0("Probe with ", arg, "='", get(arg), "', ring-no='", ring_no, "' and var_type='", var_type, "' not found in calibration data. Please add a dummy record with sensor type and NAs, if you want to use  medians of same type and ring number.")) 
+    stop(paste0("Probe with ", arg, "='", get(arg), "', ring-no='", ring_no, "' and var_type='", var_type, "' not found in calibration data. Please add a respective dummy record and coefficients set to NA, if you want to use medians of same this sensor type and ring number to be used.")) 
   
   if (length(cur_row)> 1) 
   {  
