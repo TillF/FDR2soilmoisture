@@ -738,9 +738,9 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
         dev.new(width = 40, height = 30) #open largest possible window in 4:3 format
       }
     }
-    llimit = min(0, quantile(r2_train_ex, probs=0.1, na.rm=TRUE), na.rm=TRUE)
+    llimit = max(-1, quantile(r2_train_ex, probs=0.1, na.rm=TRUE), na.rm=TRUE)
     xcoords = pmax(llimit, r2_train_ex)
-    llimit = min(0, quantile(r2_test, probs=0.1, na.rm=TRUE), na.rm=TRUE)
+    llimit = max(-1, quantile(r2_test, probs=0.1, na.rm=TRUE), na.rm=TRUE)
     ycoords = pmax(llimit, r2_test, na.rm=TRUE)
     xlab = ifelse(all(common_set$excluded==FALSE), "R2_training", "R2 training!ex")
     plot(xcoords, ycoords, xlab=xlab, ylab="R2 test")

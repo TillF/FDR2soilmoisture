@@ -361,6 +361,7 @@ PR2/6_013-012	3	70.42	1085.06	Grosse	PR2, analogue	013-012	26.03.2024	Voltage	10
 PR2/6_013-012	4	70.34	1095.12	Grosse	PR2, analogue	013-012	26.03.2024	Voltage	10.4
 PR2/6_013-012	5	68.27	1054.44	Grosse	PR2, analogue	013-012	26.03.2024	Voltage	10.4
 PR2/6_013-012	6	70.79	1080.19	Grosse	PR2, analogue	013-012	26.03.2024	Voltage	10.4
+999	1	1	1073	Biro	Theta Probe	327/084	21.06.2024	Voltage	15.8
 999	1			dummy placeholder, to be used for unknown devices	SMT100	SMT100	01.05.2023	Permittivity	
 999	1			dummy placeholder, to be used for unknown devices	SMT100	SMT100	01.05.2023	Counts	
 999	1			dummy placeholder, to be used for unknown devices	PR2, SDI-12	PR2, SDI-12	01.05.2023	Permittivity	
