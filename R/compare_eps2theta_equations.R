@@ -730,7 +730,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
 
  
     
- # compare R2-values in single scatterplot ####
+# compare R2-values of all modells in single scatterplot ####
     if(plot_extern==TRUE){
       if (Sys.info()["sysname"] == "Windows") {
         windows(width = 40, height = 30) #open largest possible window in 4:3 format
@@ -744,13 +744,20 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
     ycoords = pmax(llimit, r2_test, na.rm=TRUE)
     xlab = ifelse(all(common_set$excluded==FALSE), "R2_training", "R2 training!ex")
     plot(xcoords, ycoords, xlab=xlab, ylab="R2 test")
-    text(xcoords, ycoords, sub(names(r2_train_ex), pattern="theta_", replacement=""), cex=0.7, adj = c(0.5,0))
+    #ycoords = xcoords = runif(5)
+    sorted_ix = sort.int(xcoords, index.return = TRUE)$ix #
+    range_y = diff(range(ycoords))
+    if (range_y==0) range_y=1 #if all y values are the same, the plot is scaled to 1
+    y_offset = 1/80 * range_y * rep(c(-2,-1, 1,2), length(xcoords)%/% 4 +1 )[1:length(xcoords)] #create alternating offsets in y to prevent overlapping labels
+    ycoords_labels = ycoords
+    ycoords_labels[sorted_ix] = ycoords[sorted_ix] + y_offset
+    text(xcoords, ycoords_labels, sub(names(r2_train_ex), pattern="theta_", replacement=""), cex=0.7, adj = c(0.5,0))
     abline(v=0)
     abline(h=0)
     
        
     
-  # compare results in scatterplot matrix #### 
+# compare results of each single model in a matrix of scatterplots #### 
     models = names(common_set)
     models = models[grepl(models, pattern = "theta_")]
     
@@ -799,7 +806,9 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
   mtext(text = "theta, predicted [-]", side=2, outer=TRUE, line = 1.2)
   
     #add legend in extra plot panel
-  plot(1, 1, main="", type="n", axes=FALSE, xlab="", ylab="")    
+  plot(1, 1, main="[eps-theta-modell]\n[GOF: training, training w/o excluded, test]", type="n", axes=FALSE, xlab="", ylab="", frame.plot=TRUE) 
+
+  text(1,1, "Legend")
   if (length(legend_args)>0)
     do.call(legend, args=legend_args)
 #    legend("topleft", legend=c("mineral", "organic", "testdata", "1:1"), col=c(palette()[1:2], "black", "black"), pch=c(20, 20, 20, NA), lty=c(0,0,0,1))
