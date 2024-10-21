@@ -26,7 +26,7 @@ compare_eps2theta_equations(common_set, legend_args=NULL,eq_subset=NULL, plot_ex
 
 }
 \details{
-The dataframe \code{common_set} holds measured values of epsilon and observed values of soil moisture (theta, e.g. obtained by gravimetric method). 
+The dataframe \code{common_set} holds measured values of epsilon and observed values of soil moisture (theta, e.g. obtained by thermo-gravimetric method). 
 Additionally, other explanatory variables (e.g. bulk density, clay contents, etc.) can be contained (see details in \code{\link{eps2theta}}).
 The \code{compare_eps2theta_equations} applies all equations supported by \code{\link{eps2theta}}, where possible with the provided datsa. It also adjusts the coefficients of these equations to better match the data, yielding equations variants with suffix "_adj". Whenever some coefficients cannot be estimated (e.g. when the column of bulk density is all set to the same value), the value of the original equation is used.
 
@@ -39,7 +39,7 @@ For plotting, the dataframe \code{common_set} may hold columns \code{col} and \c
 }
 
 \value{
-A list with the elements \code{r2_train, r2_train_ex, r2_test, rmse_train, rmse_test, eps2theta_function}, each holding the computed R2-values and the conversion functions, respectively.
+A list with the elements \code{r2_train, r2_train_ex, r2_test, rmse_train, rmse_train_ex, rmse_test, eps2theta_function}, each holding the computed R2- and RMSE-values of training data, training data without the excluded datasets and test data for each conversion function, and the functions themselves, respectively.
 
 Additionally, the function generates three figures:
 
@@ -58,9 +58,9 @@ Additionally, the function generates three figures:
 \author{
 Till Francke
 }
-%\note{
-%%  ~~further notes~~
-%}
+\note{
+  For tested equartions, check the docu of \code{\link{eps2theta}}.
+}
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 

@@ -126,9 +126,10 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
           
 
     r2_train=NULL      #for collecting r2 values (training data set)
-    rmse_train=NULL
     r2_train_ex =NULL #for collecting r2 values (training data set without excluded samples)
     r2_test =NULL #for collecting r2 values (test data set)
+    rmse_train=NULL
+    rmse_train_ex =NULL #for collecting rmse values (training data set without excluded samples)
     rmse_test =NULL 
     eps2theta_function_list = list() #collect conversion functions
     
@@ -155,10 +156,11 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
       #browser()
       common_set[, paste0("theta_", eq)] = eps2theta(common_set, equation = eq) #apply equation
       r2_train     [paste0("theta_", eq)] = r2  (common_set[ common_set$training, paste0("theta_", eq)], common_set$theta[ common_set$training]) 
-      rmse_train   [paste0("theta_", eq)] = rmse(common_set[ common_set$training, paste0("theta_", eq)], common_set$theta[ common_set$training]) 
+      r2_train_ex  [paste0("theta_", eq)] = r2  (common_set[ common_set$training & !common_set$excluded, paste0("theta_", eq)], common_set$theta[common_set$training & !common_set$excluded]) 
       r2_test      [paste0("theta_", eq)] = r2  (common_set[!common_set$training, paste0("theta_", eq)], common_set$theta[!common_set$training]) 
+      rmse_train   [paste0("theta_", eq)] = rmse(common_set[ common_set$training, paste0("theta_", eq)], common_set$theta[ common_set$training]) 
+      rmse_train_ex[paste0("theta_", eq)] = rmse(common_set[ common_set$training & !common_set$excluded, paste0("theta_", eq)], common_set$theta[common_set$training & !common_set$excluded]) 
       rmse_test    [paste0("theta_", eq)] = rmse(common_set[!common_set$training, paste0("theta_", eq)], common_set$theta[!common_set$training]) 
-      r2_train_ex[paste0("theta_", eq)]   = r2  (common_set[ common_set$training & !common_set$excluded, paste0("theta_", eq)], common_set$theta[common_set$training & !common_set$excluded]) 
       
       
       ftemp = eval(parse(text=paste0("function(epsdata){eps2theta(epsdata = epsdata, equation = \"",eq, "\")}")))
@@ -230,12 +232,13 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
       
       eps2theta_function_list [[eq]] = ftemp #store conversion function
       common_set             [, eq] = ftemp(common_set) #apply conversion function
-      r2_train     [eq] = r2  (common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
-      rmse_train   [eq] = rmse(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
-      r2_test      [eq] = r2  (common_set[!common_set$training, eq], common_set$theta[!common_set$training]) 
-      rmse_test    [eq] = rmse(common_set[!common_set$training, eq], common_set$theta[!common_set$training]) 
-      r2_train_ex[eq] = r2(common_set[ common_set$training & !common_set$excluded, eq], common_set$theta[common_set$training & !common_set$excluded]) 
       
+      r2_train     [eq] = r2  (common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
+      r2_train_ex  [eq] = r2  (common_set[ common_set$training & !common_set$excluded, eq], common_set$theta[common_set$training & !common_set$excluded]) 
+      r2_test      [eq] = r2  (common_set[!common_set$training, eq], common_set$theta[!common_set$training]) 
+      rmse_train   [eq] = rmse(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
+      rmse_train_ex[eq] = rmse(common_set[ common_set$training & !common_set$excluded, eq], common_set$theta[common_set$training & !common_set$excluded]) 
+      rmse_test    [eq] = rmse(common_set[!common_set$training, eq], common_set$theta[!common_set$training]) 
       
       #collect equation output for plotting
       common_set_plot_train[, eq] = ftemp(common_set_plot_train) #apply equation
@@ -280,10 +283,11 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
       eps2theta_function_list [[eq]] = ftemp #store conversion function
       common_set             [, eq] = ftemp(common_set) #apply conversion function
       r2_train     [eq] = r2  (common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
-      rmse_train   [eq] = rmse(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
+      r2_train_ex  [eq] = r2  (common_set[ common_set$training & !common_set$excluded, eq], common_set$theta[common_set$training & !common_set$excluded]) 
       r2_test      [eq] = r2  (common_set[!common_set$training, eq], common_set$theta[!common_set$training]) 
+      rmse_train   [eq] = rmse(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
+      rmse_train_ex[eq] = rmse(common_set[ common_set$training & !common_set$excluded, eq], common_set$theta[common_set$training & !common_set$excluded]) 
       rmse_test    [eq] = rmse(common_set[!common_set$training, eq], common_set$theta[!common_set$training]) 
-      r2_train_ex[eq] = r2(common_set[ common_set$training & !common_set$excluded, eq], common_set$theta[common_set$training & !common_set$excluded]) 
       
       #collect equation output for plotting
       common_set_plot_train[, eq] = ftemp(common_set_plot_train) #apply equation
@@ -314,11 +318,11 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
       eps2theta_function_list [[eq]] = ftemp #store conversion function
       common_set             [, eq] = ftemp(common_set) #apply conversion function
       r2_train     [eq] = r2  (common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
-      rmse_train   [eq] = rmse(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
+      r2_train_ex  [eq] = r2  (common_set[ common_set$training & !common_set$excluded, eq], common_set$theta[common_set$training & !common_set$excluded]) 
       r2_test      [eq] = r2  (common_set[!common_set$training, eq], common_set$theta[!common_set$training]) 
+      rmse_train   [eq] = rmse(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
+      rmse_train_ex[eq] = rmse(common_set[ common_set$training & !common_set$excluded, eq], common_set$theta[common_set$training & !common_set$excluded]) 
       rmse_test    [eq] = rmse(common_set[!common_set$training, eq], common_set$theta[!common_set$training]) 
-      r2_train_ex[eq] = r2(common_set[ common_set$training & !common_set$excluded, eq], common_set$theta[common_set$training & !common_set$excluded]) 
-      
       
       
       #collect equation output for plotting
@@ -333,7 +337,8 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
     {
       eq="theta_malicki_adj"
       lm_all = nls(formula = theta ~ (sqrt(epsilon) -a - b*BD- c*BD^2)/(d+e*BD), data = common_set[common_set$training,], start = c(a=0.819, b=0.168, c=0.168, d=7.17, e=2.18),
-                   nls.control(maxiter = 100, warnOnly = FALSE)             )
+                   nls.control(maxiter = 100, warnOnly = TRUE)             )
+      
       mod_list = assign(paste0("lm_", eq),lm_all, envir = globvars) #keep this lm for later use
       
       ftemp = function(common_set)
@@ -347,10 +352,11 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
       eps2theta_function_list [[eq]] = ftemp #store conversion function
       common_set             [, eq] = ftemp(common_set) #apply conversion function
       r2_train     [eq] = r2  (common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
-      rmse_train   [eq] = rmse(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
+      r2_train_ex  [eq] = r2  (common_set[ common_set$training & !common_set$excluded, eq], common_set$theta[common_set$training & !common_set$excluded]) 
       r2_test      [eq] = r2  (common_set[!common_set$training, eq], common_set$theta[!common_set$training]) 
+      rmse_train   [eq] = rmse(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
+      rmse_train_ex[eq] = rmse(common_set[ common_set$training & !common_set$excluded, eq], common_set$theta[common_set$training & !common_set$excluded]) 
       rmse_test    [eq] = rmse(common_set[!common_set$training, eq], common_set$theta[!common_set$training]) 
-      r2_train_ex[eq] = r2(common_set[ common_set$training & !common_set$excluded, eq], common_set$theta[common_set$training & !common_set$excluded]) 
       
       #collect equation output for plotting
       common_set_plot_train[, eq] = ftemp(common_set_plot_train) #apply equation
@@ -411,10 +417,11 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
       common_set             [, eq] = ftemp(common_set) #apply conversion function
       
       r2_train     [eq] = r2  (common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
-      rmse_train   [eq] = rmse(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
+      r2_train_ex  [eq] = r2  (common_set[ common_set$training & !common_set$excluded, eq], common_set$theta[common_set$training & !common_set$excluded]) 
       r2_test      [eq] = r2  (common_set[!common_set$training, eq], common_set$theta[!common_set$training]) 
+      rmse_train   [eq] = rmse(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
+      rmse_train_ex[eq] = rmse(common_set[ common_set$training & !common_set$excluded, eq], common_set$theta[common_set$training & !common_set$excluded]) 
       rmse_test    [eq] = rmse(common_set[!common_set$training, eq], common_set$theta[!common_set$training]) 
-      r2_train_ex[eq] = r2(common_set[ common_set$training & !common_set$excluded, eq], common_set$theta[common_set$training & !common_set$excluded]) 
       
       #collect equation output for plotting
       common_set_plot_train[, eq] = ftemp(common_set_plot_train) #apply equation
@@ -484,10 +491,11 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
       eps2theta_function_list [[eq]] = ftemp #store conversion function
       common_set             [, eq] = ftemp(common_set) #apply conversion function
       r2_train     [eq] = r2  (common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
-      rmse_train   [eq] = rmse(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
+      r2_train_ex  [eq] = r2  (common_set[ common_set$training & !common_set$excluded, eq], common_set$theta[common_set$training & !common_set$excluded]) 
       r2_test      [eq] = r2  (common_set[!common_set$training, eq], common_set$theta[!common_set$training]) 
+      rmse_train   [eq] = rmse(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
+      rmse_train_ex[eq] = rmse(common_set[ common_set$training & !common_set$excluded, eq], common_set$theta[common_set$training & !common_set$excluded]) 
       rmse_test    [eq] = rmse(common_set[!common_set$training, eq], common_set$theta[!common_set$training]) 
-      r2_train_ex[eq] = r2(common_set[ common_set$training & !common_set$excluded, eq], common_set$theta[common_set$training & !common_set$excluded]) 
       
       #collect equation output for plotting
       common_set_plot_train[, eq] = ftemp(common_set_plot_train) #apply equation
@@ -553,10 +561,11 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
         eps2theta_function_list [[eq]] = ftemp #store conversion function
         common_set             [, eq] = ftemp(common_set) #apply conversion function
         r2_train     [eq] = r2  (common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
-        rmse_train   [eq] = rmse(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
+        r2_train_ex  [eq] = r2  (common_set[ common_set$training & !common_set$excluded, eq], common_set$theta[common_set$training & !common_set$excluded]) 
         r2_test      [eq] = r2  (common_set[!common_set$training, eq], common_set$theta[!common_set$training]) 
+        rmse_train   [eq] = rmse(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
+        rmse_train_ex[eq] = rmse(common_set[ common_set$training & !common_set$excluded, eq], common_set$theta[common_set$training & !common_set$excluded]) 
         rmse_test    [eq] = rmse(common_set[!common_set$training, eq], common_set$theta[!common_set$training]) 
-        r2_train_ex[eq] = r2(common_set[ common_set$training & !common_set$excluded, eq], common_set$theta[common_set$training & !common_set$excluded]) 
         
         #collect equation output for plotting
         common_set_plot_train[, eq] = ftemp(common_set_plot_train) #apply equation
@@ -623,10 +632,11 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
       eps2theta_function_list [[eq]] = ftemp #store conversion function
       common_set             [, eq] = ftemp(common_set) #apply conversion function
       r2_train     [eq] = r2  (common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
-      rmse_train   [eq] = rmse(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
+      r2_train_ex  [eq] = r2  (common_set[ common_set$training & !common_set$excluded, eq], common_set$theta[common_set$training & !common_set$excluded]) 
       r2_test      [eq] = r2  (common_set[!common_set$training, eq], common_set$theta[!common_set$training]) 
+      rmse_train   [eq] = rmse(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
+      rmse_train_ex[eq] = rmse(common_set[ common_set$training & !common_set$excluded, eq], common_set$theta[common_set$training & !common_set$excluded]) 
       rmse_test    [eq] = rmse(common_set[!common_set$training, eq], common_set$theta[!common_set$training]) 
-      r2_train_ex[eq] = r2(common_set[ common_set$training & !common_set$excluded, eq], common_set$theta[common_set$training & !common_set$excluded]) 
       
       #collect equation output for plotting
       common_set_plot_train[, eq] = ftemp(common_set_plot_train) #apply equation
@@ -664,10 +674,11 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
       eps2theta_function_list [[eq]] = ftemp #store conversion function
       common_set             [, eq] = ftemp(common_set) #apply conversion function
       r2_train     [eq] = r2  (common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
-      rmse_train   [eq] = rmse(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
+      r2_train_ex  [eq] = r2  (common_set[ common_set$training & !common_set$excluded, eq], common_set$theta[common_set$training & !common_set$excluded]) 
       r2_test      [eq] = r2  (common_set[!common_set$training, eq], common_set$theta[!common_set$training]) 
+      rmse_train   [eq] = rmse(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
+      rmse_train_ex[eq] = rmse(common_set[ common_set$training & !common_set$excluded, eq], common_set$theta[common_set$training & !common_set$excluded]) 
       rmse_test    [eq] = rmse(common_set[!common_set$training, eq], common_set$theta[!common_set$training]) 
-      r2_train_ex[eq] = r2(common_set[ common_set$training & !common_set$excluded, eq], common_set$theta[common_set$training & !common_set$excluded]) 
       
       #collect equation output for plotting
       common_set_plot_train[, eq] = ftemp(common_set_plot_train) #apply equation
@@ -695,10 +706,11 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
       eps2theta_function_list [[eq]] = ftemp #store conversion function
       common_set             [, eq] = ftemp(common_set) #apply conversion function
       r2_train     [eq] = r2  (common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
-      rmse_train   [eq] = rmse(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
+      r2_train_ex  [eq] = r2  (common_set[ common_set$training & !common_set$excluded, eq], common_set$theta[common_set$training & !common_set$excluded]) 
       r2_test      [eq] = r2  (common_set[!common_set$training, eq], common_set$theta[!common_set$training]) 
+      rmse_train   [eq] = rmse(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
+      rmse_train_ex[eq] = rmse(common_set[ common_set$training & !common_set$excluded, eq], common_set$theta[common_set$training & !common_set$excluded]) 
       rmse_test    [eq] = rmse(common_set[!common_set$training, eq], common_set$theta[!common_set$training]) 
-      r2_train_ex[eq] = r2(common_set[ common_set$training & !common_set$excluded, eq], common_set$theta[common_set$training & !common_set$excluded]) 
       
       #collect equation output for plotting
       common_set_plot_train[, eq] = ftemp(common_set_plot_train) #apply equation
@@ -740,8 +752,10 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
     }
     llimit = max(-1, quantile(r2_train_ex, probs=0.1, na.rm=TRUE), na.rm=TRUE)
     xcoords = pmax(llimit, r2_train_ex)
+    xcoords[!is.finite(xcoords)] = llimit #replace NAs and NaNs
     llimit = max(-1, quantile(r2_test, probs=0.1, na.rm=TRUE), na.rm=TRUE)
     ycoords = pmax(llimit, r2_test, na.rm=TRUE)
+    ycoords[!is.finite(ycoords)] = llimit #replace NAs and NaNs
     xlab = ifelse(all(common_set$excluded==FALSE), "R2_training", "R2 training!ex")
     plot(xcoords, ycoords, xlab=xlab, ylab="R2 test")
     #ycoords = xcoords = runif(5)
@@ -856,6 +870,15 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
          pch=NA, lty=c("solid","solid", lty), lwd=c(2, 1, rep(2, length(models))))
   
   
-  return(list(r2_train=r2_train, r2_train_ex=r2_train_ex, r2_test=r2_test, eps2theta_function=eps2theta_function_list))
+  return(list(n_train =    sum( common_set$training),
+              n_train_ex = sum( common_set$training)-sum( common_set$excluded),
+              n_test  = sum(!common_set$training),
+              r2_train=r2_train, 
+              r2_train_ex=r2_train_ex, 
+              r2_test=r2_test,
+              rmse_train=rmse_train, 
+              rmse_train_ex=rmse_train_ex, 
+              rmse_test=rmse_test, 
+              eps2theta_function=eps2theta_function_list))
 }  
 
