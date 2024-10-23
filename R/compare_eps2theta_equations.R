@@ -204,13 +204,13 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
     # 
     #adjusted Delta_T with fixed intercept, regression on sqrt eps ####
     if (length(setdiff (c("soil"), names(common_set))) ==0 &
-        any(grepl(eq_subset, pattern = "deltat")))
+        any(grepl(eq_subset, pattern = "deltaT")))
     {
       eq="theta_deltaT_adj"
       if (any (!(unique(common_set$soil, na.rm=TRUE) %in% c("mineral", "organic", "clay"))))
         stop("Field 'soil' must be 'mineral' or 'organic'")
       
-      common_set$a0 = NA #auxiliary column to fix intercept (aProfile Probe User Manual 5.0, p. 47)
+      common_set$a0 = NA #auxiliary column to fix intercept (Profile Probe User Manual 5.0, p. 47)
       common_set$a0[common_set$soil == "organic"] = 1.4
       common_set$a0[common_set$soil == "mineral"] = 1.6
       common_set$a0[common_set$soil == "clay"]    = 1.8

@@ -108,7 +108,7 @@ The respective equations used are:
    with \eqn{a_1 = -0.0728, a_2 = 0.0448, a_3 = -0.00195, a_4= 0.0000361} for mineral soils and \eqn{a_1 =  0.0233, a_2 = 0.0285, a_3 = -0.000431, a_4 = 0.00000304} for organic soils 
   
   \item \code{"SchaapEtal1997"} (Schaap et al. 1997 [eq. 2b in Vaz et al. 2013]):
-  \deqn{\theta =  (0.133*\sqrt{\epsilon} -0.146)^{0.885}s
+  \deqn{\theta =  (0.133*\sqrt{\epsilon} -0.146)^{0.885}
   }{%
   \theta = (0.133*\sqrt(\epsilon) -0.146)^{0.885}
   }  
