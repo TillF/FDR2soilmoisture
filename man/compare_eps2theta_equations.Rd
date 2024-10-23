@@ -32,7 +32,7 @@ The \code{compare_eps2theta_equations} applies all equations supported by \code{
 
 The dataframe \code{common_set} may hold a logical column \code{training}. If present, the custom model fits (see above) are based on this subset only; the remaining data are also displayed and their R2-values ("testing") reported.
 
-The dataframe \code{common_set} may hold a logical column \code{excluded}. If present, the custom model fits are based on all training data, but the function will also return an \code{R2_training_ex} with R2-values calculated from training data WITHOUT the excluded records. this may be useful when additional records are added to force plausible behaviour at the extremes.
+The dataframe \code{common_set} may hold a logical column \code{excluded}. If present, the custom model fits are based on all training data, but the function will also return an \code{R2_training_ex} with R2-values calculated from training data WITHOUT the excluded records. This may be useful when additional (artificial) records had been added to force plausible behaviour at the extremes.
 
 For plotting, the dataframe \code{common_set} may hold columns \code{col} and \code{pch}. These are used in the plots as respective arguments.
 
