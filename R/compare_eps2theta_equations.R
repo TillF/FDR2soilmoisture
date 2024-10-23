@@ -202,13 +202,15 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
     #   common_set_plot_test [, eq] = ftemp(common_set_plot_test ) #apply equation
     # }
     # 
+    
     #adjusted Delta_T with fixed intercept, regression on sqrt eps ####
     if (length(setdiff (c("soil"), names(common_set))) ==0 &
         any(grepl(eq_subset, pattern = "deltaT")))
     {
       eq="theta_deltaT_adj"
       if (any (!(unique(common_set$soil, na.rm=TRUE) %in% c("mineral", "organic", "clay"))))
-        stop("Field 'soil' must be 'mineral' or 'organic'")
+        stop("Field 'soil' must be 'mineral', 'organic' or 'clay'")
+      
       
       common_set$a0 = NA #auxiliary column to fix intercept (Profile Probe User Manual 5.0, p. 47)
       common_set$a0[common_set$soil == "organic"] = 1.4
@@ -247,22 +249,18 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
       
     }
     
-    #adjusted Delta_T with fixed intercept, direct regression ####
+    #adjusted Delta_T with variable intercept, regression on sqrt(eps)####
     if (length(setdiff (c("soil"), names(common_set))) == 0 &
-        any(grepl(eq_subset, pattern = "deltat")))
+        any(grepl(eq_subset, pattern = "deltaT")))
     {
       eq="theta_deltaT_adj2"
       if (any (!(unique(common_set$soil, na.rm=TRUE) %in% c("mineral", "organic", "clay"))))
-        stop("Field 'soil' must be 'mineral' or 'organic'")
+        stop("Field 'soil' must be 'mineral', 'organic' or 'clay'")
       
-      common_set$a0 = NA #auxiliary column to fix intercept (aProfile Probe User Manual 5.0, p. 47)
-      common_set$a0[common_set$soil == "organic"] = 1.4
-      common_set$a0[common_set$soil == "mineral"] = 1.6
-      common_set$a0[common_set$soil == "clay"]    = 1.8
-      
-      lm_all = nls(formula = theta ~ 1/a1 * sqrt(epsilon) -a0/a1, data = common_set[common_set$training,], start = c(a1=0.12),
-                   nls.control(maxiter = 100, warnOnly = FALSE) )
-      
+      if (length(unique(common_set$soil))==1)
+        lm_all = lm(theta ~  sqrt(epsilon), data=common_set[common_set$training,]) else
+        lm_all = lm(theta ~  sqrt(epsilon) * soil, data=common_set[common_set$training,])
+
       mod_list = assign(paste0("lm_", eq),lm_all, envir = globvars) #keep this lm for later use
       
       ftemp = function(common_set)
@@ -270,11 +268,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
         if (nrow(common_set)==0)
           theta_pred = NULL else
         {
-          common_set$a0[common_set$soil == "organic"] = 1.4
-          common_set$a0[common_set$soil == "mineral"] = 1.6
-          common_set$a0[common_set$soil == "clay"]    = 1.8
-          
-          theta_pred = predict(get(x = "lm_theta_deltaT_adj2",  envir = globvars), newdata = common_set)
+            theta_pred = predict(get(x = "lm_theta_deltaT_adj2",  envir = globvars), newdata = common_set)
         }
         return(theta_pred)
       }

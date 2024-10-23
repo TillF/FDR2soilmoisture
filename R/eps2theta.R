@@ -78,7 +78,7 @@ eps2theta <- function(epsdata, equation) {
   if (equation == "deltaT_minorg") {
       
     if (any(!(unique(epsdata$soil, na.rm=TRUE) %in% c("mineral", "organic", "clay")))) {
-      warning("Field 'soil' must be 'mineral' or 'organic'")
+      warning("Field 'soil' must be 'mineral', 'organic' or 'clay'")
     }
     
     min_ix <- sapply(FUN=isTRUE, X=(epsdata$soil == "mineral") | (epsdata$soil == "clay"))
@@ -91,7 +91,8 @@ eps2theta <- function(epsdata, equation) {
     
     theta[is.na(epsdata$soil)] = NA #don't return data where soil was not set
   }
-  # Kargas & Kerkides 2008seem to give a similar eq.
+  
+   # Kargas & Kerkides 2008seem to give a similar eq.
 
   if (equation == "FerschEtal2017") {
     theta <- (sqrt(epsdata$epsilon) - (1 - epsdata$n * sqrt(3.29)) - epsdata$n * 1) /
