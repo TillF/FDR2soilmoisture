@@ -21,13 +21,13 @@ compare_eps2theta_equations(common_set, legend_args=NULL,eq_subset=NULL, plot_ex
 	Vector of equations to be used. See \code{\link{eps2theta}}
 	}
   \item{plot_extern}{
-  Eneable to plot each plot in a seperate window
+  Enable to plot each plot in a separate window
 }
 
 }
 \details{
 The dataframe \code{common_set} holds measured values of epsilon and observed values of soil moisture (theta, e.g. obtained by thermo-gravimetric method). 
-Additionally, other explanatory variables (e.g. bulk density, clay contents, etc.) can be contained (see details in \code{\link{eps2theta}}).
+Additionally, other explanatory variables (e.g. bulk density, clay content, etc.) can be contained (see details in \code{\link{eps2theta}}).
 The \code{compare_eps2theta_equations} applies all equations supported by \code{\link{eps2theta}}, where possible with the provided datsa. It also adjusts the coefficients of these equations to better match the data, yielding equations variants with suffix "_adj". Whenever some coefficients cannot be estimated (e.g. when the column of bulk density is all set to the same value), the value of the original equation is used.
 
 The dataframe \code{common_set} may hold a logical column \code{training}. If present, the custom model fits (see above) are based on this subset only; the remaining data are also displayed and their R2-values ("testing") reported.
