@@ -638,6 +638,47 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
       
     }
     
+    #adjusted Roth et al1992 regression on 3rd order polynom####
+    if (length(setdiff (c("soil"), names(common_set))) == 0 &
+        any(grepl(eq_subset, pattern = "RothEtal1992")))
+    {
+      eq="theta_RothEtal1992_adj"
+      if (any (!(unique(common_set$soil, na.rm=TRUE) %in% c("mineral", "organic"))))
+        stop("Field 'soil' must be 'mineral' or 'organic' ")
+      
+      if (length(unique(common_set$soil))==1)
+        lm_all = lm(theta ~  epsilon + I(epsilon^2) + I(epsilon^3), data=common_set[common_set$training,]) else
+          lm_all = lm(theta ~  epsilon * soil + I(epsilon^2) * soil + I(epsilon^3) * soil, data=common_set[common_set$training,])
+        
+        mod_list = assign(paste0("lm_", eq),lm_all, envir = globvars) #keep this lm for later use
+        
+        ftemp = function(common_set)
+        {  
+          if (nrow(common_set)==0)
+            theta_pred = NULL else
+            {
+              theta_pred = predict(get(x = "lm_theta_RothEtal1992_adj",  envir = globvars), newdata = common_set)
+            }
+          return(theta_pred)
+        }
+        
+        
+        eps2theta_function_list [[eq]] = ftemp #store conversion function
+        common_set             [, eq] = ftemp(common_set) #apply conversion function
+        r2_train     [eq] = r2  (common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
+        r2_train_ex  [eq] = r2  (common_set[ common_set$training & !common_set$excluded, eq], common_set$theta[common_set$training & !common_set$excluded]) 
+        r2_test      [eq] = r2  (common_set[!common_set$training, eq], common_set$theta[!common_set$training]) 
+        rmse_train   [eq] = rmse(common_set[ common_set$training, eq], common_set$theta[ common_set$training]) 
+        rmse_train_ex[eq] = rmse(common_set[ common_set$training & !common_set$excluded, eq], common_set$theta[common_set$training & !common_set$excluded]) 
+        rmse_test    [eq] = rmse(common_set[!common_set$training, eq], common_set$theta[!common_set$training]) 
+        
+        #collect equation output for plotting
+        common_set_plot_train[, eq] = ftemp(common_set_plot_train) #apply equation
+        common_set_plot_test [, eq] = ftemp(common_set_plot_test ) #apply equation
+        common_set$a0 = NULL #remove auxiliary col
+        
+    }
+    
     
     #own glm_bin ####   
 #  if (any(grepl(eq_subset, pattern = "glm_bin")))
