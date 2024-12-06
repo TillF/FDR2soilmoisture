@@ -1,8 +1,8 @@
 Package: FDR2soilmoisture
 Type: Package
 Title: Processing data of FDR-measurements to obtain soil moisture
-Version: 0.218
-Date: 2024-11-27
+Version: 0.219
+Date: 2024-12-06
 Authors@R: c(person("Till", "Francke", role = c("aut", "cre"), email = "francke@uni-potsdam.de"),
               person("Jakob", "Terschlüsen", role = "aut", email = "terschluesen@uni-potsdam.de")
               )
