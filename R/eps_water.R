@@ -25,7 +25,7 @@ eps_water <- function(T, equ = "Weast86") {
     if (requireNamespace("iapws", quietly = TRUE)) {
       rho <- iapws::iapws95("rho", t = 273.15 + T, p = 1013.25 / 10000)[1, ]
     } else {
-      rho <- 998.2072 # standard for atmospheric pressure and 20°C without package
+      rho <- 998.2072 # standard for atmospheric pressure and 20 degree C without package
       warning("A constant density of water at 20 degree C of 998.2072 kg/m**2 is used, see help and install package iapws for temperature dependent usage.")
     }
 

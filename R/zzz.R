@@ -6,6 +6,8 @@
   for (probe in c("Theta Probe")) #for PR2, this problem does not exist
   {
     lin_file = system.file("example", paste0("linearization_", sub(probe, pattern = " ", replacement="_"), ".txt"), package = "FDR2soilmoisture") #Linearisation table from DeltaT ThetaProbe manual. p. 14
+    if (!file.exists(lin_file))
+      next #dirty workaround to stop crashes when installing the package and the file is not yet available
     lin_data = utils::read.table(lin_file, nrow=-1, sep="\t", stringsAsFactors = FALSE, header=TRUE, na.strings = c("NA",""))  #load the file
     
     #if (probe =="Theta Probe")

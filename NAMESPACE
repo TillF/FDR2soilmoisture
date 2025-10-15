@@ -16,7 +16,7 @@ importFrom(stats, coef, formula, glm, lm, lowess, median, nls, nls.control, opti
 
 #importFrom(nlmrt, nlxb)
 
-importFrom(grDevices, extendrange, palette, windows, dev.new)
+importFrom(grDevices, extendrange, palette, dev.new)
 
 importFrom(graphics, abline, legend, lines, mtext, par, points, text)
 
