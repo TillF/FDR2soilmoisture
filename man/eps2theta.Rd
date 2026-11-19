@@ -74,12 +74,13 @@ The respective equations used are:
   
   
   \item \code{"FerschEtal2017"} (Fersch et al., 2018):
-  \deqn{\theta =  \frac{\sqrt{\epsilon} - (1 - n* \sqrt{3.29}) - n * 1}{
+  \deqn{\theta =  \frac{\sqrt{\epsilon} - (1 - n) * \sqrt{3.29} - n * 1}{
         \sqrt{80} - \sqrt{1}}
   }{%
-  \theta = (\sqrt(\epsilon) - (1 - n* \sqrt(3.29)) - n * 1) /
+  \theta = (\sqrt(\epsilon) - (1 - n) * \sqrt(3.29) - n * 1) /
         (\sqrt(80) - \sqrt(1))
-  } 
+  }
+  (CRIM mixing model) with permittivities of 3.29 for the solid phase, 80 for water and 1 for air (see Fersch et al., 2020, eq. 2)
   
   \item \code{"Jacobsen_Schjonning1993"} (Jacobsen & Schjonning, 1993):
   \deqn{\theta =  -3.41*1e-2 +3.45*1e-2*\epsilon-11.4*1e-4*\epsilon^2 + 17.1*1e-6*\epsilon^3- 3.7*1e-2*BD + 7.36*1e-4*clay\_perc + 47.7*1e-4 * om\_perc
@@ -159,6 +160,8 @@ Delta-T Devices Ltd, 1998. ThetaProbe SOIL MOISTURE SENSOR TYPE ML2 USER MANUAL 
 Drnevich, V.P., Ashmawy, A.K., Yu, X., Sallam, A.M., 2005. Time domain reflectometry for water content and density of soils: study of soil-dependent calibration constants. Can. Geotech. J. 42, 1053-1065. \url{https://doi.org/10.1139/T05-047}
 
 Fersch, B., Jagdhuber, T., Schroen, M., Voelksch, I., Jaeger, M., 2018. Synergies for Soil Moisture Retrieval Across Scales From Airborne Polarimetric SAR, Cosmic Ray Neutron Roving, and an In Situ Sensor Network. Water Resour. Res. 54, 9364-9383. \url{https://doi.org/10.1029/2018WR023337}
+
+Fersch, B., Francke, T., Heistermann, M., Schroen, M., Doepper, V., Jakobi, J., Baroni, G., Blume, T., Bogena, H., Budach, C., et al., 2020. A dense network of cosmic-ray neutron sensors for soil moisture observation in a highly instrumented pre-Alpine headwater catchment in Germany. Earth Syst. Sci. Data 12, 2289-2309. \url{https://doi.org/10.5194/essd-12-2289-2020}
 
 Jacobsen, O., Schjonning, P., 1993. A Laboratory Calibration of Time-Domain Reflectometry for Soil-Water Measurement Including Effects of Bulk-Density and Texture. J. Hydrol. 151, 147-157. \url{https://doi.org/10.1016/0022-1694(93)90233-Y}
 

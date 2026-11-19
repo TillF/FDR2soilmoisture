@@ -95,7 +95,7 @@ eps2theta <- function(epsdata, equation) {
    # Kargas & Kerkides 2008seem to give a similar eq.
 
   if (equation == "FerschEtal2017") {
-    theta <- (sqrt(epsdata$epsilon) - (1 - epsdata$n * sqrt(3.29)) - epsdata$n * 1) /
+    theta <- (sqrt(epsdata$epsilon) - (1 - epsdata$n) * sqrt(3.29) - epsdata$n * 1) /
       (sqrt(80) - sqrt(1))
   }
 
