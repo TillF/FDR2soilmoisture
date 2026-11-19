@@ -27,7 +27,7 @@ The following empirical model is used from Bogena et all, 2017:
   \epsilon = \gamma + 1 / (\alpha + (\beta / ((18000 - counts) / 5000))) 
   }
   
-The function uses as default average parameters for \code{alpha}, \code{beta} and \code{gamma} (table 2, Bogena et all, 2017). Nevertheless, since each sensor is individually calibrated those should be set individually too.
+By default, the function uses average parameters for \code{alpha}, \code{beta} and \code{gamma} (Table 2, Bogena et all, 2017) and issues a warning. Since each sensor is calibrated individually, these parameters should be set individually, too.
 }
 \value{
 Permittivity value (epsilon) [-] or sensor counts [-].

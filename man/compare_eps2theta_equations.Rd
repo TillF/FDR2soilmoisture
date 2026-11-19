@@ -15,13 +15,13 @@ compare_eps2theta_equations(common_set, legend_args=NULL,eq_subset=NULL, plot_ex
 	Data frame with observed data. See details. 
   }
   \item{legend_args}{
-	Arguments passed to \code{\link{legend}()} to create the legend for the plots. 
+	List of arguments passed to \code{\link{legend}()} to create the legend for the plots. 
   }
   \item{eq_subset}{
-	Vector of equations to be used. See \code{\link{eps2theta}}
+	Vector of names of equations to be used (default: all). See \code{\link{eps2theta}}.
 	}
   \item{plot_extern}{
-  Enable to plot each plot in a separate window
+  If \code{TRUE} (default), each plot is opened in a separate window.
 }
 
 }
@@ -32,23 +32,23 @@ The \code{compare_eps2theta_equations} applies all equations supported by \code{
 
 The dataframe \code{common_set} may hold a logical column \code{training}. If present, the custom model fits (see above) are based on this subset only; the remaining data are also displayed and their R2-values ("testing") reported.
 
-The dataframe \code{common_set} may hold a logical column \code{excluded}. If present, the custom model fits are based on all training data, but the function will also return an \code{R2_training_ex} with R2-values calculated from training data WITHOUT the excluded records. This may be useful when additional (artificial) records had been added to force plausible behaviour at the extremes.
+The dataframe \code{common_set} may hold a logical column \code{excluded}. If present, the custom model fits are based on all training data, but the function will also return \code{r2_train_ex} with R2-values calculated from training data WITHOUT the excluded records. This may be useful when additional (artificial) records had been added to force plausible behaviour at the extremes.
 
 For plotting, the dataframe \code{common_set} may hold columns \code{col} and \code{pch}. These are used in the plots as respective arguments.
 
 }
 
 \value{
-A list with the elements \code{r2_train, r2_train_ex, r2_test, rmse_train, rmse_train_ex, rmse_test, eps2theta_function}, each holding the computed R2- and RMSE-values of training data, training data without the excluded datasets and test data for each conversion function, and the functions themselves, respectively.
+A list with the elements \code{n_train, n_train_ex, n_test}, holding the number of records in the training data, training data without the excluded records and test data, and \code{r2_train, r2_train_ex, r2_test, rmse_train, rmse_train_ex, rmse_test, eps2theta_function}, holding the computed R2- and RMSE-values of training data, training data without the excluded records and test data for each conversion function, and the functions themselves, respectively.
 
 Additionally, the function generates three figures:
 
 \enumerate{
+\item a plot of R2-values of training (without excluded records) vs. test for all equations. Values below the 10\% quantile (but at least -1) are trimmed to this value;
+
 \item matrix of scatterplot illustrating the tested equations (theta_observed vs. theta_predicted) and the respective R2- and RMSE-values (*_train, *_train_ex, *_test); 
 
 \item a plot showing the behaviour of all equations over the range of epsilon-values (other data averaged). This plot can help to identify equations with implausible behaviour in extrapolation to low/high values of epsilon.
-
-\item a plot of R2-values of training vs. test (trimmed to at least -0.1) for all equations
 }
 
 }

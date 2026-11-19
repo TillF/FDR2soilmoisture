@@ -30,9 +30,10 @@ Equation to be used. Must be one of
 \code{"MalickiEtal1996"},
 \code{"RothEtal1992"},
 \code{"SchaapEtal1997"},
-\code{"SinghEtal2017"},
+\code{"SinghEtal2019"},
 \code{"ToppEtal1980"}, 
 \code{"ZhaoEtal2016"}.
+Use \code{"list"} to obtain the supported equations (see Value).
 
 }
 
@@ -44,7 +45,7 @@ Applies various equations, most of which are listed in Mohamed & Paleologos, 201
 The following columns in the data frame \code{epsdata} are supported and may be required, depending on the choice of the equation:
 \itemize{
 \item{\var{epsilon}:} { Electric permittivity. [-]} 
-\item{\var{soil}:} { Soil type indicator. \code{"mineral", "organic"}} 
+\item{\var{soil}:} { Soil type indicator: \code{"mineral"} or \code{"organic"} (\code{"deltaT_minorg"} also accepts \code{"clay"}, which is treated as \code{"mineral"})} 
 \item{\var{n}:} { Soil porosity. [-]}
 \item{\var{BD}:} { dry bulk density. [\eqn{g/\text{cm}^3}{g/cm^3}]}
 \item{\var{clay_perc}:} { Percent clay. [\%]}
@@ -52,7 +53,7 @@ The following columns in the data frame \code{epsdata} are supported and may be 
 \item{\var{cohesive}:} { is the soil cohesive? [0/1]}
 }
    
-\code{theta2eps} is the inverse of \code{eps2theta}. However, currently only implemented for \code{equation=c("deltaT_minorg", "SchaapEtal1997", "ToppEtal1980"} by piecewise linear interpolation.
+\code{theta2eps} is the inverse of \code{eps2theta}. However, it is currently only implemented for \code{equation=c("deltaT_minorg", "SchaapEtal1997", "ToppEtal1980")}, the latter two by piecewise linear interpolation.
   
 \subsection{Equations}{   
 The respective equations used are:
@@ -66,7 +67,7 @@ The respective equations used are:
   
   
   \item \code{"DrnevichEtal2005"} (Drnevich et al., 2005):
-  \deqn{\theta =  \frac{\sqrt{\epsilon}-\frac{a}{BD}}{b}
+  \deqn{\theta =  \frac{\sqrt{\epsilon}-a*BD}{b}
   }{%
   \theta = (\sqrt(\epsilon) - a * BD) / b
   } with \eqn{a=0.95} and \eqn{b=8.8} for cohesive soils, \eqn{a=1} and \eqn{b=8.5} for non-cohesive soils, 
@@ -113,7 +114,7 @@ The respective equations used are:
   \theta = (0.133*\sqrt(\epsilon) -0.146)^{0.885}
   }  
     
-  \item \code{"SinghEtal2017"} (Singh et al. 2019 (version for CS655)):
+  \item \code{"SinghEtal2019"} (Singh et al. 2019 (version for CS655)):
   \deqn{\theta = a*\sqrt{\epsilon} + b
   }{%
   \theta = a*\sqrt(\epsilon) + b

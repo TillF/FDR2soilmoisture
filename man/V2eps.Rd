@@ -6,7 +6,7 @@
 Convert sensor voltage to epsilon and v.v. using manufacturer's specifications.
 }
 \description{
-Convert sensor voltage to epsilon and v.v. using manufacturer's specifications. Defined for Theta Probe and PR2 (DeltaT).
+Convert sensor voltage to epsilon and v.v. using manufacturer's specifications. Defined for Theta Probe and PR2 (DeltaT) and picoSMS.
 }
 \usage{
 V2eps(V, type, temp = NULL)
@@ -45,9 +45,9 @@ Values for \code{type}:
   \item{\code{"Theta Probe polynomial":}    
   Theta Probe polynomial* (ThetaProbe user manual, eq. 3.):
   \deqn{
-    \epsilon = 1.07 + 6.4*V - 6.4*V^2 + 4.7*V^3 
+    \sqrt{\epsilon} = 1.07 + 6.4*V - 6.4*V^2 + 4.7*V^3
   }{%
-    \epsilon = 1.07 + 6.4*V - 6.4*V^2 + 4.7*V^3 
+    sqrt(\epsilon) = 1.07 + 6.4*V - 6.4*V^2 + 4.7*V^3
   }
   Don't use for voltage > 1 V or theta > 0.5, see below!
   }
