@@ -28,7 +28,7 @@ compare_eps2theta_equations(common_set, legend_args=NULL,eq_subset=NULL, plot_ex
 \details{
 The dataframe \code{common_set} holds measured values of epsilon and observed values of soil moisture (theta, e.g. obtained by thermo-gravimetric method). 
 Additionally, other explanatory variables (e.g. bulk density, clay content, etc.) can be contained (see details in \code{\link{eps2theta}}).
-The \code{compare_eps2theta_equations} applies all equations supported by \code{\link{eps2theta}}, where possible with the provided datsa. It also adjusts the coefficients of these equations to better match the data, yielding equations variants with suffix "_adj". Whenever some coefficients cannot be estimated (e.g. when the column of bulk density is all set to the same value), the value of the original equation is used.
+The \code{compare_eps2theta_equations} applies all equations supported by \code{\link{eps2theta}}, where possible with the provided data. It also adjusts the coefficients of these equations to better match the data, yielding equation variants with suffix "_adj". Whenever some coefficients cannot be estimated (e.g. when the column of bulk density is all set to the same value), the value of the original equation is used.
 
 The dataframe \code{common_set} may hold a logical column \code{training}. If present, the custom model fits (see above) are based on this subset only; the remaining data are also displayed and their R2-values ("testing") reported.
 
@@ -46,7 +46,7 @@ Additionally, the function generates three figures:
 \enumerate{
 \item a plot of R2-values of training (without excluded records) vs. test for all equations. Values below the 10\% quantile (but at least -1) are trimmed to this value;
 
-\item matrix of scatterplot illustrating the tested equations (theta_observed vs. theta_predicted) and the respective R2- and RMSE-values (*_train, *_train_ex, *_test); 
+\item a matrix of scatterplots illustrating the tested equations (theta_observed vs. theta_predicted) and the respective R2- and RMSE-values (*_train, *_train_ex, *_test); 
 
 \item a plot showing the behaviour of all equations over the range of epsilon-values (other data averaged). This plot can help to identify equations with implausible behaviour in extrapolation to low/high values of epsilon.
 }
@@ -59,7 +59,7 @@ Additionally, the function generates three figures:
 Till Francke
 }
 \note{
-  For tested equartions, check the docu of \code{\link{eps2theta}}.
+  For tested equations, check the documentation of \code{\link{eps2theta}}.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
@@ -77,7 +77,7 @@ Till Francke
                             )
   observations$theta = sqrt(observations$eps) * runif(n=100, min=0.8, max=1.2)
   observations$theta = observations$theta / max(observations$theta)
-  observations$training   = c(rep(TRUE, 50), rep(FALSE, 50)) #use the fisrt 50 for training, the rest for validation
+  observations$training   = c(rep(TRUE, 50), rep(FALSE, 50)) #use the first 50 for training, the rest for validation
 
 res = compare_eps2theta_equations(common_set=observations, plot_extern=FALSE)
 

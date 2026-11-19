@@ -3,10 +3,10 @@
 \alias{eps2V}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Convert sensor voltage to epsilon and v.v. using manufacturer's specifications.
+Convert sensor voltage to epsilon and vice versa using manufacturer's specifications.
 }
 \description{
-Convert sensor voltage to epsilon and v.v. using manufacturer's specifications. Defined for Theta Probe and PR2 (DeltaT) and picoSMS.
+Convert sensor voltage to epsilon and vice versa using manufacturer's specifications. Defined for Theta Probe and PR2 (Delta-T Devices) and picoSMS.
 }
 \usage{
 V2eps(V, type, temp = NULL)
@@ -25,10 +25,10 @@ Type of sensor. Must be \code{"Theta Probe"}, \code{"Theta Probe polynomial"}, \
 }
 
   \item{temp}{
-Temperature during measurements [Celsius], needed for picoSMS}
+Temperature during measurements [degree Celsius], needed for picoSMS.}
 }
 \details{
-Applies the manufacturers conversion functions or its inverse. \code{V}: voltage in [V]; \code{eps}: epsilon [-]
+Applies the manufacturer's conversion functions or their inverse. \code{V}: voltage in [V]; \code{eps}: epsilon [-]
 
 Values for \code{type}:
 
@@ -92,9 +92,9 @@ this relationship can be fitted very precisely by a 3rd order polynomial}}
 \item{p. 11 states: \dQuote{For very high moisture contents (\eqn{\theta \,>\,0.5\, m^3 \cdot \, m^{-3}}{theta > 0.5 m^3*m^-3}), the polynomial equation should be used. This is usually only necessary for organic soils.}}
 
 }
-\bold{The statement on p. 11 is  obviously wrong} (see 'example 1', below): The polynom obviously differs considerably from the points in the linearization table, especially for voltage > 1 V or theta > 0.5, so only the statement on page 10 seems correct.
+\bold{The statement on p. 11 is obviously wrong} (see 'example 1', below): The polynomial differs considerably from the points in the linearization table, especially for voltage > 1 V or theta > 0.5, so only the statement on p. 10 seems correct.
 
-\bold{ -> For U > 1 V, use "Theta Probe" (i.e. based on the table) rather than "Theta Probe polynomial".}
+\bold{ -> For V > 1 V, use "Theta Probe" (i.e. based on the table) rather than "Theta Probe polynomial".}
 }
 
 

@@ -44,13 +44,13 @@ Use \code{"list"} to obtain the supported equations (see Value).
 Applies various equations, most of which are listed in Mohamed & Paleologos, 2018.
 The following columns in the data frame \code{epsdata} are supported and may be required, depending on the choice of the equation:
 \itemize{
-\item{\var{epsilon}:} { Electric permittivity. [-]} 
+\item{\var{epsilon}:} { Electric permittivity [-]} 
 \item{\var{soil}:} { Soil type indicator: \code{"mineral"} or \code{"organic"} (\code{"deltaT_minorg"} also accepts \code{"clay"}, which is treated as \code{"mineral"})} 
-\item{\var{n}:} { Soil porosity. [-]}
-\item{\var{BD}:} { dry bulk density. [\eqn{g/\text{cm}^3}{g/cm^3}]}
-\item{\var{clay_perc}:} { Percent clay. [\%]}
-\item{\var{om_perc}:} { Percent organic matter. [\%]}
-\item{\var{cohesive}:} { is the soil cohesive? [0/1]}
+\item{\var{n}:} { Soil porosity [-]}
+\item{\var{BD}:} { Dry bulk density [\eqn{g/\text{cm}^3}{g/cm^3}]}
+\item{\var{clay_perc}:} { Percent clay [\%]}
+\item{\var{om_perc}:} { Percent organic matter [\%]}
+\item{\var{cohesive}:} { Is the soil cohesive? [0/1]}
 }
    
 \code{theta2eps} is the inverse of \code{eps2theta}. However, it is currently only implemented for \code{equation=c("deltaT_minorg", "SchaapEtal1997", "ToppEtal1980")}, the latter two by piecewise linear interpolation.
@@ -62,7 +62,7 @@ The respective equations used are:
 
   \item \code{"deltaT_minorg"} (Delta-T Devices Ltd, 1998):
   \deqn{\theta =  \frac{\sqrt{\epsilon}-a_0}{a_1}}{%
-  \theta =  (\sqrt(\epsilon)-a_0)/a_1.
+  \theta =  (\sqrt(\epsilon)-a_0)/a_1
   } with \eqn{a_0=1.6} and \eqn{a_1=8.4} for mineral soils, \eqn{a_0=1.3} and \eqn{a_1=7.7} for organic soils 
   
   
@@ -70,7 +70,7 @@ The respective equations used are:
   \deqn{\theta =  \frac{\sqrt{\epsilon}-a*BD}{b}
   }{%
   \theta = (\sqrt(\epsilon) - a * BD) / b
-  } with \eqn{a=0.95} and \eqn{b=8.8} for cohesive soils, \eqn{a=1} and \eqn{b=8.5} for non-cohesive soils, 
+  } with \eqn{a=0.95} and \eqn{b=8.8} for cohesive soils, \eqn{a=1} and \eqn{b=8.5} for non-cohesive soils
   
   
   \item \code{"FerschEtal2017"} (Fersch et al., 2018):
@@ -122,11 +122,11 @@ The respective equations used are:
   with 
   \deqn{a = a_1*clay\_perc^2 + a_2*clay\_perc + a_3
   }{%
-  	a = a1*clay_perc^2 + a_2*clay_perc + a_3
+  	a = a_1*clay_perc^2 + a_2*clay_perc + a_3
   }
   \deqn{b = b_1*clay\_perc^2 + b_2*clay\_perc + b_3
   }{%
-  	b = b_1*clay_perc^2 + b_2*clay_perc + b3
+  	b = b_1*clay_perc^2 + b_2*clay_perc + b_3
   }  
    and the coefficients for CS655 (\eqn{a_1=-3.33e-5, a_2=1.14e-3, a_3=0.108, b_1=6.52e-5, b_2=-2.48e-3, b_3=-0.16})
   	
@@ -182,7 +182,7 @@ Till Francke
 }
 
 \note{
-The different equations can automatically tested and compared with \code{\link{compare_eps2theta_equations}}.
+The different equations can be automatically tested and compared with \code{\link{compare_eps2theta_equations}}.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~

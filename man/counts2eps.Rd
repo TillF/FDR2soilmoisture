@@ -3,11 +3,11 @@
 \alias{eps2counts}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Convert oscillation frequency output/Counts from SMT100 sensors into permittivity and v.v
+Convert oscillation frequency output/counts from SMT100 sensors into permittivity and vice versa
 
 }
 \description{
-Convert oscillation frequency output from SMT100 sensors into permittivity and v.v using an empirical model.
+Convert oscillation frequency output from SMT100 sensors into permittivity and vice versa using an empirical model.
 }
 \usage{
 counts2eps(counts, alpha=-0.1305, beta=0.2549, gamma=1.8342)
@@ -15,13 +15,13 @@ eps2counts(perm, alpha=-0.1305, beta=0.2549, gamma=1.8342)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{counts}{counts/oscillation frequency measured by a SMT100 sensor [-]}
+  \item{counts}{counts/oscillation frequency measured by an SMT100 sensor [-]}
   \item{perm}{apparent dielectric permittivity [-]}
   \item{alpha, beta, gamma}{Calibration parameters, see Details}
 }
 \details{
 
-The following empirical model is used from Bogena et al., 2017:
+The following empirical model from Bogena et al. (2017) is used:
 \deqn{\epsilon= \gamma + \frac{1}{\alpha+\frac{\beta}{(18000-counts)/5000}}
 }{%
   \epsilon = \gamma + 1 / (\alpha + (\beta / ((18000 - counts) / 5000))) 
