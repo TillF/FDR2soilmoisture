@@ -58,7 +58,7 @@ Values for \code{type}:
   }
   
   \item{
-  \code{"picoSMS_linear"}
+  \code{"picoSMS_linear"} (Sheshadrivasan et al., 2025):
   \deqn{
     \epsilon = 2.3811 + 70.0811 * V - 0.0337 * temp
   }{%
@@ -67,7 +67,7 @@ Values for \code{type}:
   }
   
   \item{
-  \code{"picoSMS_poly"}
+  \code{"picoSMS_poly"} (Sheshadrivasan et al., 2025):
   \deqn{
     \epsilon = 1.9284 + 43.9328 * V + 0.0181 * temp + 26.4293 * V^2 - 0.0942 * V * temp - 0.0005 * temp^2 
   }{%
@@ -103,7 +103,7 @@ Delta-T Devices Ltd, 1998. ThetaProbe SOIL MOISTURE SENSOR TYPE ML2 USER MANUAL 
 
 Delta-T Devices Ltd, 2016. User Manual for the Profile Probe type PR2 (PR2-UM-5.0). Delta-T Devices Ltd, Cambridge, UK.
 
-Sheshadrivasan V.K., Langhammer J., Scheiffele L., Terschlüsen J., Francke T. (2025): picoSMS: Development of a Low-Cost, Open-Source, Off-Grid, Soil Moisture monitoring Station, and the Calibration and Validation of commercially available Capacitive Soil Moisture Sensor for Hydrological Applications. Sensors 2025, https://zenodo.org/records/17072390
+Sheshadrivasan V.K., Langhammer J., Scheiffele L., Terschlüsen J., Francke T. (2025): picoSMS: Development of a Low-Cost, Open-Source, Off-Grid, Soil Moisture monitoring Station, and the Calibration and Validation of commercially available Capacitive Soil Moisture Sensor for Hydrological Applications. Sensors 2025, \url{https://zenodo.org/records/17072390}
 
 
 

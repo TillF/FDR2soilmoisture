@@ -90,14 +90,14 @@ With the additional arguments of \code{epsilon_0 =} and \code{epsilon_1 = } it i
  \code{correct_sensor_voltage()}: Corrected voltage value [V]
 }
 \references{
-Sheshadrivasan V.K., Langhammer J., Scheiffele L., Terschlüsen J., Francke T. (2025): picoSMS: Development of a Low-Cost, Open-Source, Off-Grid, Soil Moisture monitoring Station, and the Calibration and Validation of commercially available Capacitive Soil Moisture Sensor for Hydrological Applications. Sensors 2025, https://zenodo.org/records/17072390
+Sheshadrivasan V.K., Langhammer J., Scheiffele L., Terschlüsen J., Francke T. (2025): picoSMS: Development of a Low-Cost, Open-Source, Off-Grid, Soil Moisture monitoring Station, and the Calibration and Validation of commercially available Capacitive Soil Moisture Sensor for Hydrological Applications. Sensors 2025, \url{https://zenodo.org/records/17072390}
 
 }
 \author{
 Till Francke, Jakob Terschluesen
 }
 \note{
-Following the calibration proposed for the picoSMS described in Sheshadrivasan et all 2025, the picoSMS sensors are only normalized to water and air measurements. Therefore \code{scaling} should be set to FALSE.
+Following the calibration proposed for the picoSMS described in Sheshadrivasan et al. (2025), the picoSMS sensors are only normalized to water and air measurements. Therefore \code{scaling} should be set to FALSE.
 
 \code{correct_sensor_voltage()} is outdated and only kept for backward compatibility. It calls \code{correct_sensor_values()} with \code{var_type="Voltage"}.
 

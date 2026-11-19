@@ -73,7 +73,7 @@ The respective equations used are:
   } with \eqn{a=0.95} and \eqn{b=8.8} for cohesive soils, \eqn{a=1} and \eqn{b=8.5} for non-cohesive soils, 
   
   
-  \item \code{"FerschEtal2017"} (Fersch et al. 2017):
+  \item \code{"FerschEtal2017"} (Fersch et al., 2018):
   \deqn{\theta =  \frac{(\sqrt(\epsilon) - (1 - n* \sqrt(3.29)) - n * 1)}{
         (\sqrt(80) - \sqrt(1))}
   }{%
@@ -108,13 +108,13 @@ The respective equations used are:
   }
    with \eqn{a_1 = -0.0728, a_2 = 0.0448, a_3 = -0.00195, a_4= 0.0000361} for mineral soils and \eqn{a_1 =  0.0233, a_2 = 0.0285, a_3 = -0.000431, a_4 = 0.00000304} for organic soils 
   
-  \item \code{"SchaapEtal1997"} (Schaap et al. 1997 [eq. 2b in Vaz et al. 2013]):
+  \item \code{"SchaapEtal1997"} (Schaap et al., 1997 [eq. 2b in Vaz et al., 2013]):
   \deqn{\theta =  (0.133*\sqrt{\epsilon} -0.146)^{0.885}
   }{%
   \theta = (0.133*\sqrt(\epsilon) -0.146)^{0.885}
   }  
     
-  \item \code{"SinghEtal2019"} (Singh et al. 2019 (version for CS655)):
+  \item \code{"SinghEtal2019"} (Singh et al., 2019 (version for CS655)):
   \deqn{\theta = a*\sqrt{\epsilon} + b
   }{%
   \theta = a*\sqrt(\epsilon) + b
@@ -162,7 +162,7 @@ Fersch, B., Jagdhuber, T., Schroen, M., Voelksch, I., Jaeger, M., 2018. Synergie
 
 Jacobsen, O., Schjonning, P., 1993. A Laboratory Calibration of Time-Domain Reflectometry for Soil-Water Measurement Including Effects of Bulk-Density and Texture. J. Hydrol. 151, 147-157. \url{https://doi.org/10.1016/0022-1694(93)90233-Y}
 
-Ju, Z., Liu, X., Ren, T., & Hu, C., 2010. Measuring Soil Water Content With Time Domain Reflectometry. Soil Science, 175(10), 469-473. \url{doi:10.1097/ss.0b013e3181f55aa3} 
+Ju, Z., Liu, X., Ren, T., & Hu, C., 2010. Measuring Soil Water Content With Time Domain Reflectometry. Soil Science, 175(10), 469-473. \url{https://doi.org/10.1097/SS.0b013e3181f55aa3} 
 
 Malicki, M.A., Plagge, R., Roth, C.H., 1996. Improving the calibration of dielectric TDR soil moisture determination taking into account the solid soil. Eur. J. Soil Sci. 47, 357-366. \url{https://doi.org/10.1111/j.1365-2389.1996.tb01409.x}
 
@@ -172,7 +172,7 @@ Singh, J., Lo, T., Rudnick, D.R., Irmak, S., Blanco-Canqui, H., 2019. Quantifyin
 
 Topp, G., Davis, J., Annan, A., 1980. Electromagnetic Determination of Soil-Water Content - Measurements in Coaxial Transmission-Lines. Water Resour. Res. 16, 574-582. \url{https://doi.org/10.1029/WR016i003p00574}
 
-Vaz, C. & Jones, Scott & Meding, Stephen & Tuller, Markus. (2013). Evaluation of Standard Calibration Functions for Eight Electromagnetic Soil Moisture Sensors. Vadose Zone Journal. 12. 10.2136/vzj2012.0160. \url{https://doi.org/10.2136/vzj2012.0160}
+Vaz, C., Jones, S., Meding, S., Tuller, M., 2013. Evaluation of Standard Calibration Functions for Eight Electromagnetic Soil Moisture Sensors. Vadose Zone J. 12. \url{https://doi.org/10.2136/vzj2012.0160}
 
 Zhao, Y., Ling, D., Wang, Y., Huang, B., Wang, H., 2016. Study on a calibration equation for soil water content in field tests using time domain reflectometry. J. Zhejiang Univ.-SCI A 17, 240-252. \url{https://doi.org/10.1631/jzus.A1500065}
 

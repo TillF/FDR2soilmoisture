@@ -21,13 +21,13 @@ eps2counts(perm, alpha=-0.1305, beta=0.2549, gamma=1.8342)
 }
 \details{
 
-The following empirical model is used from Bogena et all, 2017:
+The following empirical model is used from Bogena et al., 2017:
 \deqn{\epsilon= \gamma + \frac{1}{\alpha+\frac{\beta}{(18000-counts)/5000}}
 }{%
   \epsilon = \gamma + 1 / (\alpha + (\beta / ((18000 - counts) / 5000))) 
   }
   
-By default, the function uses average parameters for \code{alpha}, \code{beta} and \code{gamma} (Table 2, Bogena et all, 2017) and issues a warning. Since each sensor is calibrated individually, these parameters should be set individually, too.
+By default, the function uses average parameters for \code{alpha}, \code{beta} and \code{gamma} (Table 2, Bogena et al., 2017) and issues a warning. Since each sensor is calibrated individually, these parameters should be set individually, too.
 }
 \value{
 Permittivity value (epsilon) [-] or sensor counts [-].

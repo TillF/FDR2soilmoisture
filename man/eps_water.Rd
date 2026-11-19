@@ -32,7 +32,7 @@ Three equations are implemented:
     \epsilon =  78.54 * (1 - (4.5791 * 10^-3)*(T-25) + 1.19*10^-5 * (T-25)^2 - 2.8 * 10^-8 * (T-25)^3)
     }
     
-    \item \code{"Uematsu1980"} (Journal of ..., 1980): 
+    \item \code{"Uematsu1980"} (Uematsu & Franck, 1980): 
     \deqn{\epsilon = 1 + \frac{A}{T_2} * \rho_2 +
       (\frac{B}{T_2} + C + D * T_2) * \rho_2^2 +
       (\frac{E}{T_2} + F * T_2 + G * T_2^2) * \rho_2^3 +
@@ -56,13 +56,13 @@ Three equations are implemented:
 Permittivity of water [-]
 }
 \references{
-Debove J (2022). _iapws: Formulations of the International Association for the
-  Properties of Water and Steam_. R package version 1.1,
-  <https://CRAN.R-project.org/package=iapws>.
+Debove J (2022). \emph{iapws: Formulations of the International Association for the
+  Properties of Water and Steam}. R package version 1.1,
+  \url{https://CRAN.R-project.org/package=iapws}.
 
-Journal of Physical and Chemical Reference Data 9, 1291 (1980); https://doi.org/10.1063/1.555632
+Uematsu, M., Franck, E.U. (1980): Static Dielectric Constant of Water and Steam. Journal of Physical and Chemical Reference Data 9, 1291. \url{https://doi.org/10.1063/1.555632}
 
-Weast, R.C. CRC Handbook of Physics and Chemistry, 67th ed.; CRC Press: Boca Raton, FL, USA, 1986.
+Weast, R.C. CRC Handbook of Chemistry and Physics, 67th ed.; CRC Press: Boca Raton, FL, USA, 1986.
 }
 
 \author{
