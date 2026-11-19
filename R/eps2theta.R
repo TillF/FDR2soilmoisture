@@ -3,7 +3,7 @@
 eps2theta <- function(epsdata, equation) {
   required_fields <- list(
     deltaT_minorg = c("epsilon", "soil"),
-    FerschEtal2017 = c("epsilon", "n"),
+    FerschEtal2018 = c("epsilon", "n"),
     ToppEtal1980 = c("epsilon"),
     RothEtal1992 = c("epsilon", "soil"),
     SchaapEtal1997 = c("epsilon"),
@@ -94,7 +94,7 @@ eps2theta <- function(epsdata, equation) {
   
    # Kargas & Kerkides 2008seem to give a similar eq.
 
-  if (equation == "FerschEtal2017") {
+  if (equation == "FerschEtal2018") {
     theta <- (sqrt(epsdata$epsilon) - (1 - epsdata$n) * sqrt(3.29) - epsdata$n * 1) /
       (sqrt(80) - sqrt(1))
   }

@@ -8,7 +8,7 @@ Assuming that the deviation in the measured variable of the sensor is linear, it
 The following equations for converting epsilon (permittivity) to theta (volumetric water content) are included:
 deltaT, manufacturer's equation, 
 Drnevich et al. (2005), 
-Fersch et al. (2017), 
+Fersch et al. (2018), 
 Jacobsen_Schjonning (1993), 
 Ju et al. (2010), 
 Malicki et al. (1996), 

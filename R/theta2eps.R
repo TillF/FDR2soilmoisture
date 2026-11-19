@@ -3,7 +3,7 @@
 theta2eps <- function(thetadata, equation, check_range = TRUE) {
   required_fields <- list(
     deltaT_minorg = c("theta", "soil"), # ,
-    # FerschEtal2017 = c("theta", "n"),
+    # FerschEtal2018 = c("theta", "n"),
     ToppEtal1980 = c("theta"),
     # RothEtal1992 = c("theta", "soil"),
     SchaapEtal1997 = c("theta")
@@ -69,7 +69,7 @@ theta2eps <- function(thetadata, equation, check_range = TRUE) {
 
   #   #Kargas & Kerkides 2008seem to give a similar eq.
   #
-  # if (equation=="FerschEtal2017")
+  # if (equation=="FerschEtal2018")
   # {
   #   theta = (sqrt(thetadata$epsilon) - (1 - thetadata$n* sqrt(3.29)) - thetadata$n * 1) /
   #     (sqrt(80) - sqrt(1))

@@ -24,7 +24,7 @@ dataframe holding at least a column \code{theta} (volumetric water content, [-])
 Equation to be used. Must be one of 
 \code{"deltaT_minorg"}, 
 \code{"DrnevichEtal2005"},
-\code{"FerschEtal2017"}, 
+\code{"FerschEtal2018"}, 
 \code{"Jacobsen_Schjonning1993"},
 \code{"JuEtal2010"},
 \code{"MalickiEtal1996"},
@@ -73,7 +73,7 @@ The respective equations used are:
   } with \eqn{a=0.95} and \eqn{b=8.8} for cohesive soils, \eqn{a=1} and \eqn{b=8.5} for non-cohesive soils
   
   
-  \item \code{"FerschEtal2017"} (Fersch et al., 2018):
+  \item \code{"FerschEtal2018"} (Fersch et al., 2018):
   \deqn{\theta =  \frac{\sqrt{\epsilon} - (1 - n) * \sqrt{3.29} - n * 1}{
         \sqrt{80} - \sqrt{1}}
   }{%
