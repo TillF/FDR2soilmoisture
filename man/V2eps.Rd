@@ -120,7 +120,7 @@ Till Francke, Jakob Terschlüsen
 \code{\link{correct_sensor_voltage}}
 }
 \examples{
-V2eps(V= 1.1, type = "Theta Probe") #convert to epsilon, eq. 1 of Theta-Probe user manual
+V2eps(V= 1.1, type = "Theta Probe") #convert to epsilon, lookup table of Theta-Probe user manual
 
   eps_air =1.00059     #permittivity of air
   eps_h2o =81          #permittivity of water at 20 degree C
@@ -138,11 +138,11 @@ V2eps(V= 1.1, type = "Theta Probe") #convert to epsilon, eq. 1 of Theta-Probe us
   main = "Theta Probe, voltage-to-epsilon conversion")
   lines(V, sqrt(eps), ylim=c(0,9), type="l", lty=2, col="red")
   abline(a=1.1, b=4.44, col="green") #linearized version (eq. 2)
-  eps = V2eps(V, type = "Theta Probe") #polynomial equation (eq. 1)
+  eps = V2eps(V, type = "Theta Probe") #lookup table, linear interpolation
   lines(V, sqrt(eps), ylim=c(0,9), type="l", lty=1, col="red")
   
  
-  abline(v=1, lty=2) #show  extent of the original figure
+  abline(v=1, lty=2) #show extent of the original figure
   abline(h=6, lty=2)
   
   legend("topleft", legend=c("polynomial", "linearized", "lookup, linear interpolation",
@@ -159,7 +159,7 @@ V2eps(V= 1.1, type = "Theta Probe") #convert to epsilon, eq. 1 of Theta-Probe us
   calib_data = read.table(calib_file, nrow=-1, sep="\t",
   stringsAsFactors = FALSE, header=TRUE, na.strings = c("NA",""))  
   
-  calib_data = calib_data[calib_data$type=="Theta Probe",]
+  calib_data = calib_data[calib_data$type=="Theta Probe" & calib_data$var_type=="Voltage",]
   
   points(calib_data$air_measurement/1000, rep(1, nrow(calib_data)), col="blue")
   points(calib_data$water_measurement/1000, sqrt(rep(81, nrow(calib_data))), col="blue")

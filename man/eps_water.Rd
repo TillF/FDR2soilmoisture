@@ -75,17 +75,13 @@ Jakob Terschluesen
 
 \examples{
 
-#calculate Permittivty of water at 20.5 degree
+#calculate permittivity of water at 20.5 degree Celsius
 T=20.5
 eps_water(T,equ = "Weast86")
-eps_water(T,equ = "Uematsu1980")
+eps_water(T,equ = "Uematsu1980") #uses constant density of water if iapws is not installed
 
 #only if package iapws is installed
-if(require("iapws", quietly = TRUE)){
-  eps_water(T, equ = "Uematsu1980")
-}
-
-if(require("iapws", quietly = TRUE)){
+if (requireNamespace("iapws", quietly = TRUE)) {
   eps_water(T, equ = "iapws")
 }
 
@@ -94,11 +90,7 @@ eps_water(T,equ = "Weast86")
 eps_water(T,equ = "Uematsu1980")
 
 #only if package iapws is installed
-if(require("iapws", quietly = TRUE)){
-  eps_water(T, equ = "Uematsu1980")
-}
-
-if(require("iapws", quietly = TRUE)){
+if (requireNamespace("iapws", quietly = TRUE)) {
   eps_water(T, equ = "iapws")
 }
 
