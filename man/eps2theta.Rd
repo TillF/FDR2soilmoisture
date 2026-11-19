@@ -34,6 +34,7 @@ Equation to be used. Must be one of
 \code{"ToppEtal1980"},
 \code{"ZhaoEtal2016"}.
 Use \code{"list"} to obtain the supported equations (see Value).
+The deprecated name \code{"FerschEtal2017"} is still accepted for \code{"FerschEtal2018"}, with a warning.
 
 }
 

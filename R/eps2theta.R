@@ -1,5 +1,17 @@
 # functions for converting sensor permittivity [-] to volumetric water content [%]
 
+# replace deprecated equation names by their current ones
+.update_equation_names <- function(equation) {
+  deprecated <- c(FerschEtal2017 = "FerschEtal2018")
+  old <- equation %in% names(deprecated)
+  if (any(old)) {
+    warning("Deprecated equation name(s): '", paste0(equation[old], collapse = "', '"),
+            "'. Use '", paste0(deprecated[equation[old]], collapse = "', '"), "' instead.")
+    equation[old] <- deprecated[equation[old]]
+  }
+  equation
+}
+
 eps2theta <- function(epsdata, equation) {
   required_fields <- list(
     deltaT_minorg = c("epsilon", "soil"),
@@ -19,6 +31,7 @@ eps2theta <- function(epsdata, equation) {
     return(required_fields)
   } # only return names of supported equations
 
+  equation <- .update_equation_names(equation)
   if (!is.data.frame(epsdata)) stop("epsdata must be a dataframe.")
   if (nrow(epsdata) == 0)      
   {  

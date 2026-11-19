@@ -135,6 +135,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
     
     supported_eqs = eps2theta(epsdata = NULL, equation = "list") #get list of all supported equations
     if (is.null(eq_subset)) eq_subset=names(supported_eqs) #use all available equations
+    eq_subset = .update_equation_names(eq_subset)
     eq_subset =  intersect(eq_subset, names(supported_eqs)) #restrict to available equations
     if (length(eq_subset) == 0) stop("No supported equations selected. See eps2theta(equation=\"list\") for available options.")
     supported_eqs = supported_eqs[eq_subset] #use only the selected ones
