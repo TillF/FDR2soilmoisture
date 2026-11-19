@@ -83,10 +83,10 @@ The respective equations used are:
   (CRIM mixing model) with permittivities of 3.29 for the solid phase, 80 for water and 1 for air (see Fersch et al., 2020, eq. 2)
   
   \item \code{"Jacobsen_Schjonning1993"} (Jacobsen & Schjonning, 1993):
-  \deqn{\theta =  -3.41*1e-2 +3.45*1e-2*\epsilon-11.4*1e-4*\epsilon^2 + 17.1*1e-6*\epsilon^3- 3.7*1e-2*BD + 7.36*1e-4*clay\_perc + 47.7*1e-4 * om\_perc
+  \deqn{\theta =  -3.41*10^{-2} +3.45*10^{-2}*\epsilon-11.4*10^{-4}*\epsilon^2 + 17.1*10^{-6}*\epsilon^3- 3.7*10^{-2}*BD + 7.36*10^{-4}*clay\_perc + 47.7*10^{-4} * om\_perc
   }{%
-  \theta = -3.41*1e-2 +3.45*1e-2*\epsilon-11.4*1e-4*\epsilon^2 + 17.1*1e-6*\epsilon^3-
-        3.7*1e-2*BD + 7.36*1e-4*clay_perc + 47.7*1e-4 * om_perc
+  \theta = -3.41*10^-2 +3.45*10^-2*\epsilon-11.4*10^-4*\epsilon^2 + 17.1*10^-6*\epsilon^3-
+        3.7*10^-2*BD + 7.36*10^-4*clay_perc + 47.7*10^-4 * om_perc
   } 
   
   \item \code{"JuEtal2010"} (Ju et al., 2010):
@@ -129,13 +129,13 @@ The respective equations used are:
   }{%
   	b = b_1*clay_perc^2 + b_2*clay_perc + b_3
   }  
-   and the coefficients for CS655 (\eqn{a_1=-3.33e-5, a_2=1.14e-3, a_3=0.108, b_1=6.52e-5, b_2=-2.48e-3, b_3=-0.16})
+   and the coefficients for CS655 (\eqn{a_1=-3.33*10^{-5}, a_2=1.14*10^{-3}, a_3=0.108, b_1=6.52*10^{-5}, b_2=-2.48*10^{-3}, b_3=-0.16}{a_1=-3.33*10^-5, a_2=1.14*10^-3, a_3=0.108, b_1=6.52*10^-5, b_2=-2.48*10^-3, b_3=-0.16})
   	
      
   \item \code{"ToppEtal1980"} (Topp et al., 1980):
-  \deqn{\theta =  -0.053+ 2.92e-2*\epsilon -5.5e-4*\epsilon^2 + 4.3e-6*\epsilon^3
+  \deqn{\theta =  -0.053+ 2.92*10^{-2}*\epsilon -5.5*10^{-4}*\epsilon^2 + 4.3*10^{-6}*\epsilon^3
   }{%
-  \theta = -0.053+ 2.92e-2*\epsilon -5.5e-4*\epsilon^2 + 4.3e-6*\epsilon^3
+  \theta = -0.053+ 2.92*10^-2*\epsilon -5.5*10^-4*\epsilon^2 + 4.3*10^-6*\epsilon^3
   }
   
   \item \code{"ZhaoEtal2016"} (Zhao et al., 2016):
