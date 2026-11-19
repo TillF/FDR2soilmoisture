@@ -1,9 +1,10 @@
+\encoding{UTF-8}
 \name{V2eps}
 \alias{V2eps}
 \alias{eps2V}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Convert sensor voltage to epsilon and vice versa using manufacturer's specifications.
+Convert sensor voltage to epsilon and vice versa using manufacturer's specifications
 }
 \description{
 Convert sensor voltage to epsilon and vice versa using manufacturer's specifications. Defined for Theta Probe and PR2 (Delta-T Devices) and picoSMS.
@@ -34,67 +35,53 @@ Values for \code{type}:
 
 \itemize{
 
-  \item{\code{"PR2"}: PR2 default equation according to manual (PR2\_user\_manual\_version\_5.0.pdf, eq. 2), (PR2\_SDI-12-\_User\_Manual\_version\_4\_1.pdf, eq. 2):
+  \item \code{"PR2"}: PR2 default equation according to manual (PR2_user_manual_version_5.0.pdf, eq. 2), (PR2_SDI-12-_User_Manual_version_4_1.pdf, eq. 2):
   \deqn{
     \sqrt{\epsilon} = 1.125 - 5.53*V + 67.17*V^2 - 234.42*V^3 + 413.56*V^4 - 356.68*V^5 + 121.53*V^6
   }{%
-    \u221a \epsilon = 1.125 - 5.53*V + 67.17*V^2 - 234.42*V^3 + 413.56*V^4 - 356.68*V^5 + 121.53*V^6
+    sqrt(\epsilon) = 1.125 - 5.53*V + 67.17*V^2 - 234.42*V^3 + 413.56*V^4 - 356.68*V^5 + 121.53*V^6
   }
-  }
-  
-  \item{\code{"Theta Probe polynomial":}    
-  Theta Probe polynomial* (ThetaProbe user manual, eq. 3.):
+
+  \item \code{"Theta Probe polynomial"}: polynomial according to ThetaProbe user manual (eq. 3.):
   \deqn{
     \sqrt{\epsilon} = 1.07 + 6.4*V - 6.4*V^2 + 4.7*V^3
   }{%
     sqrt(\epsilon) = 1.07 + 6.4*V - 6.4*V^2 + 4.7*V^3
   }
-  Don't use for voltage > 1 V or theta > 0.5, see below!
-  }
-  
-  \item{
-  \code{"Theta Probe":}
-  interpolated lookup data table from ThetaProbe user manual table (p. 14), see details below
-  }
-  
-  \item{
-  \code{"picoSMS_linear"} (Sheshadrivasan et al., 2025):
+  Don't use for voltage > 1 V or theta > 0.5, see section \sQuote{Warning} below!
+
+  \item \code{"Theta Probe"}: interpolated lookup data table from ThetaProbe user manual table (p. 14), see section \sQuote{Warning} below.
+
+  \item \code{"picoSMS_linear"} (Sheshadrivasan et al., 2025):
   \deqn{
     \epsilon = 2.3811 + 70.0811 * V - 0.0337 * temp
   }{%
     \epsilon = 2.3811 + 70.0811 * V - 0.0337 * temp
   }
-  }
-  
-  \item{
-  \code{"picoSMS_poly"} (Sheshadrivasan et al., 2025):
+
+  \item \code{"picoSMS_poly"} (Sheshadrivasan et al., 2025):
   \deqn{
-    \epsilon = 1.9284 + 43.9328 * V + 0.0181 * temp + 26.4293 * V^2 - 0.0942 * V * temp - 0.0005 * temp^2 
+    \epsilon = 1.9284 + 43.9328 * V + 0.0181 * temp + 26.4293 * V^2 - 0.0942 * V * temp - 0.0005 * temp^2
   }{%
     \epsilon = 1.9284 + 43.9328 * V + 0.0181 * temp + 26.4293 * V^2 - 0.0942 * V * temp - 0.0005 * temp^2
   }
-  }
 }
-
-
 }
 
 \value{
 Permittivity value (epsilon) [-] or sensor voltage [V].
 }
 \section{Warning}{
+Regarding \code{"Theta Probe polynomial"}, the ThetaProbe user manual states:
 \itemize{
-*\code{"Theta Probe polynomial"} from ThetaProbe user manual:
+\item p. 10: \dQuote{In the range 0 to 1 Volt (corresponding to a soil moisture range 0 to ~0.55 by volume),
+this relationship can be fitted very precisely by a 3rd order polynomial}
 
-\item{p. 10 states: \dQuote{In the range 0 to 1 Volt (corresponding to a soil moisture range 0 to ~0.55 by volume),
-this relationship can be fitted very precisely by a 3rd order polynomial}}
-
-\item{p. 11 states: \dQuote{For very high moisture contents (\eqn{\theta \,>\,0.5\, m^3 \cdot \, m^{-3}}{theta > 0.5 m^3*m^-3}), the polynomial equation should be used. This is usually only necessary for organic soils.}}
-
+\item p. 11: \dQuote{For very high moisture contents (\eqn{\theta \,>\,0.5\, m^3 \cdot \, m^{-3}}{theta > 0.5 m^3*m^-3}), the polynomial equation should be used. This is usually only necessary for organic soils.}
 }
 \bold{The statement on p. 11 is obviously wrong} (see 'example 1', below): The polynomial differs considerably from the points in the linearization table, especially for voltage > 1 V or theta > 0.5, so only the statement on p. 10 seems correct.
 
-\bold{ -> For V > 1 V, use "Theta Probe" (i.e. based on the table) rather than "Theta Probe polynomial".}
+\bold{-> For V > 1 V, use \code{"Theta Probe"} (i.e. based on the table) rather than \code{"Theta Probe polynomial"}.}
 }
 
 

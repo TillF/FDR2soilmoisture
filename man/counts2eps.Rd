@@ -4,7 +4,6 @@
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Convert oscillation frequency output/counts from SMT100 sensors into permittivity and vice versa
-
 }
 \description{
 Convert oscillation frequency output from SMT100 sensors into permittivity and vice versa using an empirical model.

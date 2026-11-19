@@ -2,20 +2,20 @@
 \alias{compare_eps2theta_equations}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-compare_eps2theta_equations
+Compare equations for converting epsilon to theta
 }
 \description{
 Compare various equations for converting epsilon to theta by creating a plot and showing R2-values. The function uses the equations included in \code{\link{eps2theta}}. It also customizes some of them with fitted coefficients, plus some GLM variants using different link functions.
 }
 \usage{
-compare_eps2theta_equations(common_set, legend_args=NULL,eq_subset=NULL, plot_extern = TRUE)
+compare_eps2theta_equations(common_set, legend_args=NULL, eq_subset=NULL, plot_extern=TRUE)
 }
 \arguments{
   \item{common_set}{
 	Data frame with observed data. See details. 
   }
   \item{legend_args}{
-	List of arguments passed to \code{\link{legend}()} to create the legend for the plots. 
+	List of arguments passed to \code{\link[graphics]{legend}()} to create the legend for the plots. 
   }
   \item{eq_subset}{
 	Vector of names of equations to be used (default: all). See \code{\link{eps2theta}}.
@@ -46,7 +46,7 @@ Additionally, the function generates three figures:
 \enumerate{
 \item a plot of R2-values of training (without excluded records) vs. test for all equations. Values below the 10\% quantile (but at least -1) are trimmed to this value;
 
-\item a matrix of scatterplots illustrating the tested equations (theta_observed vs. theta_predicted) and the respective R2- and RMSE-values (*_train, *_train_ex, *_test); 
+\item a matrix of scatterplots illustrating the tested equations (theta_observed vs. theta_predicted) and the respective R2- and RMSE-values (*_train, *_train_ex, *_test);
 
 \item a plot showing the behaviour of all equations over the range of epsilon-values (other data averaged). This plot can help to identify equations with implausible behaviour in extrapolation to low/high values of epsilon.
 }
