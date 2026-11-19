@@ -79,7 +79,10 @@ Till Francke
   observations$theta = observations$theta / max(observations$theta)
   observations$training   = c(rep(TRUE, 50), rep(FALSE, 50)) #use the first 50 for training, the rest for validation
 
-res = compare_eps2theta_equations(common_set=observations, plot_extern=FALSE)
+#requires the suggested package nlmrt
+if (requireNamespace("nlmrt", quietly = TRUE)) {
+  res = compare_eps2theta_equations(common_set=observations, plot_extern=FALSE)
+}
 
 }
 
