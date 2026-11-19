@@ -330,7 +330,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
         any(grepl(eq_subset, pattern = "Malicki")))
     {
       eq="theta_malicki_adj"
-      lm_all = nls(formula = theta ~ (sqrt(epsilon) -a - b*BD- c*BD^2)/(d+e*BD), data = common_set[common_set$training,], start = c(a=0.819, b=0.168, c=0.168, d=7.17, e=2.18),
+      lm_all = nls(formula = theta ~ (sqrt(epsilon) -a - b*BD- c*BD^2)/(d+e*BD), data = common_set[common_set$training,], start = c(a=0.819, b=0.168, c=0.159, d=7.17, e=1.18),
                    nls.control(maxiter = 100, warnOnly = TRUE)             )
       
       mod_list = assign(paste0("lm_", eq),lm_all, envir = globvars) #keep this lm for later use

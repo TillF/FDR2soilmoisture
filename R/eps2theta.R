@@ -135,7 +135,7 @@ eps2theta <- function(epsdata, equation) {
 
   # Malicki et al 1996(eq. 16.63 in Mohamed & Paleologos, 2018)
   if (equation == "MalickiEtal1996") {
-    theta <- (sqrt(epsdata$epsilon) - 0.819 - 0.168 * epsdata$BD - 0.168 * epsdata$BD^2) / (7.17 + 1.18 * epsdata$BD)
+    theta <- (sqrt(epsdata$epsilon) - 0.819 - 0.168 * epsdata$BD - 0.159 * epsdata$BD^2) / (7.17 + 1.18 * epsdata$BD)
   }
 
   # Jacobsen & Schjonning (1993) from Mohamed & Paleologos, 2018
