@@ -42,7 +42,7 @@ Values for \code{type}:
     sqrt(\epsilon) = 1.125 - 5.53*V + 67.17*V^2 - 234.42*V^3 + 413.56*V^4 - 356.68*V^5 + 121.53*V^6
   }
 
-  \item \code{"Theta Probe polynomial"}: polynomial according to ThetaProbe user manual (eq. 3.):
+  \item \code{"Theta Probe polynomial"}: polynomial according to ThetaProbe user manual (eq. 1):
   \deqn{
     \sqrt{\epsilon} = 1.07 + 6.4*V - 6.4*V^2 + 4.7*V^3
   }{%
