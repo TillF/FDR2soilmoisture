@@ -575,6 +575,9 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
         any(grepl(eq_subset, pattern = "Singh")))
     {
       eq="theta_Singh_adj"
+      if (!requireNamespace("nlmrt", quietly = TRUE)) {
+        warning("Skipping ", eq, ": package 'nlmrt' is required but not installed.")
+      } else {
       #get initial estimate
       lm_all = lm(formula = theta ~ sqrt(epsilon), 
                   data = common_set[common_set$training,]) 
@@ -636,7 +639,7 @@ compare_eps2theta_equations = function(common_set, legend_args=NULL, eq_subset=N
       #collect equation output for plotting
       common_set_plot_train[, eq] = ftemp(common_set_plot_train) #apply equation
       common_set_plot_test [, eq] = ftemp(common_set_plot_test ) #apply equation
-      
+      }      
     }
     
     #adjusted Roth et al1992 regression on 3rd order polynom####

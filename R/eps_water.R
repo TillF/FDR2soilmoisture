@@ -1,6 +1,11 @@
 # Function to calculate the temperature corrected permittivity of water
 
 eps_water <- function(T, equ = "Weast86") {
+  supported_equations <- c("Weast86", "iapws", "Uematsu1980")
+  if (!(equ %in% supported_equations)) {
+    stop("Unknown equation '", equ, "'. Supported equations are: ", paste(supported_equations, collapse = ", "))
+  }
+
   if (equ == "Weast86") {
     # Weast, R.C. CRC Handbook of Physics and Chemistry, 67th ed.; CRC Press: Boca Raton, FL, USA, 1986.
     eps_w <- 78.54 * (1 - (4.5791 * 10**(-3)) * (T - 25) + 1.19 * 10**(-5) * (T - 25)**2 - 2.8 * 10**(-8) * (T - 25)**3)

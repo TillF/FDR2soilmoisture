@@ -27,21 +27,22 @@ eps2theta <- function(epsdata, equation) {
     SinghEtal2019 = c("epsilon", "clay_perc")
   )
 
-  if (equation == "list") {
+  if (is.character(equation) && length(equation) == 1 && equation == "list") {
     return(required_fields)
   } # only return names of supported equations
 
+  if (!is.character(equation) || length(equation) != 1) {
+    stop("equation must be a single character string.")
+  }
   equation <- .update_equation_names(equation)
   if (!is.data.frame(epsdata)) stop("epsdata must be a dataframe.")
-  if (nrow(epsdata) == 0)      
-  {  
+  if (nrow(epsdata) == 0)
+  {
     #warning("epsdata has have 0 rows.")
     return(NULL)
-  }  
-  if (!is.character(equation)) stop("equation must be a character string.")
+  }
 
-
-  if (!(all(equation %in% names(required_fields)))) stop("equation must be one of ", paste0(names(required_fields), collapse = ", "))
+  if (!(equation %in% names(required_fields))) stop("equation must be one of ", paste0(names(required_fields), collapse = ", "))
   numeric_cols <- c("epsilon", "n", "BD", "clay_perc", "om_perc")
 
   theta <- rep(NA, nrow(epsdata))
